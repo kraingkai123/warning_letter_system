@@ -24,10 +24,8 @@
                 <ul class="navbar-nav">
                     <li class="nav-item btn-rotate dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="nc-icon nc-bell-55"></i>
-                            <p>
-                                <span class="d-lg-none d-md-block">Some Actions</span>
-                            </p>
+                        <?php echo $_SESSION['usr_fname']." ".$_SESSION['usr_lname'];?>
+
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Action</a>

@@ -18,8 +18,11 @@
    <link href="../assets/css/dataTables.bootstrap4.css" rel="stylesheet" />
    <link href="../assets/css/twitter-bootstrap.css" rel="stylesheet" />
    <link href="../assets/css/DataTable.css" rel="stylesheet" />
+   <link href="../assets/css/font-awesom.min.css" rel="stylesheet" />
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+  
+  
 </head>
 <?php  include("include.php");?>

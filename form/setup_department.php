@@ -19,29 +19,29 @@ include("../include/header.php");
                                 <thead>
                                     <tr class="text-center">
                                         <th class="text-center" width="10%">ลำดับ</th>
-                                        <th class="text-center" width="60%">ข้อบังคับ</th>
+                                        <th class="text-center" width="60%">ชื่อหน่วยงาน/ฝ่าย</th>
                                         <th class="text-center" width="10%">สถานะ</th>
                                         <th class="text-center" width="20%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $ressponse = LetterType::listLetterType();
+                                    $ressponse = Department::ListDepartment();
                                     $i = 1;
                                     foreach ($ressponse as $key => $value) {
                                     ?>
                                         <tr>
                                             <td align="center"><?php echo $i; ?></td>
-                                            <td><?php echo $value['letter_type_name']; ?></td>
+                                            <td><?php echo $value['dep_name']; ?></td>
                                             <td align="center">
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" class="custom-control-input" id="letter_type_status<?php echo $value['lt_id']; ?>" <?php echo $value['letter_type_status'] == 1 ? "checked" : ""; ?> onclick="UpdateStatus('<?php echo $value['lt_id']; ?>','<?php echo $value['letter_type_status']; ?>')">
-                                                    <label class="custom-control-label" for="letter_type_status<?php echo $value['lt_id']; ?>"></label>
+                                                    <input type="checkbox" class="custom-control-input" id="dep_status<?php echo $value['dep_id']; ?>" <?php echo $value['dep_status'] == 1 ? "checked" : ""; ?> onclick="UpdateStatus('<?php echo $value['dep_id']; ?>','<?php echo $value['dep_status']; ?>')">
+                                                    <label class="custom-control-label" for="dep_status<?php echo $value['dep_id']; ?>"></label>
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['lt_id']; ?>" onclick="EditData('edit','<?php echo $value['lt_id']; ?>')" data-name="<?php echo $value['letter_type_name']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
-                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['lt_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['dep_id']; ?>" onclick="EditData('edit','<?php echo $value['dep_id']; ?>')" data-name="<?php echo $value['dep_name']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
+                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['dep_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
                                             </td>
                                         </tr>
                                     <?php
@@ -68,12 +68,12 @@ include("../include/header.php");
             LoadDatatable('example');
         });
 
-        function UpdateStatus(lt_id, status) {
+        function UpdateStatus(department_id, status) {
             $.ajax({
                 type: "POST",
-                url: "../save/setup_letter_type_proc.php",
+                url: "../save/setup_department_proc.php",
                 data: {
-                    lt_id: lt_id,
+                    department_id: department_id,
                     status: status,
                     proc: 'updateStatus'
                 }, // serializes the form's elements.
@@ -96,11 +96,11 @@ include("../include/header.php");
 
         function SaveData() {
             var proc = $("#proc").val();
-            var lt_id = $("#lt_id").val()
+            var department_id = $("#department_id").val()
             if (proc == 'add') {
-                if ($("#letter_type_name").val() == "") {
+                if ($("#department_name").val() == "") {
                     Swal.fire({
-                        title: "กรุณากรอกข้อบังคับ",
+                        title: "รุณากรอกชื่อหน่วยงาน/ฝ่าย",
                         icon: "error"
                     });
                 } else {
@@ -117,9 +117,9 @@ include("../include/header.php");
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: "POST",
-                                url: "../save/setup_letter_type_proc.php",
+                                url: "../save/setup_department_proc.php",
                                 data: {
-                                    letter_type_name: $('#letter_type_name').val(),
+                                    department_name: $('#department_name').val(),
                                     proc: proc
                                 }, // serializes the form's elements.
                                 dataType: "json",
@@ -139,9 +139,9 @@ include("../include/header.php");
                 }
             } else if (proc == 'edit') {
 
-                if ($("#letter_type_name").val() == "") {
+                if ($("#department_name").val() == "") {
                     Swal.fire({
-                        title: "กรุณากรอกข้อบังคับ",
+                        title: "กรุณากรอกชื่อหน่วยงาน/ฝ่าย",
                         icon: "error"
                     });
                 } else {
@@ -158,11 +158,11 @@ include("../include/header.php");
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: "POST",
-                                url: "../save/setup_letter_type_proc.php",
+                                url: "../save/setup_department_proc.php",
                                 data: {
-                                    letter_type_name: $('#letter_type_name').val(),
+                                    department_name: $('#department_name').val(),
                                     proc: proc,
-                                    lt_id: lt_id
+                                    department_id: department_id
                                 }, // serializes the form's elements.
                                 dataType: "json",
                                 success: function(response) {
@@ -187,14 +187,14 @@ include("../include/header.php");
             $("#proc").val(proc)
         }
 
-        function EditData(proc, lt_id) {
+        function EditData(proc, department_id) {
             $("#proc").val(proc)
-            $("#lt_id").val(lt_id)
-            var letter_type_name = $("#btnEdit" + lt_id).data('name');
-            $('#letter_type_name').val(letter_type_name);
+            $("#department_id").val(department_id)
+            var department_name = $("#btnEdit" + department_id).data('name');
+            $('#department_name').val(department_name);
         }
 
-        function DeleteData(proc, lt_id) {
+        function DeleteData(proc, department_id) {
             Swal.fire({
                 title: "ต้องการลบใช่หรือไม่",
                 text: "",
@@ -208,10 +208,10 @@ include("../include/header.php");
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "POST",
-                        url: "../save/setup_letter_type_proc.php",
+                        url: "../save/setup_department_proc.php",
                         data: {
                             proc: proc,
-                            lt_id: lt_id
+                            department_id: department_id
                         }, // serializes the form's elements.
                         dataType: "json",
                         success: function(response) {
@@ -235,7 +235,7 @@ include("../include/header.php");
 
 </html>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><?php
@@ -248,12 +248,12 @@ include("../include/header.php");
                 </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" id='lt_id' name="lt_id">
+                <input type="hidden" id='department_id' name="department_id">
                 <input type="hidden" id='proc' name="proc">
                 <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">ข้อบังคับ<span class="text-danger">*</span></label>
+                    <label for="inputPassword" class="col-sm-2 col-form-label">หน่วยงาน/ฝ่าย<span class="text-danger">*</span></label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="letter_type_name" name="letter_type_name">
+                        <input type="text" class="form-control" id="department_name" name="department_name">
                     </div>
                 </div>
             </div>

@@ -10,10 +10,13 @@ if (empty($userName)) {
     $message = "กรุณากรอก Password";
     $status = false;
 } else {
-    $response = db_queryFirst("  select usr_fname,usr_lname,usr_id,usr_type,dep_name,pos_name,is_manager FROM m_user
+    
+    $response = db_queryFirst("select usr_fname,usr_lname,usr_id,usr_type,dep_name,pos_name,is_manager,prefix_name,m_user.dep_id FROM m_user
                             INNER JOIN usr_position ON usr_position.pos_id = m_user.usr_position
                             INNER JOIN usr_department ON usr_department.dep_id=m_user.dep_id 
-                            WHERE usr_username='$userName' AND usr_password='$passWord' AND usr_status='Y' ");
+							INNER JOIN m_prefix ON m_prefix.prefix_id=m_user.prefix_id
+                            WHERE usr_username='$userName' AND usr_password='$passWord' AND usr_status='Y'");
+                           
     if ($response['usr_id'] != "") {
         $_SESSION['usr_id'] = $response['usr_id'];
         $_SESSION['usr_fname'] = $response['usr_fname'];
@@ -21,6 +24,9 @@ if (empty($userName)) {
         $_SESSION['usr_type'] = $response['usr_type'];
         $_SESSION['dep_name'] = $response['dep_name'];
         $_SESSION['pos_name'] = $response['pos_name'];
+        $_SESSION['prefix_name'] = $response['prefix_name'];
+        $_SESSION['dep_id'] = $response['dep_id'];
+        $_SESSION['full_name'] = $response['prefix_name'].$response['usr_fname']." ".$response['usr_lname'];
         $message = "";
         $status = true;
         if ($response['usr_type'] == 0) {

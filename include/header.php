@@ -22,7 +22,7 @@
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
-  
-  
+  <link href="../assets/css/select2.min.css" rel="stylesheet" />
+  <link href="../assets/css/quill.snow.css" rel="stylesheet" />
 </head>
 <?php  include("include.php");?>

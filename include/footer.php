@@ -25,6 +25,8 @@
 <!-- Datatables -->
 <script src="../assets/js/plugins/datatables/datatables.min.js"></script>
 <script src="../assets/js/plugins/sweetalert/sweetalert2.min.js"></script>
+<script src="../assets/js/plugins/select2/select2.full.min.js"></script>
+<script src="../assets/js/quill.js"></script>
 <script>
     function LoadDatatable(table) {
         var t = $('#' + table).DataTable({

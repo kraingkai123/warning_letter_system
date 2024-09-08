@@ -12,9 +12,7 @@ include("../include/header.php");
                 <div class="col-md-12">
                     <div class="card ">
                         <div class="card-body ">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="AddData('add')">
-                                <i class="nc-icon nc-simple-add"></i> เพิ่มข้อมูล
-                            </button>
+                            <a class="btn btn-primary" href="addLetter.php" role="button">เพิ่มข้อมูล</a>
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr class="text-center">
@@ -269,28 +267,3 @@ include("../include/header.php");
 </body>
 
 </html>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><?php
-                                                                if (empty($_GET['menu_id'])) {
-                                                                    $_GET['menu_id'] = 0;
-                                                                }
-                                                                echo $_SESSION['menu'][$_GET['menu_id']]['menu_name']; ?></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div id="modal_content"></div>
-            </div>
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-primary" onclick="SaveData()">บันทึก</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
-            </div>
-        </div>
-    </div>
-</div>

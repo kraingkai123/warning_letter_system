@@ -52,7 +52,7 @@ function db_insert($table, $fields)
         $last_id = db_getData("SELECT LAST_INSERT_ID() AS LAST_ID", 'LAST_ID');
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-        exit;
+        $last_id =false;
     }
     return $last_id;
 }
@@ -73,8 +73,10 @@ function db_update($table, $fields, $cond)
     $sql = "UPDATE $table SET  $fieldsData WHERE 1=1 $where";
 
     if (mysqli_query($conn, $sql) === TRUE) {
+        return true;
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        return false;
         exit;
     }
 }
@@ -89,8 +91,10 @@ function db_delete($table, $cond)
     $where = rtrim($where, ", ");
     $sql = "DELETE FROM $table WHERE 1=1 $where";
     if (mysqli_query($conn, $sql) === TRUE) {
+        return true;
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        return false;
         exit;
     }
 }

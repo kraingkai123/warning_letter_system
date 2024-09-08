@@ -8,7 +8,7 @@ class Position
     }
     public static function ListPostion()
     {
-        $sql = "SELECT * FROM usr_position WHERE 1=1";
+        $sql = "SELECT * FROM usr_position WHERE 1=1  AND pos_status='1'";
         $response = db_query($sql);
         return $response;
     }

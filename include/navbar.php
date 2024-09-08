@@ -10,10 +10,12 @@
                     </button>
                 </div>
                 <a class="navbar-brand" href="javascript:;"><?php
-                                                            if (empty($_GET['menu_id'])) {
-                                                                $_GET['menu_id'] = 0;
+                                                            if ($_GET['menu_id']=="") {
+                                                                echo "หน้าแรก";
+                                                            }else{
+                                                                echo $_SESSION['menu'][$_GET['menu_id']]['menu_name'];
                                                             }
-                                                            echo $_SESSION['menu'][$_GET['menu_id']]['menu_name']; ?></a>
+                                                            ?></a>
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -24,7 +26,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item btn-rotate dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <?php echo $_SESSION['usr_fname']." ".$_SESSION['usr_lname'];?>
+                        <?php echo $_SESSION['full_name'];?>
 
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

@@ -8,7 +8,7 @@ class Department
     }
     public static function ListDepartment()
     {
-        $sql = "SELECT * FROM usr_department WHERE 1=1";
+        $sql = "SELECT * FROM usr_department WHERE 1=1 AND dep_status=1";
         $response = db_query($sql);
         return $response;
     }

@@ -24,4 +24,10 @@ class Department
     {
         db_delete($table, $cond);
     }
+    public static function getDataDepartment($department_id)
+    {
+        $sql = "SELECT * FROM usr_department WHERE 1=1 AND dep_status=1 AND dep_id='".$department_id."'";
+        $response = db_queryFirst($sql);
+        return $response;
+    }
 }

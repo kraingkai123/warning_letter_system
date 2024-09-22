@@ -268,8 +268,10 @@
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #e4e4e4;
-    border: 1px solid #aaa;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    color: white;
+    
     border-radius: 4px;
     box-sizing: border-box;
     display: inline-block;
@@ -309,7 +311,7 @@
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover,
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
-    background-color: #f1f1f1;
+    background-color: #007bff;;
     color: #333;
     outline: none
 }

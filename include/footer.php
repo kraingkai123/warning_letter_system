@@ -57,4 +57,17 @@
             });
         }).draw();
     }
+
+    function showLoadingPage(showText = "") {
+        let text = showText || "กำลังโหลดข้อมูล";
+        Swal.fire({
+            title: '',
+            text: text,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading(); // Display loading spinner
+            }
+        });
+
+    }
 </script>

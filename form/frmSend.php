@@ -17,35 +17,31 @@ include("../include/header.php");
                                 <thead>
                                     <tr class="text-center">
                                         <th class="text-center" width="10%">ลำดับ</th>
-                                        <th class="text-center" width="30%">ชื่อ-สกุล</th>
-                                        <th class="text-center" width="20%">ฝ่าย/สังกัด</th>
-                                        <th class="text-center" width="20%">ตำแหน่ง</th>
-                                        <th class="text-center" width="10%">สถานะ</th>
+                                        <th class="text-center" width="30%">เรื่อง</th>
+                                        <th class="text-center" width="20%">เรียน</th>
+                                        <th class="text-center" width="20%">วันที่</th>
+                                        <th class="text-center" width="10%">เลขคำร้อง</th>
                                         <th class="text-center" width="10%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $ressponse = User::getUserAll($_SESSION['dep_id'], $_SESSION['usr_type']);
+                                    $ressponse = Letter::ListLetter();
                                     $i = 1;
 
                                     foreach ($ressponse as $key => $value) {
                                     ?>
                                         <tr>
                                             <td align="center"><?php echo $i; ?></td>
-                                            <td><?php echo $value['prefix_name'].$value['usr_fname']." ".$value['usr_lname']; ?></td>
-                                            <td><?php echo $value['dep_name'];?></td>
-                                            <td><?php echo $value['pos_name'];?></td>
-
+                                            <td><?php echo $value['letter_name'];?></td>
+                                            <td><?php echo $value['letter_target']; ?></td>
+                                            <td><?php echo db2Date($value['letter_date']); ?></td>
                                             <td align="center">
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" class="custom-control-input" id="usr_status<?php echo $value['usr_id']; ?>" <?php echo $value['usr_status'] == 'Y' ? "checked" : ""; ?> onclick="UpdateStatus('<?php echo $value['usr_id']; ?>','<?php echo $value['usr_status']; ?>')">
-                                                    <label class="custom-control-label" for="usr_status<?php echo $value['usr_id']; ?>"></label>
-                                                </div>
+                                                
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['usr_id']; ?>" onclick="EditData('edit','<?php echo $value['usr_id']; ?>')" data-name="<?php echo $value['pos_name']; ?>" data-is_manager="<?php echo $value['is_manager']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
-                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['usr_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                            <a class="btn btn-primary" href="addLetter.php?LETTER_ID=<?php echo $value['letter_id'];?>" role="button">แก้ไข</a>
+                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['letter_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
                                             </td>
                                         </tr>
                                     <?php

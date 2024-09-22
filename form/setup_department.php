@@ -100,7 +100,7 @@ include("../include/header.php");
             if (proc == 'add') {
                 if ($("#department_name").val() == "") {
                     Swal.fire({
-                        title: "รุณากรอกชื่อหน่วยงาน/ฝ่าย",
+                        title: "กรุณากรอกชื่อหน่วยงาน/ฝ่าย",
                         icon: "error"
                     });
                 } else {

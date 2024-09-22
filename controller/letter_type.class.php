@@ -12,6 +12,12 @@ class LetterType
         $response = db_query($sql);
         return $response;
     }
+    public static function listLetterTypeActive()
+    {
+        $sql = "SELECT * FROM m_letter_type WHERE 1=1 AND letter_type_status='1'";
+        $response = db_query($sql);
+        return $response;
+    }
     public static function SaveData($table, $fields)
     {
         db_insert($table, $fields);
@@ -24,4 +30,5 @@ class LetterType
     {
         db_delete($table, $cond);
     }
+    
 }

@@ -24,4 +24,10 @@ class Position
     {
         db_delete($table, $cond);
     }
+    public static function getDataPostion(int $posId)
+    {
+        $sql = "SELECT * FROM usr_position WHERE 1=1  AND pos_status='1' AND pos_id ='".$posId."'";
+        $response = db_queryFirst($sql);
+        return $response;
+    }
 }

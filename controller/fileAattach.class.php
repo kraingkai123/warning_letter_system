@@ -47,4 +47,12 @@ class FileAttach
         $response = db_query("SELECT * FROM m_file_attach WHERE letter_id='" . $letterId . "'");
         return $response;
     }
+    public static function DeleteFileOne($fileId){
+        $response = db_queryFirst("SELECT full_url FROM m_file_attach WHERE file_id='".$fileId."'");
+        unlink($response['full_url']);
+        unset($cond);
+        $cond['file_id'] = $fileId;
+        db_delete('m_file_attach', $cond);
+
+    }
 }

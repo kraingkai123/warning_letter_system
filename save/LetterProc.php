@@ -1,7 +1,7 @@
 <?php
 include("../include/include.php");
 $PROC = $_POST['PROC'];
-
+print_pre($_POST);
 if ($PROC == 'add') {
     $target = "";
     unset($fields);
@@ -15,8 +15,9 @@ if ($PROC == 'add') {
     $fields['letter_date'] = $_POST['letter_date'];
     $fields['letter_name'] = $_POST['letter_name'];
     $fields['letter_detail'] = $_POST['letter_detail'];
-    $fields['letter_status'] = $_POST['letter_status'];
+    $fields['letter_status'] = 1;
     $fields['letter_type'] = $_POST['letter_type'];
+    $fields['img_create'] = $_POST['img_create'];
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
     $letterId = Letter::SaveData($fields);
@@ -29,6 +30,7 @@ if ($PROC == 'add') {
         $perProfile = User::getDataUser($value);
         $fields['usr_fname'] =  $perProfile['usr_fname'];
         $fields['usr_lname'] =  $perProfile['usr_lname'];
+        $fields['prefix_name'] = $perProfile['prefix_name'];
         $posData = Position::getDataPostion($perProfile['usr_position']);
         $fields['usr_pos_name'] =   $posData['pos_name'];
         $depData = Department::getDataDepartment($perProfile['dep_id']);
@@ -37,7 +39,7 @@ if ($PROC == 'add') {
         $fields['f_status'] = 2;
         db_insert('frm_target', $fields);
         $prefixData = user::getPrefix($perProfile['prefix_id']);
-        $target .=$prefixData['prefix_name'].$perProfile['usr_fname'].' '.$perProfile['usr_lname']." (". $posData['pos_name'].")"." (".$depData['dep_name'].")".",";
+        $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'] . " (" . $posData['pos_name'] . ")" . " (" . $depData['dep_name'] . ")" . ",";
     }
     $tureTarget = substr($target, 0, -1);
     unset($fields);
@@ -50,6 +52,7 @@ if ($PROC == 'add') {
         $perProfile = User::getDataUser($value);
         $fields['usr_fname'] =  $perProfile['usr_fname'];
         $fields['usr_lname'] =  $perProfile['usr_lname'];
+        $fields['prefix_name'] = $perProfile['prefix_name'];
         $posData = Position::getDataPostion($perProfile['usr_position']);
         $fields['usr_pos_name'] =   $posData['pos_name'];
         $depData = Department::getDataDepartment($perProfile['dep_id']);
@@ -67,8 +70,9 @@ if ($PROC == 'add') {
     $fields['letter_date'] = $_POST['letter_date'];
     $fields['letter_name'] = $_POST['letter_name'];
     $fields['letter_detail'] = $_POST['letter_detail'];
-    $fields['letter_status'] = $_POST['letter_status'];
+    $fields['letter_status'] = 1;
     $fields['letter_type'] = $_POST['letter_type'];
+    $fields['img_create'] = $_POST['img_create'];
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
     Letter::UpdateData($fields, $letterId);
@@ -81,15 +85,16 @@ if ($PROC == 'add') {
         $perProfile = User::getDataUser($value);
         $fields['usr_fname'] =  $perProfile['usr_fname'];
         $fields['usr_lname'] =  $perProfile['usr_lname'];
+        $fields['prefix_name'] = $perProfile['prefix_name'];
         $posData = Position::getDataPostion($perProfile['usr_position']);
-        $fields['usr_lname'] =   $posData['pos_name'];
+        $fields['usr_pos_name'] =   $posData['pos_name'];
         $depData = Department::getDataDepartment($perProfile['dep_id']);
         $fields['usr_dep_name'] =   $depData['dep_name'];
         $fields['letter_id'] = $letterId;
         $fields['f_status'] = 2;
         db_insert('frm_target', $fields);
         $prefixData = user::getPrefix($perProfile['prefix_id']);
-        $target .=$prefixData['prefix_name'].$perProfile['usr_fname'].' '.$perProfile['usr_lname']." (". $posData['pos_name'].")"." (".$depData['dep_name'].")".",";
+        $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'] . " (" . $posData['pos_name'] . ")" . " (" . $depData['dep_name'] . ")" . ",";
     }
     $tureTarget = substr($target, 0, -1);
     unset($fields);
@@ -102,8 +107,9 @@ if ($PROC == 'add') {
         $perProfile = User::getDataUser($value);
         $fields['usr_fname'] =  $perProfile['usr_fname'];
         $fields['usr_lname'] =  $perProfile['usr_lname'];
+        $fields['prefix_name'] = $perProfile['prefix_name'];
         $posData = Position::getDataPostion($perProfile['usr_position']);
-        $fields['usr_lname'] =   $posData['pos_name'];
+        $fields['usr_pos_name'] =   $posData['pos_name'];
         $depData = Department::getDataDepartment($perProfile['dep_id']);
         $fields['usr_dep_name'] =   $depData['dep_name'];
         $fields['letter_id'] = $letterId;
@@ -113,6 +119,7 @@ if ($PROC == 'add') {
     $return['status'] = 200;
     $return['url'] = '../form/frmSend.php?menu_id=2';
 } else if ($PROC == 'delete') {
+    $letterId = $_POST['LETTER_ID'];
     $cond['letter_id'] = $letterId;
     db_delete('m_letter', $cond);
     db_delete('frm_target', $cond);
@@ -120,5 +127,31 @@ if ($PROC == 'add') {
     FileAttach::DeleteFile($letterId);
     $return['status'] = 200;
     $return['url'] = '../form/frmSend.php?menu_id=2';
+} else if ($PROC == 'deleteFile') {
+    $fileId = $_POST['fileId'];
+    FileAttach::DeleteFileOne($fileId);
+    $return['status'] = 200;
+}  else if ($PROC == 'HrApprove') {
+    $letterId = $_POST['LETTER_ID'];
+    unset($fields);
+    if($_POST['rdoStatus']=='Y'){
+        $status=2;
+        $fields['hr_name'] = $_SESSION['full_name'];
+        $fields['hr_id'] = $_SESSION['usr_id'];
+        $fields['hr_apporve_date'] =date('Y-m-d');
+        $fields['hr_appove_time'] = date('H:i:s');
+        $fields['hr_position'] = $_SESSION['pos_name'];
+        $fields['img_hr'] = $_POST['img_create'];
+    }else  if($_POST['rdoStatus']=='B'){
+        $status=5;
+    }else  if($_POST['rdoStatus']=='N'){
+        $status=3;
+    }
+    $fields['letter_reason']= $_POST['hr_reson'];
+    $fields['letter_status'] = $status;
+    Letter::UpdateData($fields, $letterId);
+    FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
+    $return['status'] = 200;
+    $return['url'] = '../form/approved_list.php?menu_id=5';
 }
 echo json_encode($return);

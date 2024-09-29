@@ -10,9 +10,11 @@
                     </button>
                 </div>
                 <a class="navbar-brand" href="javascript:;"><?php
-                                                            if ($_GET['menu_id']=="") {
+                                                            if ($_GET['proc'] == 'view') {
+                                                                echo "รายละเอียด";
+                                                            } else                                                            if ($_GET['menu_id'] == "") {
                                                                 echo "หน้าแรก";
-                                                            }else{
+                                                            } else {
                                                                 echo $_SESSION['menu'][$_GET['menu_id']]['menu_name'];
                                                             }
                                                             ?></a>
@@ -26,7 +28,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item btn-rotate dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <?php echo $_SESSION['full_name'];?>
+                            <?php echo $_SESSION['full_name']; ?>
 
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

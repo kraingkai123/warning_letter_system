@@ -15,7 +15,37 @@ var myDropzone = new Dropzone("#file-dropzone", {
         // Capture the form submit event
         document.getElementById("MainFrm").addEventListener("submit", function (e) {
             e.preventDefault(); // Prevent the form from submitting right away
+            var status = $('input[name="rdoStatus"]:checked').val();
+            var proc = $("#PROC").val();
 
+            if (proc == 'Approve') {
+                if (status == undefined) {
+                    Swal.fire({
+                        title: "กรุณาเลือกสถานะ",
+                        text: "",
+                        icon: "error"
+                    });
+                    return false;
+                } else if (status == "B" || status == 'N') {
+                    if ($("#hr_reson").val() == "") {
+                        Swal.fire({
+                            title: "กรุณากรอกหมายเหตุ",
+                            text: "",
+                            icon: "error"
+                        });
+                        return false;
+                    }
+                }else{
+                    if($("#img_create").val()==""){
+                        Swal.fire({
+                            title: "กรุณเขียนภาพลายเซ็น",
+                            text: "",
+                            icon: "error"
+                        });
+                        return false;
+                    }
+                }
+            }
             // If files are added to Dropzone
             if (dropzoneInstance.getQueuedFiles().length > 0) {
                 // Add the form data to each upload request before processing the queue

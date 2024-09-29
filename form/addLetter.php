@@ -25,8 +25,8 @@ if ($_GET['LETTER_ID'] != "") {
                         <div class="card-body ">
                             <form method="POST" name="MainFrm" id="MainFrm" action="../save/LetterProc.php" enctype="multipart/form-data">
                                 <input type="hidden" name="TEMP_FILE" id="TEMP_FILE" value="<?php echo date("Ymdhis") . $_SESSION['usr_id']; ?>">
-                                <input type="hidden1" name="PROC" id="PROC" value="<?php echo $_GET['LETTER_ID'] == "" ? 'add' : "edit"; ?>">
-                                <input type="hidden1" name="LETTER_ID" id="LETTER_ID" value="<?php echo $_GET['LETTER_ID']; ?>">
+                                <input type="hidden" name="PROC" id="PROC" value="<?php echo $_GET['LETTER_ID'] == "" ? 'add' : "edit"; ?>">
+                                <input type="hidden" name="LETTER_ID" id="LETTER_ID" value="<?php echo $_GET['LETTER_ID']; ?>">
                                 <div class="form-group row">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">เขียนที่</label>
                                     <div class="col-sm-7">
@@ -83,7 +83,7 @@ if ($_GET['LETTER_ID'] != "") {
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด</label>
                                     <div class="col-sm-11">
                                         <div id="editor"></div>
-                                        <textarea name="letter_detail" id="letter_detail" style="display: none;"><?php echo $dataLetter['letter_detail'];?></textarea>
+                                        <textarea name="letter_detail" id="letter_detail" style="display: none;"><?php echo $dataLetter['letter_detail']; ?></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -92,23 +92,29 @@ if ($_GET['LETTER_ID'] != "") {
                                         <div id="file-dropzone" class="dropzone"></div>
                                     </div>
                                     <div class="col-sm-5">
-                                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                        <table id="example" class="table table-striped table-bordered" style="width:100%">
                                             <tr>
-                                                <th><div align="center">ลำดับ</div></th>
-                                                <th><div align="center">เอกสารแนบ</div></th>
-                                                <th><div align="center">จัดการ</div></th>
+                                                <th>
+                                                    <div align="center">ลำดับ</div>
+                                                </th>
+                                                <th>
+                                                    <div align="center">เอกสารแนบ</div>
+                                                </th>
+                                                <th>
+                                                    <div align="center">จัดการ</div>
+                                                </th>
                                             </tr>
-                                            <?php 
+                                            <?php
                                             $indexFile = 1;
                                             foreach ($dataFile as $key => $value) {
-                                               ?>
-                                               <tr >
-                                                <td align="center"><?php echo $indexFile;?></td>
-                                                <td><a href="<?php echo $value['full_url'];?>" target="_blank" download="<?php echo $value['file_name'];?>" ><?php echo $value['file_name'];?></a></td>
-                                                <td></td>
-                                            </tr>
-                                               <?php
-                                               $indexFile++;
+                                            ?>
+                                                <tr id="tr_<?php echo $value['file_id']; ?>">
+                                                    <td align="center"><?php echo $indexFile; ?></td>
+                                                    <td><a href="<?php echo $value['full_url']; ?>" target="_blank" download="<?php echo $value['file_name']; ?>"><?php echo $value['file_name']; ?></a></td>
+                                                    <td align="center"><button type="button" class="btn btn-danger btn-mini" onclick="DeleteFile('<?php echo $value['file_id']; ?>')"><i class="nc-icon nc-simple-remove"></i>ลบ</button></td>
+                                                </tr>
+                                            <?php
+                                                $indexFile++;
                                             }
                                             ?>
                                         </table>
@@ -136,6 +142,19 @@ if ($_GET['LETTER_ID'] != "") {
                                             ?>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-2">
+                                        <a href="#!" class="btn btn-primary"
+                                            onclick="window.open('letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <img id="view_pic" src="<?php echo $dataLetter['img_create'] == "" ? "" : 'data:image/png;base64,' . $dataLetter['img_create']; ?>" style="width: 500px;" />
+                                    </div>
+                                    <textarea id="img_create" name="img_create" rows="4" cols="50" readonly style="display: none;"><?php echo $dataLetter['img_create']; ?></textarea>
+                                </div>
+                                <div class="form-group row">
+
                                 </div>
                         </div>
                         <div class="row">
@@ -170,7 +189,7 @@ if ($_GET['LETTER_ID'] != "") {
         var quill = new Quill('#editor', {
             theme: 'snow'
         });
-        quill.root.innerHTML  = $("#letter_detail").val();
+        quill.root.innerHTML = $("#letter_detail").val();
     });
 
     function saveData() {
@@ -211,5 +230,36 @@ if ($_GET['LETTER_ID'] != "") {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
+
+    function DeleteFile(fileId) {
+        Swal.fire({
+            title: "ต้องการลบเอกสารแนบใช่หรือไม่",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ยืนยัน",
+            cancelButtonText: "ปิด",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "../save/LetterProc.php",
+                    data: {
+                        PROC: 'deleteFile',
+                        fileId: fileId
+                    }, // serializes the form's elements.
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.status == 200) {
+                            $('#tr_' + fileId).hide();
+                        }
+                    }
+                });
+
+            }
+        });
+    }
 </script>
 <script src="../assets/js/dorpZone.js"></script>

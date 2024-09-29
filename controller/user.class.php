@@ -42,7 +42,7 @@ class User
     }
     public static function getDataUser($usrId)
     {
-        $sql = "SELECT * FROM m_user WHERE 1=1  AND usr_id='$usrId'";
+        $sql = "SELECT * FROM view_user WHERE 1=1  AND usr_id='$usrId'";
         $response = db_queryFirst($sql);
         return $response;
     }
@@ -59,4 +59,5 @@ class User
         $response = db_query($sql);
         return $response;
     }
+    
 }

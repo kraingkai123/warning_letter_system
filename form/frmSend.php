@@ -17,10 +17,11 @@ include("../include/header.php");
                                 <thead>
                                     <tr class="text-center">
                                         <th class="text-center" width="10%">ลำดับ</th>
+                                        <th class="text-center" width="10%">เลขคำร้อง</th>
                                         <th class="text-center" width="30%">เรื่อง</th>
                                         <th class="text-center" width="20%">เรียน</th>
                                         <th class="text-center" width="20%">วันที่</th>
-                                        <th class="text-center" width="10%">เลขคำร้อง</th>
+
                                         <th class="text-center" width="10%"></th>
                                     </tr>
                                 </thead>
@@ -33,15 +34,28 @@ include("../include/header.php");
                                     ?>
                                         <tr>
                                             <td align="center"><?php echo $i; ?></td>
-                                            <td><?php echo $value['letter_name'];?></td>
-                                            <td><?php echo $value['letter_target']; ?></td>
-                                            <td><?php echo db2Date($value['letter_date']); ?></td>
                                             <td align="center">
-                                                
+                                                <?php echo $value['letter_number']; ?>
                                             </td>
+                                            <td><?php echo $value['letter_name']; ?></td>
+                                            <td><?php echo $value['letter_target']; ?></td>
+                                            <td  align="center"><?php echo db2Date($value['letter_date']); ?></td>
+
                                             <td>
-                                            <a class="btn btn-primary" href="addLetter.php?LETTER_ID=<?php echo $value['letter_id'];?>" role="button">แก้ไข</a>
-                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['letter_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                    
+                                                <?php
+                                                
+                                                if ($value['letter_status'] == 5) {
+                                                ?>
+                                                    <a class="btn btn-primary" href="addLetter.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>" role="button">แก้ไข</a>
+                                                    <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['letter_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                <?php
+                                                } else if ($value['letter_status'] == 2) {
+                                                    ?>
+                                                      <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>&proc=Receive" role="button">รับทราบ</a>
+                                                    <?php
+                                                }?>
+                                                <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&proc=view" role="button"><i class="nc-icon nc-email-85"></i> รายละเอียด</a>
                                             </td>
                                         </tr>
                                     <?php
@@ -223,7 +237,7 @@ include("../include/header.php");
 
         }
 
-        function DeleteData(proc, pos_id) {
+        function DeleteData(proc, letterId) {
             Swal.fire({
                 title: "ต้องการลบใช่หรือไม่",
                 text: "",
@@ -237,19 +251,14 @@ include("../include/header.php");
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "POST",
-                        url: "../save/setup_position_proc.php",
+                        url: "../save/LetterProc.php",
                         data: {
-                            proc: proc,
-                            pos_id: pos_id
+                            PROC: proc,
+                            LETTER_ID: letterId
                         }, // serializes the form's elements.
                         dataType: "json",
                         success: function(response) {
-                            if (response.Status == false) {
-                                Swal.fire({
-                                    title: response.Message,
-                                    icon: "error"
-                                });
-                            } else {
+                            if (response.status == 200) {
                                 location.reload();
                             }
                         }

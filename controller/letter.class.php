@@ -39,12 +39,17 @@ class Letter
     }
     public static function getDataTarget(int $letter_id)
     {
-        $reponse = db_query("SELECT usr_id FROM frm_target WHERE letter_id='" . $letter_id . "'");
+        $reponse = db_query("SELECT * FROM frm_target WHERE letter_id='" . $letter_id . "'");
         return $reponse;
     }
     public static function getDataWiness(int $letter_id)
     {
-        $reponse = db_query("SELECT usr_id FROM frm_witness WHERE letter_id='" . $letter_id . "'");
+        $reponse = db_query("SELECT * FROM frm_witness WHERE letter_id='" . $letter_id . "'");
+        return $reponse;
+    }
+    public static function ListLetterHr()
+    {
+        $reponse = db_query("SELECT * FROM m_letter WHERE letter_status not in(5,0) order by letter_date DESC,letter_id DESC");
         return $reponse;
     }
 }

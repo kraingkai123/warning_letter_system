@@ -53,9 +53,15 @@ if ($_GET['LETTER_ID'] != "") {
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">เอกสารแนบ</button>
                                 </li>
-                                <li class="nav-item" role="presentation">
+                                <?php
+                                if($_GET['proc'] != 'view'){
+                                    ?>
+                                    <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">เซ็นเอกสาร</button>
                                 </li>
+                                    <?php
+                                }
+                                ?>
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -94,9 +100,7 @@ if ($_GET['LETTER_ID'] != "") {
                                                             <th>
                                                                 <div align="center">เอกสารแนบ</div>
                                                             </th>
-                                                            <th>
-                                                                <div align="center">จัดการ</div>
-                                                            </th>
+                                                         
                                                         </tr>
                                                         <?php
                                                         $indexFile = 1;
@@ -105,7 +109,7 @@ if ($_GET['LETTER_ID'] != "") {
                                                             <tr id="tr_<?php echo $value['file_id']; ?>">
                                                                 <td align="center"><?php echo $indexFile; ?></td>
                                                                 <td><a href="<?php echo $value['full_url']; ?>" target="_blank" download="<?php echo $value['file_name']; ?>"><?php echo $value['file_name']; ?></a></td>
-                                                                <td align="center"><button type="button" class="btn btn-danger btn-mini" onclick="DeleteFile('<?php echo $value['file_id']; ?>')"><i class="nc-icon nc-simple-remove"></i>ลบ</button></td>
+                                                              
                                                             </tr>
                                                         <?php
                                                             $indexFile++;
@@ -168,12 +172,20 @@ if ($_GET['LETTER_ID'] != "") {
                                     <form method="POST" name="MainFrm" id="MainFrm" action="../save/LetterProc.php" enctype="multipart/form-data">
                                         <input type="hidden" name="TEMP_FILE" id="TEMP_FILE" value="<?php echo date("Ymdhis") . $_SESSION['usr_id']; ?>">
                                         <input type="hidden" name="LETTER_ID" id="LETTER_ID" value="<?php echo $_GET['LETTER_ID']; ?>">
-                                        <input type="hidden" name="PROC" id="PROC" value="<?php echo $_GET['proc'];?>">
-                                        <?php if($_GET['proc']=='Approve'){
+                                        <input type="hidden" name="PROC" id="PROC" value="<?php echo $_GET['proc']; ?>">
+                                        <?php if ($_GET['proc'] == 'Approve') {
                                             include("FrmSign.php");
-                                        }else if($_GET['proc']=='Receive'){
+                                        } else if ($_GET['proc'] == 'Receive') {
                                             include("FrmReceive.php");
-                                        }?>
+                                        ?>
+                                            <div class="form-group row">
+                                                <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">เอกสารแนบ</label>
+                                                <div class="col-sm-6">
+                                                    <div id="file-dropzone" class="dropzone"></div>
+                                                </div>
+                                            </div>
+                                        <?php
+                                        } ?>
                                         <div class="row">
                                             <div class="col-sm-4">
                                             </div>
@@ -209,8 +221,9 @@ if ($_GET['LETTER_ID'] != "") {
     $(document).ready(function() {
         HideSign('N');
     });
+
     function saveData() {
-       
+
         $.ajax({
             type: "POST",
             url: '../save/LetterProc.php',

@@ -17,7 +17,6 @@ var myDropzone = new Dropzone("#file-dropzone", {
             e.preventDefault(); // Prevent the form from submitting right away
             var status = $('input[name="rdoStatus"]:checked').val();
             var proc = $("#PROC").val();
-
             if (proc == 'Approve') {
                 if (status == undefined) {
                     Swal.fire({
@@ -35,8 +34,8 @@ var myDropzone = new Dropzone("#file-dropzone", {
                         });
                         return false;
                     }
-                }else{
-                    if($("#img_create").val()==""){
+                } else {
+                    if ($("#img_create").val() == "") {
                         Swal.fire({
                             title: "กรุณเขียนภาพลายเซ็น",
                             text: "",
@@ -44,6 +43,35 @@ var myDropzone = new Dropzone("#file-dropzone", {
                         });
                         return false;
                     }
+                }
+            } else if (proc == 'Receive') {
+                var checktarget=0;
+                var checkWiness=0;
+                $(".img_create_traget").each(function (index) {
+                    if($(this).val()==""){
+                        checktarget++;
+                    }
+                });
+                if(checktarget>0){
+                    Swal.fire({
+                        title: "กรุณเขียนภาพลายเซ็นพนักงาน",
+                        text: "",
+                        icon: "error"
+                    });
+                    return false;
+                }
+                $(".img_create_winess").each(function (index) {
+                    if($(this).val()==""){
+                        checkWiness++;
+                    }
+                });
+                if(checkWiness>0){
+                    Swal.fire({
+                        title: "กรุณเขียนภาพลายเซ็นพยาน",
+                        text: "",
+                        icon: "error"
+                    });
+                    return false;
                 }
             }
             // If files are added to Dropzone

@@ -1,7 +1,6 @@
 <?php
 include("../include/include.php");
 $PROC = $_POST['PROC'];
-print_pre($_POST);
 if ($PROC == 'add') {
     $target = "";
     unset($fields);
@@ -131,27 +130,57 @@ if ($PROC == 'add') {
     $fileId = $_POST['fileId'];
     FileAttach::DeleteFileOne($fileId);
     $return['status'] = 200;
-}  else if ($PROC == 'HrApprove') {
+} else if ($PROC == 'HrApprove') {
     $letterId = $_POST['LETTER_ID'];
     unset($fields);
-    if($_POST['rdoStatus']=='Y'){
-        $status=2;
+    if ($_POST['rdoStatus'] == 'Y') {
+        $status = 2;
         $fields['hr_name'] = $_SESSION['full_name'];
         $fields['hr_id'] = $_SESSION['usr_id'];
-        $fields['hr_apporve_date'] =date('Y-m-d');
+        $fields['hr_apporve_date'] = date('Y-m-d');
         $fields['hr_appove_time'] = date('H:i:s');
         $fields['hr_position'] = $_SESSION['pos_name'];
         $fields['img_hr'] = $_POST['img_create'];
-    }else  if($_POST['rdoStatus']=='B'){
-        $status=5;
-    }else  if($_POST['rdoStatus']=='N'){
-        $status=3;
+        $fields['hr_appove_status'] = 'Y';
+    } else  if ($_POST['rdoStatus'] == 'B') {
+        $status = 5;
+    } else  if ($_POST['rdoStatus'] == 'N') {
+        $status = 3;
     }
-    $fields['letter_reason']= $_POST['hr_reson'];
+    $fields['letter_reason'] = $_POST['hr_reson'];
     $fields['letter_status'] = $status;
     Letter::UpdateData($fields, $letterId);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $return['status'] = 200;
     $return['url'] = '../form/approved_list.php?menu_id=5';
+} else if ($PROC == 'Receive') {
+    foreach ($_POST['img_create_traget'] as $key => $value) {
+        unset($fields);
+        $fields['date_sign'] = date('Y-m-d');
+        $fields['f_image'] = $value;
+        $fields['f_status'] = 1;
+        unset($cond);
+        $cond['f_id'] = $key;
+        db_update('frm_target', $fields, $cond);
+    }
+    foreach ($_POST['img_create_winess'] as $key => $value) {
+        unset($fields);
+        $fields['date_sign'] = date('Y-m-d');
+        $fields['f_image'] = $value;
+        $fields['f_status'] = 1;
+        unset($cond);
+        $cond['f_id'] = $key;
+        db_update('frm_witness', $fields, $cond);
+    }
+    unset($fields);
+    $fields['letter_status'] = 4;
+    $letterId = $_POST['LETTER_ID'];
+    Letter::UpdateData($fields, $letterId);
+    $return['status'] = 200;
+    FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
+    $return['status'] = 200;
+    $return['url'] = '../form/frmSend.php?menu_id=2';
 }
+
 echo json_encode($return);
+

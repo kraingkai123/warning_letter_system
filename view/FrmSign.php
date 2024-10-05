@@ -24,7 +24,7 @@
     <div class="col-sm-6">
         <img id="view_pic" src="" style="width: 500px;" />
     </div>
-    <textarea id="img_create" name="img_create" rows="4" cols="50" readonly></textarea>
+    <textarea id="img_create" name="img_create" rows="4" cols="50" readonly style="display: none;"></textarea>
 </div>
 <br>
 <div class="row">

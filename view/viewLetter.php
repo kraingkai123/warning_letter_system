@@ -49,7 +49,7 @@ $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
         <td colspan="4">เรื่อง <?php echo $dataLetter['letter_name']; ?></td>
     </tr>
     <tr>
-        <td colspan="4">เรียน <?php echo $dataLetter['letter_target']; ?></td>
+        <td colspan="4">ผู้กระทำความผิด <?php echo $dataLetter['letter_target']; ?></td>
     </tr>
     <tr>
         <td colspan="4"><?php echo $dataLetter['letter_detail']; ?></td>

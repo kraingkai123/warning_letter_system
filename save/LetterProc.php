@@ -130,7 +130,7 @@ if ($PROC == 'add') {
     $fileId = $_POST['fileId'];
     FileAttach::DeleteFileOne($fileId);
     $return['status'] = 200;
-} else if ($PROC == 'HrApprove') {
+} else if ($PROC == 'Approve') {
     $letterId = $_POST['LETTER_ID'];
     unset($fields);
     if ($_POST['rdoStatus'] == 'Y') {

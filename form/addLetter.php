@@ -28,7 +28,7 @@ if ($_GET['LETTER_ID'] != "") {
                                 <input type="hidden" name="PROC" id="PROC" value="<?php echo $_GET['LETTER_ID'] == "" ? 'add' : "edit"; ?>">
                                 <input type="hidden" name="LETTER_ID" id="LETTER_ID" value="<?php echo $_GET['LETTER_ID']; ?>">
                                 <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">เขียนที่</label>
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">ประเภทคำร้อง</label>
                                     <div class="col-sm-7">
                                         <select name="letter_type" id="letter_type" class="form-control selectbox" placeholder="โปรดเลือก">
                                             <?php
@@ -59,7 +59,7 @@ if ($_GET['LETTER_ID'] != "") {
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">เรียน</label>
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">ผู้กระทำความผิด</label>
                                     <div class="col-sm-7">
                                         <select name="letter_target[]" id="letter_target" class="form-control selectbox" multiple>
                                             <?php
@@ -72,7 +72,7 @@ if ($_GET['LETTER_ID'] != "") {
                                                     }
                                                 }
                                             ?>
-                                                <option <?php echo $select; ?> value="<?php echo $value['usr_id']; ?>"><?php echo $value['prefix_name'] . $value['usr_fname'] . ' ' . $value['usr_lname']; ?></option>
+                                                <option <?php echo $select; ?> value="<?php echo $value['usr_id']; ?>"><?php echo "รหัสพนักงาน : ".$value['usr_username']."  ".$value['prefix_name'] . $value['usr_fname'] . ' ' . $value['usr_lname']; ?></option>
                                             <?php
                                             }
                                             ?>

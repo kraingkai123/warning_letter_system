@@ -12,50 +12,37 @@ include("../include/header.php");
                 <div class="col-md-12">
                     <div class="card ">
                         <div class="card-body ">
-                            <a class="btn btn-primary" href="addLetter.php" role="button">เพิ่มข้อมูล</a>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="AddData('add')">
+                                <i class="nc-icon nc-simple-add"></i> เพิ่มข้อมูล
+                            </button>
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr class="text-center">
                                         <th class="text-center" width="10%">ลำดับ</th>
-                                        <th class="text-center" width="10%">เลขคำร้อง</th>
-                                        <th class="text-center" width="30%">เรื่อง</th>
-                                        <th class="text-center" width="20%">เรียน</th>
-                                        <th class="text-center" width="20%">วันที่</th>
-
+                                        <th class="text-center" width="40%">ข้อบังคับ</th>
+                                        <th class="text-center" width="30%">รายละเอียด</th>
+                                        <th class="text-center" width="10%">สถานะ</th>
                                         <th class="text-center" width="10%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $ressponse = Letter::ListLetter();
+                                    $ressponse = Rule::ListRule();
                                     $i = 1;
 
                                     foreach ($ressponse as $key => $value) {
                                     ?>
                                         <tr>
                                             <td align="center"><?php echo $i; ?></td>
-                                            <td align="center">
-                                                <?php echo $value['letter_number']; ?>
-                                            </td>
-                                            <td><?php echo $value['letter_name']; ?></td>
-                                            <td><?php echo $value['letter_target']; ?></td>
-                                            <td  align="center"><?php echo db2Date($value['letter_date']); ?></td>
-
                                             <td>
-                    
-                                                <?php
-                                                
-                                                if ($value['letter_status'] == 5) {
-                                                ?>
-                                                    <a class="btn btn-primary" href="addLetter.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>" role="button">แก้ไข</a>
-                                                    <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['letter_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
-                                                <?php
-                                                } else if ($value['letter_status'] == 2) {
-                                                    ?>
-                                                      <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>&proc=Receive" role="button">รับทราบ</a>
-                                                    <?php
-                                                }?>
-                                                <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&proc=view" role="button"><i class="nc-icon nc-email-85"></i> รายละเอียด</a>
+                                                <?php echo $value['rule_name']; ?>
+                                            </td>
+                                            <td><?php echo $value['rule_detail']; ?></td>
+                                            <td align="center"><?php echo $value['rule_status'] == "Y" ? "ใช้งาน" : "ไม่ใช้งาน"; ?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['rule_id']; ?>" onclick="EditData('edit','<?php echo $value['rule_id']; ?>')" data-name="<?php echo $value['rule_name']; ?>" data-rule_status="<?php echo $value['rule_status']; ?>" data-detail="<?php echo base64_encode($value['rule_detail']); ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
+                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['rule_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+
                                             </td>
                                         </tr>
                                     <?php
@@ -111,11 +98,11 @@ include("../include/header.php");
 
         function SaveData() {
             var proc = $("#proc").val();
-            var pos_id = $("#usr_id").val()
+            var pos_id = $("#rule_id").val()
             if (proc == 'add') {
-                if ($("#pos_name").val() == "") {
+                if ($("#rule_name").val() == "") {
                     Swal.fire({
-                        title: "กรุณากรอกชื่อตำแหน่ง",
+                        title: "กรุณากรอกข้อบังคับ",
                         icon: "error"
                     });
                 } else {
@@ -130,22 +117,25 @@ include("../include/header.php");
                         cancelButtonText: "ปิด",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            var form = $("#frmUser");
-                            var actionUrl = form.attr('action');
-                            const formData = new FormData($("#frmUser")[0]);
                             $.ajax({
                                 type: "POST",
-                                url: actionUrl,
-                                // data: form.serialize(), // serializes the form's elements.
-                                data: formData, // serializes the form's elements.
-                                contentType: false,
-                                processData: false,
-                                beforeSend: function() {
-                                    Swal.showLoading();
-                                },
+                                url: "../save/rule_proc.php",
+                                data: {
+                                    rule_name: $('#rule_name').val(),
+                                    rule_detail: $('#rule_detail').val(),
+                                    rule_status: $('#rule_status').val(),
+                                    proc: proc
+                                }, // serializes the form's elements.
+                                dataType: "json",
                                 success: function(response) {
-                                    swal.close();
-                                    location.reload();
+                                    if (response.Status == false) {
+                                        Swal.fire({
+                                            title: response.Message,
+                                            icon: "error"
+                                        });
+                                    } else {
+                                        location.reload();
+                                    }
                                 }
                             });
                         }
@@ -153,18 +143,17 @@ include("../include/header.php");
                 }
             } else if (proc == 'edit') {
 
-                if ($("#pos_name").val() == "") {
+                if ($("#rule_name").val() == "") {
                     Swal.fire({
-                        title: "กรุณากรอกชื่อตำแหน่ง",
+                        title: "กรุณากรอกข้อบังคับ",
                         icon: "error"
                     });
                 } else {
-                    var is_manager = $('#btnEdit' + pos_id).data('is_manager');
-
-                    if (is_manager != 'Y') {
-                        is_manager = 'Y';
+                    var rule_status="";
+                    if ($('#rule_status').prop('checked')) {
+                        rule_status='Y';
                     } else {
-                        is_manager = 'N';
+                        rule_status='N'
                     }
                     Swal.fire({
                         title: "คุณต้องการบันทึกข้อมูลใช่หรือไม่",
@@ -177,22 +166,26 @@ include("../include/header.php");
                         cancelButtonText: "ปิด",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            var form = $("#frmUser");
-                            var actionUrl = form.attr('action');
-                            const formData = new FormData($("#frmUser")[0]);
                             $.ajax({
                                 type: "POST",
-                                url: actionUrl,
-                                // data: form.serialize(), // serializes the form's elements.
-                                data: formData, // serializes the form's elements.
-                                contentType: false,
-                                processData: false,
-                                beforeSend: function() {
-                                    Swal.showLoading();
-                                },
+                                url: "../save/rule_proc.php",
+                                data: {
+                                    rule_name: $('#rule_name').val(),
+                                    rule_detail: $('#rule_detail').val(),
+                                    rule_status: rule_status,
+                                    rule_id: $("#rule_id").val(),
+                                    proc: proc
+                                }, // serializes the form's elements.
+                                dataType: "json",
                                 success: function(response) {
-                                    swal.close();
-                                    location.reload();
+                                    if (response.Status == false) {
+                                        Swal.fire({
+                                            title: response.Message,
+                                            icon: "error"
+                                        });
+                                    } else {
+                                         location.reload();
+                                    }
                                 }
                             });
                         }
@@ -202,42 +195,27 @@ include("../include/header.php");
 
         }
 
+
         function AddData(proc) {
             $("#proc").val(proc)
-            $.ajax({
-                type: "POST",
-                url: "../view/show_frm_user.php",
-                data: {
-                    proc: proc,
-                }, // serializes the form's elements.
-                dataType: "html",
-                success: function(response) {
-                    $('#modal_content').html(response)
-                }
-            });
         }
 
-        function EditData(proc, usr_id) {
-            $.ajax({
-                type: "POST",
-                url: "../view/show_frm_user.php",
-                data: {
-                    proc: proc,
-                    usr_id: usr_id
-                }, // serializes the form's elements.
-                //dataType: "html",
-                success: function(response) {
-                    $('#modal_content').html(response)
-                    $("#proc").val(proc)
-                    $("#usr_id").val(usr_id)
-                }
-            });
-
-
-
+        function EditData(proc, pos_id) {
+            $("#proc").val(proc)
+            $("#rule_id").val(pos_id)
+            var pos_name = $("#btnEdit" + pos_id).data('name');
+            $('#rule_name').val(pos_name);
+            var rule_status = $('#btnEdit' + pos_id).data('rule_status');
+            $('#rule_status').prop('checked', false)
+            if (rule_status == 'Y') {
+                $('#rule_status').prop('checked', true)
+            }
+            var base64String = $('#btnEdit' + pos_id).data('detail');
+            var decodedString = decodeBase64ToUTF8(base64String);
+            $("#rule_detail").text(decodedString);
         }
 
-        function DeleteData(proc, letterId) {
+        function DeleteData(proc, rule_id) {
             Swal.fire({
                 title: "ต้องการลบใช่หรือไม่",
                 text: "",
@@ -251,10 +229,10 @@ include("../include/header.php");
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "POST",
-                        url: "../save/LetterProc.php",
+                        url: "../save/rule_proc.php",
                         data: {
-                            PROC: proc,
-                            LETTER_ID: letterId
+                            proc: proc,
+                            rule_id: rule_id
                         }, // serializes the form's elements.
                         dataType: "json",
                         success: function(response) {
@@ -268,7 +246,63 @@ include("../include/header.php");
             });
 
         }
+
+        function decodeBase64ToUTF8(base64String) {
+            var binaryString = atob(base64String);
+            var binaryArray = new Uint8Array(binaryString.length);
+            for (var i = 0; i < binaryString.length; i++) {
+                binaryArray[i] = binaryString.charCodeAt(i);
+            }
+            return new TextDecoder('utf-8').decode(binaryArray);
+        }
     </script>
 </body>
 
 </html>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><?php
+                                                                if (empty($_GET['menu_id'])) {
+                                                                    $_GET['menu_id'] = 0;
+                                                                }
+                                                                echo $_SESSION['menu'][$_GET['menu_id']]['menu_name']; ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id='rule_id' name="rule_id">
+                <input type="hidden" id='proc' name="proc">
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">ข้อบังคับ<span class="text-danger">*</span></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="rule_name" name="rule_name" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">ข้อบังคับ<span class="text-danger">*</span></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="rule_detail" name="rule_detail" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">สถานะ</label>
+                    <div class="col-sm-10">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="rule_status" value="Y">
+                            <label class="custom-control-label" for="rule_status"></label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary" onclick="SaveData()">บันทึก</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -102,7 +102,7 @@
 						icon: "error"
 					});
 				} else {
-					location.href = "./form/home.php"
+					location.href = "./form/frmSend.php?menu_id=0"
 				}
 			}
 		});

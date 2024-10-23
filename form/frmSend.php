@@ -47,7 +47,7 @@ include("../include/header.php");
                                                 
                                                 if ($value['letter_status'] == 5) {
                                                 ?>
-                                                    <a class="btn btn-primary" href="addLetter.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>" role="button">แก้ไข</a>
+                                                    <a class="btn btn-success" href="addLetter.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>" role="button"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</a>
                                                     <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['letter_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
                                                 <?php
                                                 } else if ($value['letter_status'] == 2) {

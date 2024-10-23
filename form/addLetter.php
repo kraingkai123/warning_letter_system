@@ -10,6 +10,7 @@ if ($_GET['LETTER_ID'] != "") {
     $dataFrmTarget = Letter::getDataTarget($_GET['LETTER_ID']);
     $dataFrmWiness = Letter::getDataWiness($_GET['LETTER_ID']);
     $dataFile = FileAttach::listFile($_GET['LETTER_ID']);
+    $dataletterRule = Rule::getruleLetter($_GET['LETTER_ID']);
 }
 ?>
 
@@ -28,7 +29,7 @@ if ($_GET['LETTER_ID'] != "") {
                                 <input type="hidden" name="PROC" id="PROC" value="<?php echo $_GET['LETTER_ID'] == "" ? 'add' : "edit"; ?>">
                                 <input type="hidden" name="LETTER_ID" id="LETTER_ID" value="<?php echo $_GET['LETTER_ID']; ?>">
                                 <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">ประเภทคำร้อง</label>
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">ประเภทคำร้อง <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
                                         <select name="letter_type" id="letter_type" class="form-control selectbox" placeholder="โปรดเลือก">
                                             <?php
@@ -47,19 +48,19 @@ if ($_GET['LETTER_ID'] != "") {
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">เขียนที่</label>
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">เขียนที่ <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" name="letter_write_address" placeholder="เขียนที่" id="letter_write_address" value="<?php echo $dataLetter['letter_write_address']; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">เรื่อง</label>
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">เรื่อง <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
                                         <textarea class="form-control" id="letter_name" rows="3" name="letter_name"><?php echo $dataLetter['letter_name']; ?></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">ผู้กระทำความผิด</label>
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">ผู้กระทำความผิด <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
                                         <select name="letter_target[]" id="letter_target" class="form-control selectbox" multiple>
                                             <?php
@@ -72,7 +73,7 @@ if ($_GET['LETTER_ID'] != "") {
                                                     }
                                                 }
                                             ?>
-                                                <option <?php echo $select; ?> value="<?php echo $value['usr_id']; ?>"><?php echo "รหัสพนักงาน : ".$value['usr_username']."  ".$value['prefix_name'] . $value['usr_fname'] . ' ' . $value['usr_lname']; ?></option>
+                                                <option <?php echo $select; ?> value="<?php echo $value['usr_id']; ?>"><?php echo "รหัสพนักงาน : " . $value['usr_username'] . "  " . $value['prefix_name'] . $value['usr_fname'] . ' ' . $value['usr_lname']; ?></option>
                                             <?php
                                             }
                                             ?>
@@ -80,10 +81,31 @@ if ($_GET['LETTER_ID'] != "") {
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด</label>
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด <span class="text-danger">*</span></label>
                                     <div class="col-sm-11">
                                         <div id="editor"></div>
                                         <textarea name="letter_detail" id="letter_detail" style="display: none;"><?php echo $dataLetter['letter_detail']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">ข้อบังคับ <span class="text-danger">*</span></label>
+                                    <div class="col-sm-7">
+                                        <select name="rule_id[]" id="rule_id" class="form-control selectbox" multiple>
+                                            <?php
+                                            $responseRule = Rule::ListRule('Y');
+                                            foreach ($responseRule as $key => $value) {
+                                                $select = "";
+                                                foreach ($dataletterRule as $key2 => $value2) {
+                                                    if ($value2['rule_id'] == $value['rule_id']) {
+                                                        $select = "selected";
+                                                    }
+                                                }
+                                            ?>
+                                                <option <?php echo $select; ?> value="<?php echo $value['rule_id']; ?>"><?php echo $value['rule_name']; ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -123,7 +145,7 @@ if ($_GET['LETTER_ID'] != "") {
 
 
                                 <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">พยาน</label>
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">พยาน <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
                                         <select name="witness[]" id="witness" class="form-control selectbox" multiple>
                                             <?php
@@ -146,7 +168,7 @@ if ($_GET['LETTER_ID'] != "") {
                                 <div class="form-group row">
                                     <div class="col-sm-2">
                                         <a href="#!" class="btn btn-primary"
-                                            onclick="window.open('letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a>
+                                            onclick="window.open('letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a> <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-sm-6">
                                         <img id="view_pic" src="<?php echo $dataLetter['img_create'] == "" ? "" : 'data:image/png;base64,' . $dataLetter['img_create']; ?>" style="width: 500px;" />
@@ -193,35 +215,83 @@ if ($_GET['LETTER_ID'] != "") {
     });
 
     function saveData() {
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
-        var delta = quill.getContents(); // Delta format (JSON-like)
-        var html = quill.root.innerHTML;
-        $('#letter_detail').val(html);
-        $.ajax({
-            type: "POST",
-            url: '../save/LetterProc.php',
-            data: $("#MainFrm").serialize(),
-            //async: false,
-            cache: false,
-            dataType: 'json',
-            beforeSend: function() {
-                showLoadingPage()
-            },
-            success: function(response) {
-                if (response.status == 200) {
-                    swal.close();
-                    window.location.href = response.url;
-                } else {
-                    Swal.fire({
-                        title: "เกิดข้อผิดพลาด Error 500",
-                        text: "",
-                        icon: "error"
-                    });
+
+        var invalidate = true;
+        if ($("#letter_write_address").val() == "") {
+            Swal.fire({
+                title: "กรุณากรอกสถานที่เขียน",
+                icon: "error"
+            });
+            invalidate = false;
+        }
+        if ($("#letter_name").val() == "") {
+            Swal.fire({
+                title: "กรุณากรอกเรื่อง",
+                icon: "error"
+            });
+            invalidate = false;
+        }
+        if ($("#letter_target").val() == "") {
+            Swal.fire({
+                title: "กรุณาเลือกผู้กระทำความผิด",
+                icon: "error"
+            });
+            invalidate = false;
+        }
+        if ($("#rule_id").val() == "") {
+            Swal.fire({
+                title: "กรุณาเลือกข้อบังคับ",
+                icon: "error"
+            });
+            invalidate = false;
+        }
+        if ($("#witness").val() == "") {
+            Swal.fire({
+                title: "กรุณาเลือกพยาน",
+                icon: "error"
+            });
+            invalidate = false;
+        }
+        if ($("#img_create").val() == "") {
+            Swal.fire({
+                title: "กรุณาเซ็นลายเซ็นผู้สร้าง",
+                icon: "error"
+            });
+            invalidate = false;
+        }
+
+        if (invalidate == true) {
+            var quill = new Quill('#editor', {
+                theme: 'snow'
+            });
+            var delta = quill.getContents(); // Delta format (JSON-like)
+            var html = quill.root.innerHTML;
+            $('#letter_detail').val(html);
+            $.ajax({
+                type: "POST",
+                url: '../save/LetterProc.php',
+                data: $("#MainFrm").serialize(),
+                //async: false,
+                cache: false,
+                dataType: 'json',
+                beforeSend: function() {
+                    showLoadingPage()
+                },
+                success: function(response) {
+                    if (response.status == 200) {
+                        swal.close();
+                        window.location.href = response.url;
+                    } else {
+                        Swal.fire({
+                            title: "เกิดข้อผิดพลาด Error 500",
+                            text: "",
+                            icon: "error"
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
     $('.selectbox').select2({
         placeholder: '',

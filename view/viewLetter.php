@@ -7,7 +7,13 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
 
 ob_start();
 $base64Image = 'data:image/png;base64,' . $dataLetter['img_create'];
-$base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
+if ($dataLetter['img_hr'] == "") {
+    $showHrImage = 0;
+} else {
+    $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
+    $showHrImage = 1;
+}
+
 ?>
 <style>
     table {
@@ -55,6 +61,14 @@ $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
         <td colspan="4"><?php echo $dataLetter['letter_detail']; ?></td>
     </tr>
     <tr>
+        <td colspan="4">
+            <?php $dataRule = Rule::getruleLetter($_GET['LETTER_ID']);
+            foreach ($dataRule as $key => $value) {
+                echo $value['rule_detail']." : " .$value['rule_name']."<br>";
+            } ?>
+        </td>
+    </tr>
+    <tr>
         <td colspan="4"><br></td>
     </tr>
     <tr>
@@ -90,7 +104,13 @@ $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
     <tr>
         <td colspan="2" width="50%" align="right">ลงชื่อ</td>
         <td width="30%" align="center">
-            <img id="view_pic" src="<?php echo $base64ImageHr;  ?>" style="width: 150px;" />
+            <?php
+            if ($showHrImage == 1) {
+            ?>
+                <img id="view_pic" src="<?php echo $base64ImageHr;  ?>" style="width: 150px;" />
+            <?php
+            }
+            ?>
         </td>
         <td width="20%"></td>
     </tr>
@@ -98,8 +118,7 @@ $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
         <td colspan="2" width="50%" align="right"></td>
         <td width="30%" align="center">
             (<?php
-                ;
-                echo $dataLetter['hr_name']; ?>)
+                echo $dataLetter['hr_name'] == "" ? "ลงชื่อ" : $dataLetter['hr_name']; ?>)
         </td>
         <td width="20%"></td>
     </tr>
@@ -107,7 +126,7 @@ $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
         <td colspan="2" width="50%" align="right"></td>
         <td width="30%" align="center">
             (<?php
-                echo $dataLetter['hr_position']; ?>)
+                echo $dataLetter['hr_position'] == "" ? "ตำแหน่ง" : $dataLetter['hr_position']; ?>)
         </td>
         <td width="20%"></td>
     </tr>
@@ -165,14 +184,14 @@ $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
                             <?php if ($value2 != "") {
                             ?>
                                 <img id="view_pic" src="<?php echo 'data:image/png;base64,' . $value2;  ?>" style="width: 150px;" />
-                                
-                                    <?php
-                                } else {
-                                    ?>
-                                    
-                                    <?php
-                                } ?>
-                                    </td>
+
+                            <?php
+                            } else {
+                            ?>
+
+                            <?php
+                            } ?>
+                        </td>
                     <?php
                     } else  if ($key2 == 'fullname') {
                     ?>
@@ -180,7 +199,7 @@ $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
                     <?php
                     } else  if ($key2 == 'date_sign') {
                     ?>
-                      <td colspan="2" align="center"><?php echo $value2 == "" ? "<br>" : "(" . db2Date($value2) . ")"; ?></td>
+                        <td colspan="2" align="center"><?php echo $value2 == "" ? "<br>" : "(" . db2Date($value2) . ")"; ?></td>
                     <?php
                     }
                     ?>
@@ -245,24 +264,24 @@ $base64ImageHr = 'data:image/png;base64,' . $dataLetter['img_hr'];
                             <?php if ($value2 != "") {
                             ?>
                                 <img id="view_pic" src="<?php echo 'data:image/png;base64,' . $value2;  ?>" style="width: 150px;" />
-                                
-                                    <?php
-                                } else {
-                                    ?>
-                                    
-                                    <?php
-                                } ?>
-                                    </td>
-                                <?php
-                            } else  if ($key2 == 'fullname') {
-                                ?>
+
+                            <?php
+                            } else {
+                            ?>
+
+                            <?php
+                            } ?>
+                        </td>
+                    <?php
+                    } else  if ($key2 == 'fullname') {
+                    ?>
                         <td colspan="2" align="center">(<?php echo $value2; ?>)</td>
                     <?php
-                            } else  if ($key2 == 'date_sign') {
+                    } else  if ($key2 == 'date_sign') {
                     ?>
                         <td colspan="2" align="center"><?php echo $value2 == "" ? "<br>" : "(" . db2Date($value2) . ")"; ?></td>
                     <?php
-                            }
+                    }
                     ?>
     <?php
                 }

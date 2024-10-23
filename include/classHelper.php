@@ -5,3 +5,4 @@ include("../controller/department.class.php");
 include("../controller/position.class.php");
 include("../controller/fileAattach.class.php");
 include("../controller/letter.class.php");
+include("../controller/rule.class.php");

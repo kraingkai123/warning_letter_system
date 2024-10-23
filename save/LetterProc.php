@@ -60,6 +60,16 @@ if ($PROC == 'add') {
         $fields['f_status'] = 2;
         db_insert('frm_witness', $fields);
     }
+    db_delete('frm_letter_rule', $cond);
+    foreach ($_POST['rule_id'] as $key => $value) {
+        unset($fields);
+        $fields['rule_id'] =  $value;
+        $dataRule = Rule::GetDataRule($value);
+        $fields['rule_name'] = $dataRule['rule_name'];
+        $fields['rule_detail'] = $dataRule['rule_detail'];
+        $fields['letter_id'] = $letterId;
+        db_insert('frm_letter_rule', $fields);
+    }
     $return['status'] = 200;
     $return['url'] = '../form/frmSend.php?menu_id=2';
 } else if ($PROC == 'edit') {
@@ -115,6 +125,16 @@ if ($PROC == 'add') {
         $fields['f_status'] = 2;
         db_insert('frm_witness', $fields);
     }
+    db_delete('frm_letter_rule', $cond);
+    foreach ($_POST['rule_id'] as $key => $value) {
+        unset($fields);
+        $fields['rule_id'] =  $value;
+        $dataRule = Rule::GetDataRule($value);
+        $fields['rule_name'] = $dataRule['rule_name'];
+        $fields['rule_detail'] = $dataRule['rule_detail'];
+        $fields['letter_id'] = $letterId;
+        db_insert('frm_letter_rule', $fields);
+    }
     $return['status'] = 200;
     $return['url'] = '../form/frmSend.php?menu_id=2';
 } else if ($PROC == 'delete') {
@@ -123,6 +143,7 @@ if ($PROC == 'add') {
     db_delete('m_letter', $cond);
     db_delete('frm_target', $cond);
     db_delete('frm_witness', $cond);
+    db_delete('frm_letter_rule', $cond);
     FileAttach::DeleteFile($letterId);
     $return['status'] = 200;
     $return['url'] = '../form/frmSend.php?menu_id=2';
@@ -183,4 +204,3 @@ if ($PROC == 'add') {
 }
 
 echo json_encode($return);
-

@@ -1,9 +1,12 @@
 <?php
 include("connect.php");
-function db_query($sql)
+function db_query($sql, $show_sql = 'N')
 {
     global $conn;
     $array = array();
+    if ($show_sql == 'Y') {
+        echo $sql;
+    }
     $result = mysqli_query($conn, $sql);
     while ($obj = mysqli_fetch_assoc($result)) {
         $array[] = $obj;
@@ -52,7 +55,7 @@ function db_insert($table, $fields)
         $last_id = db_getData("SELECT LAST_INSERT_ID() AS LAST_ID", 'LAST_ID');
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-        $last_id =false;
+        $last_id = false;
     }
     return $last_id;
 }

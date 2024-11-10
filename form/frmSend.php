@@ -12,7 +12,7 @@ include("../include/header.php");
                 <div class="col-md-12">
                     <div class="card ">
                         <div class="card-body ">
-                            <a class="btn btn-primary" href="addLetter.php" role="button">เพิ่มข้อมูล</a>
+                            <a class="btn btn-primary" href="addLetter.php" role="button"><span class="nc-icon nc-simple-add"></span> เพิ่มข้อมูล</a>
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr class="text-center">
@@ -39,22 +39,22 @@ include("../include/header.php");
                                             </td>
                                             <td><?php echo $value['letter_name']; ?></td>
                                             <td><?php echo $value['letter_target']; ?></td>
-                                            <td  align="center"><?php echo db2Date($value['letter_date']); ?></td>
+                                            <td align="center"><?php echo db2Date($value['letter_date']); ?></td>
 
                                             <td>
-                    
+
                                                 <?php
-                                                
+
                                                 if ($value['letter_status'] == 5) {
                                                 ?>
                                                     <a class="btn btn-success" href="addLetter.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>" role="button"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</a>
                                                     <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['letter_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
                                                 <?php
                                                 } else if ($value['letter_status'] == 2) {
-                                                    ?>
-                                                      <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>&proc=Receive" role="button">รับทราบ</a>
-                                                    <?php
-                                                }?>
+                                                ?>
+                                                    <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>&proc=Receive" role="button">รับทราบ</a>
+                                                <?php
+                                                } ?>
                                                 <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&proc=view" role="button"><i class="nc-icon nc-email-85"></i> รายละเอียด</a>
                                             </td>
                                         </tr>
@@ -73,7 +73,6 @@ include("../include/header.php");
             </div>
         </div>
         <?php include("../include/footer.php"); ?>
-    </div>
     </div>
     <script>
         $(document).ready(function() {

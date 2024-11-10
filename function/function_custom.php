@@ -6,13 +6,20 @@ function print_pre($data)
     echo "</pre>";
 }
 
-function db2Date($date){
-;
-    $exDate = explode("-",$date);
-    return $exDate[2]."/".$exDate[1]."/".($exDate[0]+543);
+function db2Date($date)
+{;
+    $exDate = explode("-", $date);
+    return $exDate[2] . "/" . $exDate[1] . "/" . ($exDate[0] + 543);
 }
-function convDateThai($date){
-    $exDate = explode("-",$date);
+function date2db($date)
+{
+    echo $date;
+    $exDate = explode("/", $date);
+    return ($exDate[2] - 543) . "-" . $exDate[1] . "-" . $exDate[0];
+}
+function convDateThai($date)
+{
+    $exDate = explode("-", $date);
     $thaiMonths = [
         1 => "มกราคม",    // January
         2 => "กุมภาพันธ์",  // February
@@ -27,5 +34,5 @@ function convDateThai($date){
         11 => "พฤศจิกายน",  // November
         12 => "ธันวาคม"     // December
     ];
-    return $exDate[2]." เดือน ".$thaiMonths[intval($exDate[1])]." พ.ศ. ". ($exDate[0]+543);
+    return $exDate[2] . " เดือน " . $thaiMonths[intval($exDate[1])] . " พ.ศ. " . ($exDate[0] + 543);
 }

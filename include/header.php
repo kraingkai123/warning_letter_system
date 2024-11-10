@@ -24,5 +24,6 @@
   <link href="../assets/demo/demo.css" rel="stylesheet" />
   <link href="../assets/css/select2.min.css" rel="stylesheet" />
   <link href="../assets/css/quill.snow.css" rel="stylesheet" />
+  <link href="../assets/css/gijgo.min.css" rel="stylesheet" />
 </head>
 <?php  include("include.php");?>

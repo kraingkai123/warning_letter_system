@@ -13,7 +13,6 @@ function db2Date($date)
 }
 function date2db($date)
 {
-    echo $date;
     $exDate = explode("/", $date);
     return ($exDate[2] - 543) . "-" . $exDate[1] . "-" . $exDate[0];
 }

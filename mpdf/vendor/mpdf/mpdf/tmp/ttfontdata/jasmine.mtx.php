@@ -1,0 +1,37 @@
+<?php
+$name='JasmineUPC';
+$type='TTF';
+$desc=array (
+  'CapHeight' => 454,
+  'XHeight' => 293,
+  'FontBBox' => '[-509 -309 875 909]',
+  'Flags' => 4,
+  'Ascent' => 748,
+  'Descent' => -309,
+  'Leading' => 0,
+  'ItalicAngle' => 0,
+  'StemV' => 87,
+  'MissingWidth' => 750,
+);
+$unitsPerEm=4096;
+$up=-32;
+$ut=5;
+$strp=259;
+$strs=50;
+$ttffile='C:\wamp64\www\mpdf\vendor\mpdf\mpdf\src\Config/../../ttfonts/upcjl.ttf';
+$TTCfontID='0';
+$originalsize=73376;
+$sip=false;
+$smp=false;
+$BMPselected=false;
+$fontkey='jasmine';
+$panose=' 0 0 2 2 6 3 5 4 5 2 3 4';
+$haskerninfo=false;
+$haskernGPOS=false;
+$hassmallcapsGSUB=false;
+$fontmetrics='win';
+// TypoAscender/TypoDescender/TypoLineGap = 718, -170, 0
+// usWinAscent/usWinDescent = 748, -309
+// hhea Ascent/Descent/LineGap = 481, -132, 0
+$useOTL=0x0000;
+$rtlPUAstr='';

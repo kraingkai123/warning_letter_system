@@ -13,17 +13,7 @@ if ($proc == "updateStatus") {
     Position::EditData('usr_position', $fields, $cond);
     $status = true;
     $message = "บันทึกข้อมูลเสร็จสิ้น";
-} else if($proc=="updateStatusManager"){
-    $pos_id = $_POST['pos_id'];
-    $status = $_POST['status'];
-    unset($fields);
-    $fields['is_manager'] = $status == 'Y' ? 'N': 'Y';
-    unset($cond);
-    $cond['pos_id'] = $pos_id;
-    Position::EditData('usr_position', $fields, $cond);
-    $status = true;
-    $message = "บันทึกข้อมูลเสร็จสิ้น";
-}else if ($proc == 'add') {
+} else if ($proc == 'add') {
     unset($fields);
     $fields['rule_name'] = $_POST['rule_name'];
     $fields['rule_detail'] = $_POST['rule_detail'];

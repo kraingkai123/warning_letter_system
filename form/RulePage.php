@@ -41,8 +41,13 @@ include("../include/header.php");
                                             <td align="center"><?php echo $value['rule_status'] == "Y" ? "ใช้งาน" : "ไม่ใช้งาน"; ?></td>
                                             <td>
                                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['rule_id']; ?>" onclick="EditData('edit','<?php echo $value['rule_id']; ?>')" data-name="<?php echo $value['rule_name']; ?>" data-rule_status="<?php echo $value['rule_status']; ?>" data-detail="<?php echo base64_encode($value['rule_detail']); ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
-                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['rule_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
-
+                                                <?php
+                                                $count = db_getData("SELECT COUNT(1) as C FROM frm_letter_rule WHERE rule_id='" . $value['rule_id'] . "'", "C");
+                                                if ($count == 0) {
+                                                ?>
+                                                    <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['rule_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                <?php } ?>
+                                               
                                             </td>
                                         </tr>
                                     <?php

@@ -48,7 +48,15 @@ include("../include/header.php");
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['pos_id']; ?>" onclick="EditData('edit','<?php echo $value['pos_id']; ?>')" data-name="<?php echo $value['pos_name']; ?>" data-is_manager="<?php echo $value['is_manager']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
-                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['pos_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                <?php
+                                                    $count = db_getData("SELECT COUNT(1) as C FROM m_user WHERE usr_position='".$value['pos_id']."'","C");
+                                                    if($count==0){
+                                                        ?>
+                                                         <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['pos_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                        <?php
+                                                    }
+                                                ?>
+                                               
                                             </td>
                                         </tr>
                                     <?php

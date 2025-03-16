@@ -16,7 +16,7 @@ if ($PROC == 'add') {
     $fields['letter_detail'] = $_POST['letter_detail'];
     $fields['letter_status'] = 1;
     $fields['letter_type'] = $_POST['letter_type'];
-    $fields['img_create'] = $_POST['img_create'];
+    $fields['img_create'] = FileAttach::MakeSignature($_POST['img_create']);
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
     $letterId = Letter::SaveData($fields);
@@ -81,7 +81,7 @@ if ($PROC == 'add') {
     $fields['letter_detail'] = $_POST['letter_detail'];
     $fields['letter_status'] = 1;
     $fields['letter_type'] = $_POST['letter_type'];
-    $fields['img_create'] = $_POST['img_create'];
+    $fields['img_create'] = FileAttach::MakeSignature($_POST['img_create']);
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
     Letter::UpdateData($fields, $letterId);
@@ -161,7 +161,7 @@ if ($PROC == 'add') {
         $fields['hr_apporve_date'] = date('Y-m-d');
         $fields['hr_appove_time'] = date('H:i:s');
         $fields['hr_position'] = $_SESSION['pos_name'];
-        $fields['img_hr'] = $_POST['img_create'];
+        $fields['img_hr'] = FileAttach::MakeSignature($_POST['img_create']);
         $fields['hr_appove_status'] = 'Y';
     } else  if ($_POST['rdoStatus'] == 'B') {
         $status = 5;
@@ -178,7 +178,7 @@ if ($PROC == 'add') {
     foreach ($_POST['img_create_traget'] as $key => $value) {
         unset($fields);
         $fields['date_sign'] = date('Y-m-d');
-        $fields['f_image'] = $value;
+        $fields['f_image'] = FileAttach::MakeSignature($value);
         $fields['f_status'] = 1;
         unset($cond);
         $cond['f_id'] = $key;
@@ -187,7 +187,7 @@ if ($PROC == 'add') {
     foreach ($_POST['img_create_winess'] as $key => $value) {
         unset($fields);
         $fields['date_sign'] = date('Y-m-d');
-        $fields['f_image'] = $value;
+        $fields['f_image'] = FileAttach::MakeSignature($value);
         $fields['f_status'] = 1;
         unset($cond);
         $cond['f_id'] = $key;

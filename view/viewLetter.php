@@ -77,7 +77,7 @@ if ($dataLetter['img_hr'] == "") {
     <tr>
         <td colspan="2" width="50%" align="right">ลงชื่อ</td>
         <td width="30%" align="center">
-            <img id="view_pic" src="<?php echo $base64Image;  ?>" style="width: 150px;" />
+            <img id="view_pic" src="<?php echo $dataLetter['img_create'];  ?>" style="width: 150px;" />
         </td>
         <td width="20%"></td>
     </tr>
@@ -107,7 +107,7 @@ if ($dataLetter['img_hr'] == "") {
             <?php
             if ($showHrImage == 1) {
             ?>
-                <img id="view_pic" src="<?php echo $base64ImageHr;  ?>" style="width: 150px;" />
+                <img id="view_pic" src="<?php echo $dataLetter['img_hr'];  ?>" style="width: 150px;" />
             <?php
             }
             ?>
@@ -183,7 +183,7 @@ if ($dataLetter['img_hr'] == "") {
                         <td colspan="2" align="center">ลงชื่อ
                             <?php if ($value2 != "") {
                             ?>
-                                <img id="view_pic" src="<?php echo 'data:image/png;base64,' . $value2;  ?>" style="width: 150px;" />
+                                <img id="view_pic" src="<?php echo $value2 ;  ?>" style="width: 150px;" />
 
                             <?php
                             } else {
@@ -263,7 +263,7 @@ if ($dataLetter['img_hr'] == "") {
                         <td colspan="2" align="center">ลงชื่อ
                             <?php if ($value2 != "") {
                             ?>
-                                <img id="view_pic" src="<?php echo 'data:image/png;base64,' . $value2;  ?>" style="width: 150px;" />
+                                <img id="view_pic" src="<?php echo  $value2;  ?>" style="width: 150px;" />
 
                             <?php
                             } else {

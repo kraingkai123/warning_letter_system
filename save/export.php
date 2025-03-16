@@ -1,9 +1,14 @@
 <?php
-session_start();
+
 
 include("../include/include.php");
 if ($_POST['typeExport'] == 'pdf') {
 require_once '../mpdf/vendor/autoload.php';
+}else{
+    header("Content-Type: application/xls");
+    header("Content-Disposition: attachment; filename=export.xls");
+    header("Pragma: no-cache");
+    header("Expires: 0");
 }
 /* ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -132,10 +137,7 @@ if ($_POST['typeExport'] == 'pdf') {
     $mpdf->WriteHTML($htmlBody);
     // Output to browser
     $mpdf->Output();;
-} else {
+}else{
     echo $htmlBody;
-    header("Content-Type: application/xls");
-    header("Content-Disposition: attachment; filename=export.xls");
-    header("Pragma: no-cache");
-    header("Expires: 0");
 }
+?>

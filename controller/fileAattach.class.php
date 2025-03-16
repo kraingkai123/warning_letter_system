@@ -55,4 +55,22 @@ class FileAttach
         db_delete('m_file_attach', $cond);
 
     }
+    public static function MakeSignature($base64)
+    {
+        $data = base64_decode($base64);
+
+        // Set the file path and name
+        $filePath = '../fileUpload/signImage/';
+        $fileName = 'signature_' . time() . rand(0, 99999) . '.png';
+
+        // Create the images directory if it doesn't exist
+        if (!is_dir($filePath)) {
+            mkdir($filePath, 0755, true);
+        }
+
+        // Save the decoded data to a file
+        $file = $filePath . $fileName;
+        file_put_contents($file, $data);
+        return $filePath . $fileName;
+    }
 }

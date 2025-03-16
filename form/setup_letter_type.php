@@ -41,7 +41,12 @@ include("../include/header.php");
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['lt_id']; ?>" onclick="EditData('edit','<?php echo $value['lt_id']; ?>')" data-name="<?php echo $value['letter_type_name']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
-                                                <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['lt_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                <?php
+                                                $count = db_getData("SELECT COUNT(1) as C FROM m_letter WHERE letter_type='" . $value['lt_id'] . "'", "C");
+                                                if ($count == 0) {
+                                                ?>
+                                                    <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['lt_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                <?php } ?>
                                             </td>
                                         </tr>
                                     <?php
@@ -89,6 +94,7 @@ include("../include/header.php");
                             title: response.Message,
                             icon: "success"
                         });
+                        location.reload();
                     }
                 }
             });

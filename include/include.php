@@ -11,4 +11,4 @@ include("db_function.php");
 include("../function/function_custom.php");
 include("classHelper.php");
 date_default_timezone_set("Asia/Bangkok");
-
+?>

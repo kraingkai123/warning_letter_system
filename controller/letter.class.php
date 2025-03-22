@@ -53,7 +53,9 @@ class Letter
     }
     public static function ListLetterHr()
     {
-        $reponse = db_query("SELECT * FROM m_letter WHERE letter_status not in(5,0) order by letter_date DESC,letter_id DESC");
+        $reponse = db_query("SELECT * FROM m_letter 
+        INNER JOIN letter_process ON letter_process.letter_id = m_letter.letter_id
+        WHERE letter_status not in(5,0) AND (receive_status is null OR receive_status='Y') order by sender_date DESC,sender_time DESC");
         return $reponse;
     }
 }

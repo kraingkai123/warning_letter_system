@@ -364,10 +364,15 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
         <td colspan="4">ฝ่ายทรัพยากรบุคคล</td>
     </tr>
     <tr>
+    <td colspan="4">
+        <?php echo $dataLetter['letter_reason'];?>
+        </td>
+    </tr>
+    <tr>
         <td colspan="2" width="50%" align="right">ลงชื่อ</td>
         <td width="30%" align="center">
             <?php
-            if ($showHrImage == 1) {
+            if (!empty($dataLetter['img_hr'])) {
             ?>
                 <img id="view_pic" src="<?php echo $dataLetter['img_hr'];  ?>" style="width: 150px;" />
             <?php

@@ -53,13 +53,16 @@ if ($_GET['LETTER_ID'] != "") {
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">เอกสารแนบ</button>
                                 </li>
-                                <?php
-                                if($_GET['proc'] != 'view'){
-                                    ?>
-                                    <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">เซ็นเอกสาร</button>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#Process" type="button" role="tab" aria-controls="Process" aria-selected="false">ความคิดเห็น</button>
                                 </li>
-                                    <?php
+                                <?php
+                                if ($_GET['proc'] != 'view') {
+                                ?>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">เซ็นเอกสาร</button>
+                                    </li>
+                                <?php
                                 }
                                 ?>
                             </ul>
@@ -76,6 +79,56 @@ if ($_GET['LETTER_ID'] != "") {
                                                     style="border:none;">
                                                 </iframe>
                                             </center>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade " id="Process" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                                <tr>
+                                                    <th width="10%">
+                                                        <div align="center">ลำดับ</div>
+                                                    </th>
+                                                    <th>
+                                                        <div align="center">รายละเอียด</div>
+                                                    </th>
+
+                                                </tr>
+                                                <?php
+                                                $indexFile = 1;
+                                                $listProcess = Process::ProcessList($_GET['LETTER_ID']);
+                                                foreach ($listProcess as $key => $value) {
+                                                ?>
+                                                    <tr id="tr_<?php echo $value['bp_id']; ?>">
+                                                        <td align="center"><?php echo $indexFile; ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $txtReceiveStatus = "รออนุมัติ";
+                                                            $receiveName = "";
+                                                            $receiveDatetime = "";
+                                                            if ($value['receive_status'] != "") {
+                                                                $receiveName = " ส่ง " . $value['receive_name'];
+                                                                $receiveDatetime = "<span class='text-primary'>" . " (" . db2Date($value['receive_date']) . " " . $value['receive_time'] . ")" . "</span>";
+                                                            }
+                                                            if ($value['receive_status'] == 'N') {
+                                                                $txtReceiveStatus = "ไม่อนุมัติ";
+                                                            } else if ($value['receive_status'] == 'Y') {
+                                                                $txtReceiveStatus = "อนุมัติ";
+                                                            } else if ($value['receive_status'] == 'B') {
+                                                                $txtReceiveStatus = "ส่งกลับแก้ไข";
+                                                            }
+
+
+                                                            echo $value['sender_name'] . "<span class='text-primary'>" . " (" . db2Date($value['sender_date']) . " " . $value['sender_time'] . ")" . "</span>" . $receiveName . " <span class='text-success'>" . $txtReceiveStatus . " " .  $receiveDatetime . "</span>" . " <span class='text-danger'>" . $value['comment'] . "</span>"; ?>
+                                                        </td>
+
+                                                    </tr>
+                                                <?php
+                                                    $indexFile++;
+                                                }
+                                                ?>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +153,7 @@ if ($_GET['LETTER_ID'] != "") {
                                                             <th>
                                                                 <div align="center">เอกสารแนบ</div>
                                                             </th>
-                                                         
+
                                                         </tr>
                                                         <?php
                                                         $indexFile = 1;
@@ -109,7 +162,7 @@ if ($_GET['LETTER_ID'] != "") {
                                                             <tr id="tr_<?php echo $value['file_id']; ?>">
                                                                 <td align="center"><?php echo $indexFile; ?></td>
                                                                 <td><a href="<?php echo $value['full_url']; ?>" target="_blank" download="<?php echo $value['file_name']; ?>"><?php echo $value['file_name']; ?></a></td>
-                                                              
+
                                                             </tr>
                                                         <?php
                                                             $indexFile++;
@@ -173,6 +226,7 @@ if ($_GET['LETTER_ID'] != "") {
                                         <input type="hidden" name="TEMP_FILE" id="TEMP_FILE" value="<?php echo date("Ymdhis") . $_SESSION['usr_id']; ?>">
                                         <input type="hidden" name="LETTER_ID" id="LETTER_ID" value="<?php echo $_GET['LETTER_ID']; ?>">
                                         <input type="hidden" name="PROC" id="PROC" value="<?php echo $_GET['proc']; ?>">
+                                        <input type="hidden" name="bp_id" id="bp_id" value="<?php echo $_GET['bp_id']; ?>">
                                         <?php if ($_GET['proc'] == 'Approve') {
                                             include("FrmSign.php");
                                         } else if ($_GET['proc'] == 'Receive') {

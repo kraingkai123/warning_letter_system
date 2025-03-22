@@ -12,6 +12,7 @@ if($proc=='add'){
     $fields['usr_idcard'] = $_POST['usr_idcard'];
     $fields['dep_id'] = $_POST['dep_id'];
     $fields['usr_position'] = $_POST['usr_position'];
+    $fields['usr_status']='Y';
     $response = User::CreateUsername();
     $fields['usr_username'] =  $response['username'];
     $fields['usr_year'] = date("Y");

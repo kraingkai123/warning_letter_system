@@ -21,7 +21,7 @@ include("../include/header.php");
                                         <th class="text-center" width="30%">เรื่อง</th>
                                         <th class="text-center" width="20%">เรียน</th>
                                         <th class="text-center" width="20%">วันที่</th>
-
+                                        <th class="text-center" width="20%">สถานะ</th>
                                         <th class="text-center" width="10%"></th>
                                     </tr>
                                 </thead>
@@ -40,7 +40,20 @@ include("../include/header.php");
                                             <td><?php echo $value['letter_name']; ?></td>
                                             <td><?php echo $value['letter_target']; ?></td>
                                             <td align="center"><?php echo db2Date($value['letter_date']); ?></td>
-
+                                            <td><?php 
+                                                if($value['letter_status']==1){
+                                                    $textStatus = "รอ hr อนุมัติ";
+                                                }else if($value['letter_status']==5){
+                                                    $textStatus = "Hr ส่งกลับแก้ไข";
+                                                }else if($value['letter_status']==3){
+                                                    $textStatus = "Hr ไม่อนุมัติ";
+                                                }else if($value['letter_status']==2){
+                                                    $textStatus = "Hr อนุมัติ";
+                                                }else if($value['letter_status']==4){
+                                                    $textStatus = "ดำเนินการเสร็จสิ้น";
+                                                }
+                                                echo $textStatus;
+                                            ?></td>
                                             <td>
 
                                                 <?php

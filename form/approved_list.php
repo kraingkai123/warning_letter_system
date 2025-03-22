@@ -44,7 +44,7 @@ include("../include/header.php");
                                                 <?php
                                                 if ($value['letter_status'] == 1) {
                                                 ?>
-                                                    <a class="btn btn-danger" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>&proc=Approve" role="button"><i class="nc-icon nc-check-2"></i> อนุมัติ</a>
+                                                    <a class="btn btn-danger" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>&proc=Approve&bp_id=<?php echo $value['bp_id'];?>" role="button"><i class="nc-icon nc-check-2"></i> อนุมัติ</a>
                                                             <?php
                                                 } ?>
                                                 <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&proc=view" role="button"><i class="nc-icon nc-email-85"></i> รายละเอียด</a>

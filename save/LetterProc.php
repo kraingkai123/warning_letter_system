@@ -70,6 +70,16 @@ if ($PROC == 'add') {
         $fields['letter_id'] = $letterId;
         db_insert('frm_letter_rule', $fields);
     }
+    //เส้นทางเอสการ
+    unset($fieldsProcess);
+    $fieldsProcess['letter_id'] = $letterId;
+    $fieldsProcess['sender_id'] = $_SESSION['usr_id'];
+    $fieldsProcess['sender_name'] = $_SESSION['full_name'];
+    $fieldsProcess['sender_date'] = date('Y-m-d');
+    $fieldsProcess['sender_time'] = date("H:i:s");
+    $fieldsProcess['letter_step'] = 0;
+    Process::SaveProcess("letter_process", $fieldsProcess);
+    //
     $return['status'] = 200;
     $return['url'] = '../form/frmSend.php?menu_id=2';
 } else if ($PROC == 'edit') {
@@ -135,6 +145,16 @@ if ($PROC == 'add') {
         $fields['letter_id'] = $letterId;
         db_insert('frm_letter_rule', $fields);
     }
+      //เส้นทางเอสการ
+      unset($fieldsProcess);
+      $fieldsProcess['letter_id'] = $letterId;
+      $fieldsProcess['sender_id'] = $_SESSION['usr_id'];
+      $fieldsProcess['sender_name'] = $_SESSION['full_name'];
+      $fieldsProcess['sender_date'] = date('Y-m-d');
+      $fieldsProcess['sender_time'] = date("H:i:s");
+      $fieldsProcess['letter_step'] = 0;
+      Process::SaveProcess("letter_process", $fieldsProcess);
+      //
     $return['status'] = 200;
     $return['url'] = '../form/frmSend.php?menu_id=2';
 } else if ($PROC == 'delete') {
@@ -165,6 +185,7 @@ if ($PROC == 'add') {
         $fields['hr_appove_status'] = 'Y';
     } else  if ($_POST['rdoStatus'] == 'B') {
         $status = 5;
+        $fields['img_create'] = null;
     } else  if ($_POST['rdoStatus'] == 'N') {
         $status = 3;
     }
@@ -172,6 +193,19 @@ if ($PROC == 'add') {
     $fields['letter_status'] = $status;
     Letter::UpdateData($fields, $letterId);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
+    //เส้นทางเอสการ
+    unset($fieldsProcess);
+    $fieldsProcess['letter_id'] = $letterId;
+    $fieldsProcess['receive_user'] = $_SESSION['usr_id'];
+    $fieldsProcess['receive_name'] = $_SESSION['full_name'];
+    $fieldsProcess['receive_date'] = date('Y-m-d');
+    $fieldsProcess['receive_time'] = date("H:i:s");
+    $fieldsProcess['receive_status'] = $_POST['rdoStatus'];
+    $fieldsProcess['comment'] = $_POST['hr_reson'];
+    unset($cond);
+    $cond['bp_id'] =$_POST['bp_id'];
+    Process::UpdateProcess('letter_process',$fieldsProcess,$cond);
+    //
     $return['status'] = 200;
     $return['url'] = '../form/approved_list.php?menu_id=5';
 } else if ($PROC == 'Receive') {

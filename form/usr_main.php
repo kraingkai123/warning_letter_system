@@ -35,9 +35,9 @@ include("../include/header.php");
                                     ?>
                                         <tr>
                                             <td align="center"><?php echo $i; ?></td>
-                                            <td><?php echo $value['prefix_name'].$value['usr_fname']." ".$value['usr_lname']; ?></td>
-                                            <td><?php echo $value['dep_name'];?></td>
-                                            <td><?php echo $value['pos_name'];?></td>
+                                            <td><?php echo $value['prefix_name'] . $value['usr_fname'] . " " . $value['usr_lname']; ?></td>
+                                            <td><?php echo $value['dep_name']; ?></td>
+                                            <td><?php echo $value['pos_name']; ?></td>
 
                                             <td align="center">
                                                 <div class="custom-control custom-switch">
@@ -47,7 +47,7 @@ include("../include/header.php");
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['usr_id']; ?>" onclick="EditData('edit','<?php echo $value['usr_id']; ?>')" data-name="<?php echo $value['pos_name']; ?>" data-is_manager="<?php echo $value['is_manager']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
-                                            
+
                                             </td>
                                         </tr>
                                     <?php
@@ -104,6 +104,20 @@ include("../include/header.php");
         function SaveData() {
             var proc = $("#proc").val();
             var pos_id = $("#usr_id").val()
+            $(".form-control").each(function(index) {
+                if ($(this).attr("aria-required") == "true") {
+                    if ($(this).val() == "") {
+                        Swal.fire({
+                            title: $(this).attr('alert'),
+                            text: "",
+                            icon: "error",
+                            confirmButtonText: "ตกลง",
+                        });
+                        error++
+                        return false;
+                    }
+                }
+            });
             if (proc == 'add') {
                 if ($("#pos_name").val() == "") {
                     Swal.fire({

@@ -29,7 +29,11 @@ class Letter
     }
     public static function ListLetter()
     {
-        $reponse = db_query("SELECT * FROM m_letter WHERE dep_id ='" . $_SESSION['dep_id'] . "' order by letter_date DESC,letter_id DESC");
+        $filter="";
+        if($_SESSION['usr_type']==0){
+            $filter = " AND usr_id='".$_SESSION['usr_id']."'";
+        }
+        $reponse = db_query("SELECT * FROM m_letter WHERE dep_id ='" . $_SESSION['dep_id'] . "' $filter order by letter_date DESC,letter_id DESC");
         return $reponse;
     }
     public static function getDataLetter(int $letter_id)

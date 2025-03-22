@@ -30,9 +30,12 @@ if (empty($userName)) {
         $message = "";
         $status = true;
         if ($response['usr_type'] == 0) {
-            $filter = " AND menu_type='2' AND manager_status='" . $response['is_manager'] . "'";
+            $filter = " AND menu_type='2' AND manager_status is null";
+        }else{
+            $filter = " AND menu_type='1'";
         }
         $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
+
         $i = 0;
         foreach ($responseMenu as $key => $value) {
             $_SESSION["menu"][$i] = array(

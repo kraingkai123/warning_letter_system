@@ -9,7 +9,7 @@ $rUser = User::getDataUser($_POST['usr_id']);
         <div class="col-md-2 pr-1">
 
             <label>คำนำหน้า</label><br>
-            <select class=" select2 form-control" style="width: 100%;" id="prefix_id" name="prefix_id">
+            <select class=" select2 form-control" style="width: 100%;" id="prefix_id" name="prefix_id" aria-required="true" alert="กรุณาเลือกคำนำหน้า">
                 <option value="">โปรดเลือก</option>
                 <?php
                 $resposnePrefix = User::getPrefix();
@@ -25,20 +25,20 @@ $rUser = User::getDataUser($_POST['usr_id']);
         <div class="col-md-5 px-1">
             <div class="form-group">
                 <label>ชื่อ</label>
-                <input type="text" class="form-control" placeholder="ชื่อ" value="<?php echo $rUser['usr_fname']; ?>" name="usr_fname" id="usr_fname">
+                <input type="text" class="form-control" placeholder="ชื่อ" value="<?php echo $rUser['usr_fname']; ?>" name="usr_fname" id="usr_fname" aria-required="true" alert="กรุณากรอกชื่อ">
             </div>
         </div>
         <div class="col-md-5 pl-1">
             <div class="form-group">
                 <label for="exampleInputEmail1">นามสกุล</label>
-                <input type="text" class="form-control" placeholder="นามสกุล" value="<?php echo $rUser['usr_lname']; ?>" name="usr_lname" id="usr_lname">
+                <input type="text" class="form-control" placeholder="นามสกุล" value="<?php echo $rUser['usr_lname']; ?>" name="usr_lname" id="usr_lname" aria-required="true" alert="กรุณากรอกนามสกุล">
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-2 pr-1">
             <label>เพศ</label><br>
-            <select class=" form-control" id="usr_gender" name="usr_gender">
+            <select class=" form-control" id="usr_gender" name="usr_gender" aria-required="true" alert="กรุณาเลือกเพศ">
                 <option value="1" <?php echo $rUser['usr_gender'] == 1 ? 'selected' : ""; ?>>ชาย</option>
                 <option value="2" <?php echo $rUser['usr_gender'] == 2 ? 'selected' : ""; ?>>หญิง</option>
             </select>
@@ -47,13 +47,13 @@ $rUser = User::getDataUser($_POST['usr_id']);
         <div class="col-md-5 px-1">
             <div class="form-group">
                 <label>เบอร์โทรศัพท์</label>
-                <input type="text" class="form-control" placeholder="เบอร์โทรศัพท์" value="<?php echo $rUser['usr_tel']; ?>" name="usr_tel" id="usr_tel">
+                <input type="text" class="form-control" placeholder="เบอร์โทรศัพท์" value="<?php echo $rUser['usr_tel']; ?>" name="usr_tel" id="usr_tel" aria-required="true" alert="กรุณากรอกเบอร์โทรศัพท์">
             </div>
         </div>
         <div class="col-md-5 pl-1">
             <div class="form-group">
                 <label for="exampleInputEmail1">Email</label>
-                <input type="email" class="form-control" placeholder="Email" value="<?php echo $rUser['usr_email']; ?>" name="usr_email" id="usr_email">
+                <input type="email" class="form-control" placeholder="Email" value="<?php echo $rUser['usr_email']; ?>" name="usr_email" id="usr_email" aria-required="true" alert="กรุณากรอก Email">
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@ $rUser = User::getDataUser($_POST['usr_id']);
         <div class="col-md-5 pr-1">
             <div class="form-group">
                 <label>เลขประจำตัวบัตรประชาชน</label>
-                <input type="text" class="form-control" maxlength="13" placeholder="เลขประจำตัวบัตรประชาชน" value="<?php echo $rUser['usr_idcard']; ?>" name="usr_idcard" id="usr_idcard">
+                <input type="text" class="form-control" maxlength="13" placeholder="เลขประจำตัวบัตรประชาชน" value="<?php echo $rUser['usr_idcard']; ?>" name="usr_idcard" id="usr_idcard" aria-required="true" alert="กรุณากรอกเลขประจำตัวบัตรประชาชน">
             </div>
         </div>
         <div class="col-md-5 pl-1">
@@ -79,7 +79,7 @@ $rUser = User::getDataUser($_POST['usr_id']);
     <div class="row">
         <div class="col-md-2 pr-1">
             <label>หน่วยงาน/ฝ่าย</label><br>
-            <select class=" form-control" style="width: 100%;" id="dep_id" name="dep_id">
+            <select class=" form-control" style="width: 100%;" id="dep_id" name="dep_id" aria-required="true" alert="กรุณาเลือกหน่วยงาน/ฝ่าย">
                 <option value="">โปรดเลือก</option>
                 <?php
                 $resposnePrefix = Department::ListDepartment();
@@ -94,7 +94,7 @@ $rUser = User::getDataUser($_POST['usr_id']);
         </div>
         <div class="col-md-5 px-1">
             <label>ตำแหน่ง</label><br>
-            <select class=" form-control" style="width: 100%;" id="usr_position" name="usr_position">
+            <select class=" form-control" style="width: 100%;" id="usr_position" name="usr_position" aria-required="true" alert="กรุณาเลือกตำแหน่ง">
                 <option value="">โปรดเลือก</option>
                 <?php
                 $resposnePrefix = Position::ListPostion();

@@ -30,7 +30,12 @@ if (empty($userName)) {
         $message = "";
         $status = true;
         if ($response['usr_type'] == 0) {
-            $filter = " AND menu_type='2' AND manager_status is null";
+            if($response['is_manager']=='Y'){
+                $filter.=" AND (manager_status is null OR manager_status ='Y')";
+            }else{
+                $filter.=" AND manager_status is null";
+            }
+            $filter .= " AND menu_type='2' ";
         }else{
             $filter = " AND menu_type='1'";
         }

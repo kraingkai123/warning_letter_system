@@ -199,7 +199,6 @@ if ($PROC == 'add') {
         $fields['hr_appove_status'] = 'Y';
     } else  if ($_POST['rdoStatus'] == 'B') {
         $status = 5;
-        $fields['img_create'] = null;
     } else  if ($_POST['rdoStatus'] == 'N') {
         $status = 3;
     }
@@ -221,7 +220,7 @@ if ($PROC == 'add') {
     Process::UpdateProcess('letter_process',$fieldsProcess,$cond);
     //
     $return['status'] = 200;
-    $return['url'] = '../form/approved_list.php?menu_id=5';
+    $return['url'] = '../form/approved_list.php?menu_id=1';
 } else if ($PROC == 'Receive') {
     foreach ($_POST['img_create_traget'] as $key => $value) {
         unset($fields);

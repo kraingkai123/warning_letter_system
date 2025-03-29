@@ -197,7 +197,7 @@ if ($_GET['LETTER_ID'] != "") {
                                             onclick="window.open('letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a> <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-sm-6">
-                                        <img id="view_pic" src="<?php echo $dataLetter['img_create'] == "" ? "" : 'data:image/png;base64,' . $dataLetter['img_create']; ?>" style="width: 500px;" />
+                                        <img id="view_pic"  style="width: 500px;" />
                                     </div>
                                     <textarea id="img_create" name="img_create" rows="4" cols="50" readonly style="display: none;"><?php echo $dataLetter['img_create']; ?></textarea>
                                 </div>

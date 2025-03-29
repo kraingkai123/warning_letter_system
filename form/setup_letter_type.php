@@ -106,7 +106,22 @@ include("../include/header.php");
             if (proc == 'add') {
                 if ($("#letter_type_name").val() == "") {
                     Swal.fire({
-                        title: "กรุณากรอกข้อบังคับ",
+                        title: "กรุณากรอกประเภทคำร้อง",
+                        icon: "error"
+                    });
+                } else if ($("#detail_1").val() == "") {
+                    Swal.fire({
+                        title: "กรุณากรอกรายละเอียด (1)",
+                        icon: "error"
+                    });
+                }else if ($("#detail_2").val() == "") {
+                    Swal.fire({
+                        title: "กรุณากรอกรายละเอียด (2)",
+                        icon: "error"
+                    });
+                }else if ($("#detail_3").val() == "") {
+                    Swal.fire({
+                        title: "กรุณากรอกรายละเอียด (3)",
                         icon: "error"
                     });
                 } else {
@@ -126,6 +141,9 @@ include("../include/header.php");
                                 url: "../save/setup_letter_type_proc.php",
                                 data: {
                                     letter_type_name: $('#letter_type_name').val(),
+                                    detail_1: $('#detail_1').val(),
+                                    detail_2: $('#detail_2').val(),
+                                    detail_3: $('#detail_3').val(),
                                     proc: proc
                                 }, // serializes the form's elements.
                                 dataType: "json",
@@ -147,7 +165,22 @@ include("../include/header.php");
 
                 if ($("#letter_type_name").val() == "") {
                     Swal.fire({
-                        title: "กรุณากรอกข้อบังคับ",
+                        title: "กรุณากรอกประเภทคำร้อง",
+                        icon: "error"
+                    });
+                } else if ($("#detail_1").val() == "") {
+                    Swal.fire({
+                        title: "กรุณากรอกรายละเอียด (1)",
+                        icon: "error"
+                    });
+                }else if ($("#detail_2").val() == "") {
+                    Swal.fire({
+                        title: "กรุณากรอกรายละเอียด (2)",
+                        icon: "error"
+                    });
+                }else if ($("#detail_3").val() == "") {
+                    Swal.fire({
+                        title: "กรุณากรอกรายละเอียด (3)",
                         icon: "error"
                     });
                 } else {
@@ -167,6 +200,9 @@ include("../include/header.php");
                                 url: "../save/setup_letter_type_proc.php",
                                 data: {
                                     letter_type_name: $('#letter_type_name').val(),
+                                    detail_1: $('#detail_1').val(),
+                                    detail_2: $('#detail_2').val(),
+                                    detail_3: $('#detail_3').val(),
                                     proc: proc,
                                     lt_id: lt_id
                                 }, // serializes the form's elements.
@@ -196,7 +232,28 @@ include("../include/header.php");
         function EditData(proc, lt_id) {
             $("#proc").val(proc)
             $("#lt_id").val(lt_id)
-            var letter_type_name = $("#btnEdit" + lt_id).data('name');
+            $.ajax({
+                type: "POST",
+                url: "../save/setup_letter_type_proc.php",
+                data: {
+                    proc: "getData",
+                    lt_id: lt_id
+                }, // serializes the form's elements.
+                dataType: "json",
+                success: function(response) {
+                    if (response.Status == false) {
+                        Swal.fire({
+                            title: response.Message,
+                            icon: "error"
+                        });
+                    } else {
+                       $('#letter_type_name').val(response.data.letter_type_name)
+                       $('#detail_1').val(response.data.detail_1)
+                       $('#detail_2').val(response.data.detail_2)
+                       $('#detail_3').val(response.data.detail_3)
+                    }
+                }
+            });
             $('#letter_type_name').val(letter_type_name);
         }
 
@@ -240,8 +297,8 @@ include("../include/header.php");
 </body>
 
 </html>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><?php
@@ -257,9 +314,28 @@ include("../include/header.php");
                 <input type="hidden" id='lt_id' name="lt_id">
                 <input type="hidden" id='proc' name="proc">
                 <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">ข้อบังคับ<span class="text-danger">*</span></label>
+                    <label for="inputPassword" class="col-sm-2 col-form-label">ประเภทคำร้อง<span class="text-danger">*</span></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="letter_type_name" name="letter_type_name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">รายละเอียด (1)<span class="text-danger">*</span></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="detail_1" id="detail_1"></textarea>
+                        <small class="text-danger">รูปแทนที่วันที่คือ XXXX</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">รายละเอียด (2)<span class="text-danger">*</span></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="detail_2" id="detail_2"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">รายละเอียด (3)<span class="text-danger">*</span></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="detail_3" id="detail_3"></textarea>
                     </div>
                 </div>
             </div>

@@ -292,7 +292,7 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
 <table border="0" width="100%">
 
     <tr>
-        <td colspan="3" align="center">หนังสือ</td>
+        <td colspan="3" align="center"><?php echo $dataLetter['letter_type_name'];?></td>
     </tr>
 </table>
 <table border="0" width="100%">
@@ -320,8 +320,15 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
         <td colspan="4">ผู้กระทำความผิด <?php echo $dataLetter['letter_target']; ?></td>
     </tr>
     <tr>
+        <td colspan="4"><?php echo $dataLetter['type_detail_1']; ?></td>
+    </tr>
+    <tr>
         <td colspan="4"><?php echo $dataLetter['letter_detail']; ?></td>
     </tr>
+    <tr>
+        <td colspan="4"><?php echo $dataLetter['type_detail_2']; ?></td>
+    </tr>
+
     <tr>
         <td colspan="4">
             <?php $dataRule = Rule::getruleLetter($_GET['LETTER_ID']);
@@ -329,6 +336,9 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
                 echo $value['rule_detail']." : " .$value['rule_name']."<br>";
             } ?>
         </td>
+    </tr>
+    <tr>
+        <td colspan="4"><?php echo $dataLetter['type_detail_3']; ?></td>
     </tr>
     <tr>
         <td colspan="4"><br></td>

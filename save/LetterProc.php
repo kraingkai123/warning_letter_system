@@ -19,6 +19,10 @@ if ($PROC == 'add') {
     $fields['img_create'] = FileAttach::MakeSignature($_POST['img_create']);
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
+    for ($i = 1; $i < 4; $i++) {
+        $fields['type_detail_' . $i] = $_POST['type_detail_' . $i];
+    }
+    $fields['letter_date_do'] = $_POST['letter_date_do'];
     $letterId = Letter::SaveData($fields);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $cond['letter_id'] = $letterId;
@@ -38,7 +42,10 @@ if ($PROC == 'add') {
         $fields['f_status'] = 2;
         db_insert('frm_target', $fields);
         $prefixData = user::getPrefix($perProfile['prefix_id']);
-        $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'] . " (" . $posData['pos_name'] . ")" . " (" . $depData['dep_name'] . ")" . ",";
+        $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'];
+        $target .= " รหัสพนักงาน " .$perProfile['usr_username'];
+        $target .= " ตำแหน่ง " .$posData['pos_name'];
+        $target .= " ฝ่าย " .$posData['dep_name'].",";
     }
     $tureTarget = substr($target, 0, -1);
     unset($fields);
@@ -94,6 +101,10 @@ if ($PROC == 'add') {
     $fields['img_create'] = FileAttach::MakeSignature($_POST['img_create']);
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
+    for ($i = 1; $i < 4; $i++) {
+        $fields['type_detail_' . $i] = $_POST['type_detail_' . $i];
+    }
+    $fields['letter_date_do'] = $_POST['letter_date_do'];
     Letter::UpdateData($fields, $letterId);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $cond['letter_id'] = $letterId;
@@ -113,7 +124,10 @@ if ($PROC == 'add') {
         $fields['f_status'] = 2;
         db_insert('frm_target', $fields);
         $prefixData = user::getPrefix($perProfile['prefix_id']);
-        $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'] . " (" . $posData['pos_name'] . ")" . " (" . $depData['dep_name'] . ")" . ",";
+        $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'];
+        $target .= " รหัสพนักงาน " .$perProfile['usr_username'];
+        $target .= " ตำแหน่ง " .$posData['pos_name'];
+        $target .= " ฝ่าย " .$posData['dep_name'].",";;
     }
     $tureTarget = substr($target, 0, -1);
     unset($fields);

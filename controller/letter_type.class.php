@@ -30,5 +30,10 @@ class LetterType
     {
         db_delete($table, $cond);
     }
-    
+    public static function getDataType($lt_id)
+    {
+        $sql = "SELECT * FROM m_letter_type WHERE 1=1 AND lt_id = '".$lt_id."'";
+        $response = db_queryFirst($sql);
+        return $response;
+    }
 }

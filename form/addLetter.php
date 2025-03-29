@@ -31,8 +31,9 @@ if ($_GET['LETTER_ID'] != "") {
                                 <div class="form-group row">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">ประเภทคำร้อง <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
-                                        <select name="letter_type" id="letter_type" class="form-control selectbox" placeholder="โปรดเลือก">
-                                            <?php
+                                        <select name="letter_type" id="letter_type" class="form-control selectbox" placeholder="โปรดเลือก" onchange="getDataLetterType(this.value)">
+                                        <option value="">โปรดเลือก</option>
+                                           <?php
                                             $responseType = LetterType::listLetterTypeActive();
                                             foreach ($responseType as $key => $value) {
                                             ?>
@@ -44,13 +45,17 @@ if ($_GET['LETTER_ID'] != "") {
                                     </div>
                                     <label for="letter_date" class="col-sm-1 col-form-label text-dark">วันที่เอกสาร</label>
                                     <div class="col-sm-3">
-                                        <input type="date" class="form-control" id="letter_date" name="letter_date" value="<?php echo $dataLetter['letter_date'] == "" ? date('Y-m-d')  : $dataLetter['letter_date']; ?>" readonly>
+                                        <input type="date" class="form-control" id="letter_date" name="letter_date" value="<?php echo $dataLetter['letter_date_do'] == "" ? date('Y-m-d')  : $dataLetter['letter_date']; ?>" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">เขียนที่ <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="letter_write_address" placeholder="เขียนที่" id="letter_write_address" value="<?php echo $dataLetter['letter_write_address']; ?>">
+                                        <input type="text" class="form-control" name="letter_write_address" placeholder="เขียนที่" readonly id="letter_write_address" value="<?php echo $dataLetter['letter_write_address'] == ""  ? "บริษัท เรียนจบนะ จำกัด" : $dataLetter['letter_write_address']; ?>">
+                                    </div>
+                                    <label for="letter_date" class="col-sm-1 col-form-label text-dark">วันที่กระทำผิด</label>
+                                    <div class="col-sm-3">
+                                        <input type="date" class="form-control" id="letter_date_do" name="letter_date_do" value="<?php echo $dataLetter['letter_date_do'] == "" ? date('Y-m-d')  : $dataLetter['letter_date_do']; ?>" onchange="getDateTemplate(this.value)" >
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -81,9 +86,23 @@ if ($_GET['LETTER_ID'] != "") {
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด (1) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-11">
+                                       
+                                        <textarea class="form-control" name="type_detail_1" id="type_detail_1"><?php echo $dataLetter['type_detail_1']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด (2) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-11">
+                                    
+                                        <textarea class="form-control" name="type_detail_2" id="type_detail_2" ><?php echo $dataLetter['type_detail_2']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด <span class="text-danger">*</span></label>
                                     <div class="col-sm-11">
-                                        <div id="editor"></div>
+                                    <div id="editor"></div>
                                         <textarea name="letter_detail" id="letter_detail" style="display: none;"><?php echo $dataLetter['letter_detail']; ?></textarea>
                                     </div>
                                 </div>
@@ -106,6 +125,13 @@ if ($_GET['LETTER_ID'] != "") {
                                             }
                                             ?>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด (3) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-11">
+                                      
+                                        <textarea name="type_detail_3" id="type_detail_3" class="form-control" ><?php echo $dataLetter['type_detail_3']; ?></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -328,6 +354,40 @@ if ($_GET['LETTER_ID'] != "") {
                     }
                 });
 
+            }
+        });
+    }
+
+    function getDataLetterType(letterType) {
+        $.ajax({
+            type: "POST",
+            url: "../save/setup_letter_type_proc.php",
+            data: {
+                proc: 'getData',
+                lt_id: letterType,
+            }, // serializes the form's elements.
+            dataType: "json",
+            success: function(response) {
+                $("#type_detail_1").val(response.data.detail_1)
+                $("#type_detail_2").val(response.data.detail_2)
+                $("#type_detail_3").val(response.data.detail_3)
+                $('#letter_name').val(response.data.letter_type_name)
+            }
+        });
+    }
+    function getDateTemplate(date){
+        var letterType = $("#letter_type").val()
+        $.ajax({
+            type: "POST",
+            url: "../save/setup_letter_type_proc.php",
+            data: {
+                proc: 'getDataTemplate',
+                lt_id: letterType,
+                date:date
+            }, // serializes the form's elements.
+            dataType: "json",
+            success: function(response) {
+                $("#type_detail_1").val(response.data.detail_1)
             }
         });
     }

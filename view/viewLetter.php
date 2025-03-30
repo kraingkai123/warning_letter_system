@@ -317,7 +317,7 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
         <td colspan="4">เรื่อง <?php echo $dataLetter['letter_name']; ?></td>
     </tr>
     <tr>
-        <td colspan="4">ผู้กระทำความผิด <?php echo $dataLetter['letter_target']; ?></td>
+        <td colspan="4">เรียน <?php echo $dataLetter['letter_target']; ?></td>
     </tr>
     <tr>
         <td colspan="4"><?php echo $dataLetter['type_detail_1']; ?></td>

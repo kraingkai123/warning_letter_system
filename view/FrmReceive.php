@@ -1,14 +1,55 @@
 <div class="accordion" id="accordionExample">
-    <div class="card" >
+    <div class="card">
+        <div class="card-header" id="headingtree" style="background-color: #91b9f7;">
+            <h5 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapsetree" aria-expanded="true" aria-controls="collapsetree">
+                    ลายเซ็นผู้บังคับบัญชา
+                </button>
+            </h5>
+        </div>
+        <div class="card">
+            <div id="collapsetree" class="collapse show" aria-labelledby="headingtree" data-parent="#accordionExample">
+                <div class="card-body">
+                    <table border="0"  width="100%">
+                        <tr>
+                            <td width="30%" >
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <a href="#!" class="btn btn-primary"
+                                            onclick="window.open('../form/letter_receive_sign.php?ID=xxx&proc=manager','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> ลงชื่อ</a>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <center><img id="view_pic_managerxxx" src="" style="width: 500px;" /></center>
+                                    </div>
+                                </div>
+                                <textarea class="image_create_manager" id="img_create_managerxxx" name="img_create_managerxxx" rows="4" cols="50" readonly style="display: none;"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">(<?php
+
+                        echo $dataLetter['manager_name'];
+                        ?>)</td>
+                        </tr>
+                        <tr >
+                            <td style="text-align: center;">(<?php
+
+                        echo $dataLetter['manager_pos'];
+                        ?>)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="card-header" id="headingOne" style="background-color: #91b9f7;">
             <h5 class="mb-0">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     ลายเซ็นพนักงาน
                 </button>
             </h5>
         </div>
 
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample" >
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
                 <?php
                 $listTarget = Letter::getDataTarget($_GET['LETTER_ID']);
@@ -40,41 +81,40 @@
 
                     for ($i = 0; $i <=  count($arrayTarget); $i++) {
                         $checkTr = 0;
-                        /*     print_pre($arrayTarget[1]);
-    exit; */
+
                         foreach ($arrayTarget[$i] as $key => $value) {
                             echo "<tr>";
                             for ($x = 0; $x <= count($value); $x++) {
 
                                 foreach ($value[$x] as $key2 => $value2) {
                     ?>
-                                  
-                                        <?php if ($key2 == 'f_id') {
-                                        ?>
-                                          <td width="30%">
+
+                                    <?php if ($key2 == 'f_id') {
+                                    ?>
+                                        <td width="30%">
                                             <div class="row">
                                                 <div class="col-sm-3">
                                                     <a href="#!" class="btn btn-primary"
-                                                        onclick="window.open('../form/letter_receive_sign.php?ID=<?php echo $key2 == 'f_id' ? $value2 : 0; ?>&proc=traget','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a>
+                                                        onclick="window.open('../form/letter_receive_sign.php?ID=<?php echo $key2 == 'f_id' ? $value2 : 0; ?>&proc=traget','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> ลงชื่อ</a>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                 <center><img id="view_pic_traget<?php echo $value2; ?>" src="" style="width: 500px;" /></center>
+                                                    <center><img id="view_pic_traget<?php echo $value2; ?>" src="" style="width: 500px;" /></center>
                                                 </div>
                                             </div>
                                             <textarea class="img_create_traget" id="img_create_traget<?php echo $value2; ?>" name="img_create_traget[<?php echo $value2; ?>]" rows="4" cols="50" readonly style="display: none;"></textarea>
-                                            </td>
-                                      <?php
-                                        } else if ($key2 == 'fullname') {
-                                           ?>
-                                           <td width="30%"  align="center">(<?php echo $value2; ?>)</td>
-                                           <?php
-                                        }else if ($key2 == 'posname') {
-                                            ?>
-                                            <td width="30%"  align="center">(<?php echo $value2; ?>)</td>
-                                            <?php
-                                         }
-                                        ?>
-                                    
+                                        </td>
+                                    <?php
+                                    } else if ($key2 == 'fullname') {
+                                    ?>
+                                        <td width="30%" align="center">(<?php echo $value2; ?>)</td>
+                                    <?php
+                                    } else if ($key2 == 'posname') {
+                                    ?>
+                                        <td width="30%" align="center">(<?php echo $value2; ?>)</td>
+                                    <?php
+                                    }
+                                    ?>
+
                     <?php
                                 }
                             }
@@ -97,7 +137,7 @@
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
-            <?php
+                <?php
                 $listTarget = Letter::getDataWiness($_GET['LETTER_ID']);
                 $arrayTarget = [];
                 $index = 0;
@@ -127,41 +167,39 @@
 
                     for ($i = 0; $i <=  count($arrayTarget); $i++) {
                         $checkTr = 0;
-                        /*     print_pre($arrayTarget[1]);
-    exit; */
                         foreach ($arrayTarget[$i] as $key => $value) {
                             echo "<tr>";
                             for ($x = 0; $x <= count($value); $x++) {
 
                                 foreach ($value[$x] as $key2 => $value2) {
                     ?>
-                                  
-                                        <?php if ($key2 == 'f_id') {
-                                        ?>
-                                          <td width="30%">
+
+                                    <?php if ($key2 == 'f_id') {
+                                    ?>
+                                        <td width="30%">
                                             <div class="row">
                                                 <div class="col-sm-3">
                                                     <a href="#!" class="btn btn-primary"
-                                                        onclick="window.open('../form/letter_receive_sign.php?ID=<?php echo $key2 == 'f_id' ? $value2 : 0; ?>&proc=winess','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a>
+                                                        onclick="window.open('../form/letter_receive_sign.php?ID=<?php echo $key2 == 'f_id' ? $value2 : 0; ?>&proc=winess','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> ลงชื่อ</a>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                 <center><img id="view_pic_winess<?php echo $value2; ?>" src="" style="width: 500px;" /></center>
+                                                    <center><img id="view_pic_winess<?php echo $value2; ?>" src="" style="width: 500px;" /></center>
                                                 </div>
                                             </div>
-                                            <textarea class="img_create_winess"  id="img_create_winess<?php echo $value2; ?>" name="img_create_winess[<?php echo $value2; ?>]" rows="4" cols="50" readonly style="display: none;"></textarea>
-                                            </td>
-                                      <?php
-                                        } else if ($key2 == 'fullname') {
-                                           ?>
-                                           <td width="30%"  align="center">(<?php echo $value2; ?>)</td>
-                                           <?php
-                                        }else if ($key2 == 'posname') {
-                                            ?>
-                                            <td width="30%"  align="center">(<?php echo $value2; ?>)</td>
-                                            <?php
-                                         }
-                                        ?>
-                                    
+                                            <textarea class="img_create_winess" id="img_create_winess<?php echo $value2; ?>" name="img_create_winess[<?php echo $value2; ?>]" rows="4" cols="50" readonly style="display: none;"></textarea>
+                                        </td>
+                                    <?php
+                                    } else if ($key2 == 'fullname') {
+                                    ?>
+                                        <td width="30%" align="center">(<?php echo $value2; ?>)</td>
+                                    <?php
+                                    } else if ($key2 == 'posname') {
+                                    ?>
+                                        <td width="30%" align="center">(<?php echo $value2; ?>)</td>
+                                    <?php
+                                    }
+                                    ?>
+
                     <?php
                                 }
                             }
@@ -174,4 +212,5 @@
             </div>
         </div>
     </div>
+
 </div>

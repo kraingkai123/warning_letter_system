@@ -11,7 +11,10 @@ if ($_GET['LETTER_ID'] != "") {
     $dataFrmWiness = Letter::getDataWiness($_GET['LETTER_ID']);
     $dataFile = FileAttach::listFile($_GET['LETTER_ID']);
     $dataletterRule = Rule::getruleLetter($_GET['LETTER_ID']);
+    $target = $dataFrmTarget[0]['usr_id'];
 }
+
+
 ?>
 
 <body class="">
@@ -32,8 +35,8 @@ if ($_GET['LETTER_ID'] != "") {
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">ประเภทคำร้อง <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
                                         <select name="letter_type" id="letter_type" class="form-control selectbox" placeholder="โปรดเลือก" onchange="getDataLetterType(this.value)">
-                                        <option value="">โปรดเลือก</option>
-                                           <?php
+                                            <option value="">โปรดเลือก</option>
+                                            <?php
                                             $responseType = LetterType::listLetterTypeActive();
                                             foreach ($responseType as $key => $value) {
                                             ?>
@@ -51,11 +54,19 @@ if ($_GET['LETTER_ID'] != "") {
                                 <div class="form-group row">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">เขียนที่ <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="letter_write_address" placeholder="เขียนที่" readonly id="letter_write_address" value="<?php echo $dataLetter['letter_write_address'] == ""  ? "บริษัท เรียนจบนะ จำกัด" : $dataLetter['letter_write_address']; ?>">
+                                        <input type="text" class="form-control" name="letter_write_address" placeholder="เขียนที่" id="letter_write_address" value="<?php echo $dataLetter['letter_write_address'] == ""  ? "บริษัท เรียนจบนะ จำกัด" : $dataLetter['letter_write_address']; ?>">
                                     </div>
-                                    <label for="letter_date" class="col-sm-1 col-form-label text-dark">วันที่กระทำผิด</label>
+                                    <label for="letter_date" class="col-sm-1 col-form-label text-dark">วันที่กระทำผิด<span class="text-danger">*</span></label>
                                     <div class="col-sm-3">
-                                        <input type="date" class="form-control" id="letter_date_do" name="letter_date_do" value="<?php echo $dataLetter['letter_date_do'] == "" ? date('Y-m-d')  : $dataLetter['letter_date_do']; ?>" onchange="getDateTemplate(this.value)" >
+                                        <input type="date" class="form-control" id="letter_date_do" name="letter_date_do" value="<?php echo $dataLetter['letter_date_do'] == "" ? "" : $dataLetter['letter_date_do']; ?>" onchange="getDateTemplate()">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <label for="letter_date" class="col-sm-1 col-form-label text-dark">เวลากระทำผิด<span class="text-danger">*</span></label>
+                                    <div class="col-sm-2">
+                                        <input type="time" class="form-control" id="letter_time" name="letter_time" value="<?php echo $dataLetter['letter_time']; ?>" onchange="getDateTemplate()">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -67,7 +78,8 @@ if ($_GET['LETTER_ID'] != "") {
                                 <div class="form-group row">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">ผู้กระทำความผิด <span class="text-danger">*</span></label>
                                     <div class="col-sm-7">
-                                        <select name="letter_target[]" id="letter_target" class="form-control selectbox" multiple>
+                                        <select name="letter_target[]" id="letter_target" class="form-control selectbox" onchange="getManager(this.value)">
+                                            <option value="">โปรดเลือก</option>
                                             <?php
                                             $responseProfile = User::getUserAll($_SESSION['dep_id'], 0);
                                             foreach ($responseProfile as $key => $value) {
@@ -85,24 +97,17 @@ if ($_GET['LETTER_ID'] != "") {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row" style="display: none;">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด (1) <span class="text-danger">*</span></label>
                                     <div class="col-sm-11">
-                                       
+
                                         <textarea class="form-control" name="type_detail_1" id="type_detail_1"><?php echo $dataLetter['type_detail_1']; ?></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด (2) <span class="text-danger">*</span></label>
-                                    <div class="col-sm-11">
-                                    
-                                        <textarea class="form-control" name="type_detail_2" id="type_detail_2" ><?php echo $dataLetter['type_detail_2']; ?></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด <span class="text-danger">*</span></label>
                                     <div class="col-sm-11">
-                                    <div id="editor"></div>
+                                        <div id="editor"></div>
                                         <textarea name="letter_detail" id="letter_detail" style="display: none;"><?php echo $dataLetter['letter_detail']; ?></textarea>
                                     </div>
                                 </div>
@@ -127,11 +132,18 @@ if ($_GET['LETTER_ID'] != "") {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row" style="display: none;">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด (3) <span class="text-danger">*</span></label>
                                     <div class="col-sm-11">
-                                      
-                                        <textarea name="type_detail_3" id="type_detail_3" class="form-control" ><?php echo $dataLetter['type_detail_3']; ?></textarea>
+
+                                        <textarea name="type_detail_3" id="type_detail_3" class="form-control"><?php echo $dataLetter['type_detail_3']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="display: none;">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด (2) <span class="text-danger">*</span></label>
+                                    <div class="col-sm-11">
+
+                                        <textarea name="type_detail_2" id="type_detail_2" class="form-control"><?php echo $dataLetter['type_detail_2']; ?></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -192,14 +204,38 @@ if ($_GET['LETTER_ID'] != "") {
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">ลงชื่อผู้จัดการ </label>
                                     <div class="col-sm-2">
                                         <a href="#!" class="btn btn-primary"
-                                            onclick="window.open('letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a> <span class="text-danger">*</span>
+                                            onclick="window.open('letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> ลงชื่อ</a>
                                     </div>
                                     <div class="col-sm-6">
-                                        <img id="view_pic"  style="width: 500px;" />
+                                        <img id="view_pic" style="width: 500px;" />
                                     </div>
                                     <textarea id="img_create" name="img_create" rows="4" cols="50" readonly style="display: none;"><?php echo $dataLetter['img_create']; ?></textarea>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">ผู้บังคับบัญชา <span class="text-danger">*</span></label>
+                                    <div class="col-sm-7">
+                                        <select name="manager_id" id="manager_id" class="form-control selectbox">
+                                            <option value="">โปรดเลือก</option>
+                                            <?php
+                                             $depId = db_getData("SELECT dep_id FROM VIEW_USER WHERE USR_ID='".$target."'",'dep_id');
+                                            $responseProfile = User::getManager($target);
+
+                                
+                                            foreach ($responseProfile as $key => $value) {
+                                                $select = "";
+                                                if ($dataLetter['manager_id'] == $value['usr_id']) {
+                                                    $select = "selected";
+                                                }
+                                            ?>
+                                                <option <?php echo $select; ?> value="<?php echo $value['usr_id']; ?>"><?php echo $value['fullname']; ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group row">
 
@@ -238,11 +274,33 @@ if ($_GET['LETTER_ID'] != "") {
             theme: 'snow'
         });
         quill.root.innerHTML = $("#letter_detail").val();
+      
     });
 
     function saveData() {
 
         var invalidate = true;
+        if ($('#letter_type').val() == "") {
+            Swal.fire({
+                title: "กรุณาเลือกประเภทคำร้อง",
+                icon: "error"
+            });
+            invalidate = false;
+        }
+        if ($('#letter_date_do').val() == "") {
+            Swal.fire({
+                title: "กรุณากรอกวันที่กระทำผิด",
+                icon: "error"
+            });
+            invalidate = false;
+        }
+        if ($('#letter_time').val() == "") {
+            Swal.fire({
+                title: "กรุณากรอกเวลาที่กระทำผิด",
+                icon: "error"
+            });
+            invalidate = false;
+        }
         if ($("#letter_write_address").val() == "") {
             Swal.fire({
                 title: "กรุณากรอกสถานที่เขียน",
@@ -277,6 +335,16 @@ if ($_GET['LETTER_ID'] != "") {
                 icon: "error"
             });
             invalidate = false;
+        } else {
+           
+            var check = $("#witness").val().length;
+            if (check < 2) {
+                Swal.fire({
+                title: "กรุณาเลือกพยานอย่างน้อย 2 คน",
+                icon: "error"
+            });
+            invalidate = false;
+            }
         }
         if ($("#img_create").val() == "") {
             Swal.fire({
@@ -369,25 +437,47 @@ if ($_GET['LETTER_ID'] != "") {
             dataType: "json",
             success: function(response) {
                 $("#type_detail_1").val(response.data.detail_1)
-                $("#type_detail_2").val(response.data.detail_2)
                 $("#type_detail_3").val(response.data.detail_3)
+                $("#type_detail_2").val(response.data.detail_2)
                 $('#letter_name').val(response.data.letter_type_name)
             }
         });
     }
-    function getDateTemplate(date){
+
+    function getDateTemplate() {
         var letterType = $("#letter_type").val()
+        var date = $("#letter_date_do").val()
+        var letter_time = $("#letter_time").val()
         $.ajax({
             type: "POST",
             url: "../save/setup_letter_type_proc.php",
             data: {
                 proc: 'getDataTemplate',
                 lt_id: letterType,
-                date:date
+                date: date,
+                letter_time: letter_time
             }, // serializes the form's elements.
             dataType: "json",
             success: function(response) {
                 $("#type_detail_1").val(response.data.detail_1)
+            }
+        });
+    }
+    function getManager(usrId){
+        $("#manager_id").empty()
+        $.ajax({
+            type: "POST",
+            url: "../save/SaveUser.php",
+            data: {
+                proc: 'getManager',
+                usrId: usrId,
+            }, // serializes the form's elements.
+            dataType: "json",
+            success: function(response) {
+                manager_id
+                $.each(response.data, function(index, item) {
+                    $("#manager_id").append("<option value='"+item.usr_id+"'>"+item.fullname+"</option>")
+    });
             }
         });
     }

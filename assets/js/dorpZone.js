@@ -47,19 +47,19 @@ var myDropzone = new Dropzone("#file-dropzone", {
             } else if (proc == 'Receive') {
                 var checktarget=0;
                 var checkWiness=0;
-                $(".img_create_traget").each(function (index) {
+               /*  $(".img_create_traget").each(function (index) {
                     if($(this).val()==""){
                         checktarget++;
                     }
-                });
-                if(checktarget>0){
+                }); */
+               /*  if(checktarget>0){
                     Swal.fire({
                         title: "กรุณเขียนภาพลายเซ็นพนักงาน",
                         text: "",
                         icon: "error"
                     });
                     return false;
-                }
+                } */
                 $(".img_create_winess").each(function (index) {
                     if($(this).val()==""){
                         checkWiness++;

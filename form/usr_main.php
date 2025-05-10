@@ -19,6 +19,7 @@ include("../include/header.php");
                                 <thead>
                                     <tr class="text-center">
                                         <th class="text-center" width="10%">ลำดับ</th>
+                                        <th class="text-center" width="30%">รหัสพนักงาน</th>
                                         <th class="text-center" width="30%">ชื่อ-สกุล</th>
                                         <th class="text-center" width="20%">ฝ่าย/สังกัด</th>
                                         <th class="text-center" width="20%">ตำแหน่ง</th>
@@ -35,6 +36,7 @@ include("../include/header.php");
                                     ?>
                                         <tr>
                                             <td align="center"><?php echo $i; ?></td>
+                                            <td><?php echo $value['usr_username']; ?></td>
                                             <td><?php echo $value['prefix_name'] . $value['usr_fname'] . " " . $value['usr_lname']; ?></td>
                                             <td><?php echo $value['dep_name']; ?></td>
                                             <td><?php echo $value['pos_name']; ?></td>

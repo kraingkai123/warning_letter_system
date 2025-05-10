@@ -19,9 +19,9 @@ include("../include/header.php");
                                         <th class="text-center" width="10%">ลำดับ</th>
                                         <th class="text-center" width="10%">เลขคำร้อง</th>
                                         <th class="text-center" width="30%">เรื่อง</th>
-                                        <th class="text-center" width="20%">เรียน</th>
-                                        <th class="text-center" width="20%">วันที่</th>
-                                        <th class="text-center" width="20%">สถานะ</th>
+                                        <th class="text-center" width="20%">ผู้กระทำความผิด</th>
+                                        <th class="text-center" width="18%">วันที่</th>
+                                        <th class="text-center" width="22%">สถานะ</th>
                                         <th class="text-center" width="10%"></th>
                                     </tr>
                                 </thead>
@@ -31,8 +31,22 @@ include("../include/header.php");
                                     $i = 1;
 
                                     foreach ($ressponse as $key => $value) {
+                                        $color="";
+                                        if ($value['letter_status'] == 1) {
+                                           $color="#F7CAAC";
+                                        } else if ($value['letter_status'] == 5) {
+                                            $color="#F7CAAC";
+                                        } else if ($value['letter_status'] == 3) {
+                                            $color="#FFAFAF";
+                                        } else if ($value['letter_status'] == 2) {
+                                            $color="#B3C6E7";
+                                        } else if ($value['letter_status'] == 4) {
+                                            $color="#C4E0B2";
+                                        }else if ($value['letter_status'] == 6) {
+                                            $color="#FFAFAF";
+                                        }
                                     ?>
-                                        <tr>
+                                       <tr style="background-color:<?php echo $color;?>">
                                             <td align="center"><?php echo $i; ?></td>
                                             <td align="center">
                                                 <?php echo $value['letter_number']; ?>
@@ -42,33 +56,34 @@ include("../include/header.php");
                                             <td align="center"><?php echo db2Date($value['letter_date']); ?></td>
                                             <td><?php 
                                                 if($value['letter_status']==1){
-                                                    $textStatus = "รอ hr อนุมัติ";
+                                                    $textStatus = "รออนุมัติ";
                                                 }else if($value['letter_status']==5){
-                                                    $textStatus = "Hr ส่งกลับแก้ไข";
+                                                    $textStatus = "ส่งกลับแก้ไข";
                                                 }else if($value['letter_status']==3){
-                                                    $textStatus = "Hr ไม่อนุมัติ";
+                                                    $textStatus = "ไม่อนุมัติ";
                                                 }else if($value['letter_status']==2){
-                                                    $textStatus = "Hr อนุมัติ";
+                                                    $textStatus = "อนุมัติ";
                                                 }else if($value['letter_status']==4){
                                                     $textStatus = "ดำเนินการเสร็จสิ้น";
+                                                }else if ($value['letter_status'] == 6) {
+                                                    $textStatus = "พนักงานไม่ยินยอมรับทราบ";
                                                 }
                                                 echo $textStatus;
                                             ?></td>
                                             <td>
 
                                                 <?php
-
+                                                $proc='view';
                                                 if ($value['letter_status'] == 5) {
                                                 ?>
                                                     <a class="btn btn-success" href="addLetter.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>" role="button"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</a>
                                                     <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['letter_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
                                                 <?php
                                                 } else if ($value['letter_status'] == 2) {
-                                                ?>
-                                                    <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&menu_id=<?php echo $_GET['menu_id']; ?>&proc=Receive" role="button">รับทราบ</a>
-                                                <?php
+                                                    $proc='Receive';
+
                                                 } ?>
-                                                <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&proc=view" role="button"><i class="nc-icon nc-email-85"></i> รายละเอียด</a>
+                                                <a class="btn btn-primary" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&proc=<?php echo $proc;?>" role="button"><i class="nc-icon nc-email-85"></i> รายละเอียด</a>
                                             </td>
                                         </tr>
                                     <?php

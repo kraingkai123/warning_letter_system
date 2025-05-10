@@ -19,7 +19,7 @@
 <div class="form-group row" id="divSign">
     <div class="col-sm-2">
         <a href="#!" class="btn btn-primary"
-            onclick="window.open('../form/letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a>
+            onclick="window.open('../form/letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> ลงชื่อ</a>
     </div>
     <div class="col-sm-6">
         <img id="view_pic" src="" style="width: 500px;" />

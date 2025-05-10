@@ -46,7 +46,10 @@ if ($proc == "updateStatus") {
 } else if($proc=="getDataTemplate"){
     $ressponeData = LetterType::getDataType($_POST['lt_id']);
     $date = convDateThai($_POST['date']);
+    $time = $_POST['letter_time'];
     $resspone['detail_1'] = str_replace("XXXX",$date ,$ressponeData['detail_1']);
+    $resspone['detail_1'] = str_replace("TTTT",$time,$resspone['detail_1']);
+    $status = true;
 
 }
 $res = array(

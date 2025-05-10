@@ -60,7 +60,7 @@ if ($_GET['LETTER_ID'] != "") {
                                 if ($_GET['proc'] != 'view') {
                                 ?>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">เซ็นเอกสาร</button>
+                                        <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">การอนุมัติเอกสาร</button>
                                     </li>
                                 <?php
                                 }

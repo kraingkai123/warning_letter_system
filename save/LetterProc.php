@@ -19,10 +19,17 @@ if ($PROC == 'add') {
     $fields['img_create'] = FileAttach::MakeSignature($_POST['img_create']);
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
+    $fields['letter_time'] = $_POST['letter_time'];
     for ($i = 1; $i < 4; $i++) {
-        $fields['type_detail_' . $i] = $_POST['type_detail_' . $i];
+        if (!empty($_POST['type_detail_' . $i])) {
+            $fields['type_detail_' . $i] = $_POST['type_detail_' . $i];
+        }
     }
     $fields['letter_date_do'] = $_POST['letter_date_do'];
+    $fields['manager_id'] = $_POST['manager_id'];
+    $perProfile = User::getDataUser($_POST['manager_id']);
+    $fields['manager_name'] = $perProfile['fullname'];
+    $fields['manager_pos'] = $perProfile['pos_name'];
     $letterId = Letter::SaveData($fields);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $cond['letter_id'] = $letterId;
@@ -43,9 +50,9 @@ if ($PROC == 'add') {
         db_insert('frm_target', $fields);
         $prefixData = user::getPrefix($perProfile['prefix_id']);
         $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'];
-        $target .= " รหัสพนักงาน " .$perProfile['usr_username'];
-        $target .= " ตำแหน่ง " .$posData['pos_name'];
-        $target .= " ฝ่าย " .$posData['dep_name'].",";
+        $target .= " รหัสพนักงาน " . $perProfile['usr_username'];
+        $target .= " ตำแหน่ง " . $posData['pos_name'];
+        $target .= " ฝ่าย " . $posData['dep_name'] . ",";
     }
     $tureTarget = substr($target, 0, -1);
     unset($fields);
@@ -101,10 +108,18 @@ if ($PROC == 'add') {
     $fields['img_create'] = FileAttach::MakeSignature($_POST['img_create']);
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
+    $fields['letter_time'] = $_POST['letter_time'];
     for ($i = 1; $i < 4; $i++) {
-        $fields['type_detail_' . $i] = $_POST['type_detail_' . $i];
+        if (!empty($_POST['type_detail_' . $i])) {
+            $fields['type_detail_' . $i] = $_POST['type_detail_' . $i];
+        }
     }
     $fields['letter_date_do'] = $_POST['letter_date_do'];
+    $fields['manager_id'] = $_POST['manager_id'];
+    $perProfile = User::getDataUser($_POST['manager_id']);
+    $fields['manager_name'] = $perProfile['fullname'];
+    $fields['manager_pos'] = $perProfile['pos_name'];
+    $letterId = Letter::SaveData($fields);
     Letter::UpdateData($fields, $letterId);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $cond['letter_id'] = $letterId;
@@ -125,9 +140,9 @@ if ($PROC == 'add') {
         db_insert('frm_target', $fields);
         $prefixData = user::getPrefix($perProfile['prefix_id']);
         $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'];
-        $target .= " รหัสพนักงาน " .$perProfile['usr_username'];
-        $target .= " ตำแหน่ง " .$posData['pos_name'];
-        $target .= " ฝ่าย " .$posData['dep_name'].",";;
+        $target .= " รหัสพนักงาน " . $perProfile['usr_username'];
+        $target .= " ตำแหน่ง " . $posData['pos_name'];
+        $target .= " ฝ่าย " . $posData['dep_name'] . ",";;
     }
     $tureTarget = substr($target, 0, -1);
     unset($fields);
@@ -159,16 +174,16 @@ if ($PROC == 'add') {
         $fields['letter_id'] = $letterId;
         db_insert('frm_letter_rule', $fields);
     }
-      //เส้นทางเอสการ
-      unset($fieldsProcess);
-      $fieldsProcess['letter_id'] = $letterId;
-      $fieldsProcess['sender_id'] = $_SESSION['usr_id'];
-      $fieldsProcess['sender_name'] = $_SESSION['full_name'];
-      $fieldsProcess['sender_date'] = date('Y-m-d');
-      $fieldsProcess['sender_time'] = date("H:i:s");
-      $fieldsProcess['letter_step'] = 0;
-      Process::SaveProcess("letter_process", $fieldsProcess);
-      //
+    //เส้นทางเอสการ
+    unset($fieldsProcess);
+    $fieldsProcess['letter_id'] = $letterId;
+    $fieldsProcess['sender_id'] = $_SESSION['usr_id'];
+    $fieldsProcess['sender_name'] = $_SESSION['full_name'];
+    $fieldsProcess['sender_date'] = date('Y-m-d');
+    $fieldsProcess['sender_time'] = date("H:i:s");
+    $fieldsProcess['letter_step'] = 0;
+    Process::SaveProcess("letter_process", $fieldsProcess);
+    //
     $return['status'] = 200;
     $return['url'] = '../form/frmSend.php?menu_id=2';
 } else if ($PROC == 'delete') {
@@ -216,20 +231,25 @@ if ($PROC == 'add') {
     $fieldsProcess['receive_status'] = $_POST['rdoStatus'];
     $fieldsProcess['comment'] = $_POST['hr_reson'];
     unset($cond);
-    $cond['bp_id'] =$_POST['bp_id'];
-    Process::UpdateProcess('letter_process',$fieldsProcess,$cond);
+    $cond['bp_id'] = $_POST['bp_id'];
+    Process::UpdateProcess('letter_process', $fieldsProcess, $cond);
     //
     $return['status'] = 200;
     $return['url'] = '../form/approved_list.php?menu_id=1';
 } else if ($PROC == 'Receive') {
+    $status = 4;
     foreach ($_POST['img_create_traget'] as $key => $value) {
-        unset($fields);
-        $fields['date_sign'] = date('Y-m-d');
-        $fields['f_image'] = FileAttach::MakeSignature($value);
-        $fields['f_status'] = 1;
-        unset($cond);
-        $cond['f_id'] = $key;
-        db_update('frm_target', $fields, $cond);
+        if (!empty($value)) {
+            unset($fields);
+            $fields['date_sign'] = date('Y-m-d');
+            $fields['f_image'] = FileAttach::MakeSignature($value);
+            $fields['f_status'] = 1;
+            unset($cond);
+            $cond['f_id'] = $key;
+            db_update('frm_target', $fields, $cond);
+        } else {
+            $status = 6;
+        }
     }
     foreach ($_POST['img_create_winess'] as $key => $value) {
         unset($fields);
@@ -241,7 +261,9 @@ if ($PROC == 'add') {
         db_update('frm_witness', $fields, $cond);
     }
     unset($fields);
-    $fields['letter_status'] = 4;
+    $fields['manager_sign_date'] = date('Y-m-d');
+    $fields['letter_status'] = $status;
+    $fields['manager_image'] = FileAttach::MakeSignature($_POST['img_create_managerxxx']);
     $letterId = $_POST['LETTER_ID'];
     Letter::UpdateData($fields, $letterId);
     $return['status'] = 200;

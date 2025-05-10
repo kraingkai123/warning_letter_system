@@ -3,8 +3,8 @@
 
 include("../include/include.php");
 if ($_POST['typeExport'] == 'pdf') {
-require_once '../mpdf/vendor/autoload.php';
-}else{
+    require_once '../mpdf/vendor/autoload.php';
+} else {
     header("Content-Type: application/xls");
     header("Content-Disposition: attachment; filename=export.xls");
     header("Pragma: no-cache");
@@ -49,86 +49,70 @@ ob_start();
 
 
 
-<table id="example" class="table" style="width:100%">
-    <tr>
-        <th colspan="6"><?php echo $header; ?></th>
-    </tr>
-    <tr class="text-center">
-        <th class="text-center" width="10%">ลำดับ</th>
-        <th class="text-center" width="10%">ชื่อ-สกุล</th>
-        <th class="text-center" width="30%">หน่วยงาน</th>
-        <th class="text-center" width="20%">ตำแหน่ง</th>
-        <th class="text-center" width="20%">ข้อบังคับ</th>
-        <th class="text-center" width="10%">จำนวน</th>
-    </tr>
+ <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th class="text-center" width="10%">รายละเอียด</th>
+                                            <th class="text-center" width="10%">สถานะ</th>
+                                            <th class="text-center" width="10%">เลขที่เอกสาร</th>
+                                             <th class="text-center" width="10%">โทษทางวินัย</th>
+                                            <th class="text-center" width="10%">วันที่</th>
+                                            <th class="text-center" width="10%">รหัสพนักงาน</th>
+                                            <th class="text-center" width="20%">ชื่อ-นามสกุล</th>
+                                            <th class="text-center" width="20%">ตำแหน่ง</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $index = 1;
+                                        if (count($respone) > 0) {
+                                            foreach ($respone as $key => $value) {
+                                                $color = "";
+                                                $textStatus = "";
+                                                if ($value['letter_status'] == 1) {
+                                                    $color = "#F7CAAC";
+                                                    $textStatus = "รออนุมัติ";
+                                                } else if ($value['letter_status'] == 5) {
+                                                    $color = "#F7CAAC";
+                                                    $textStatus = "ส่งกลับแก้ไข";
+                                                } else if ($value['letter_status'] == 3) {
+                                                    $color = "#FFAFAF";
+                                                    $textStatus = "ไม่อนุมัติ";
+                                                } else if ($value['letter_status'] == 2) {
+                                                    $color = "#B3C6E7";
+                                                    $textStatus = "อนุมัติ";
+                                                } else if ($value['letter_status'] == 4) {
+                                                    $color = "#C4E0B2";
+                                                    $textStatus = "ดำเนินการเสร็จสิ้น";
+                                                }else if ($value['letter_status'] == 6) {
+                                                     $color = "#FFAFAF";
+                                                    $textStatus = "พนักงานไม่ยินยอมรับทราบ";
+                                                }
 
-
-    <?php
-    $index = 1;
-    if (count($respone) > 0) {
-        foreach ($respone as $key => $value) {
-            $ltterId = $value['letter_id'];
-            $usrId =  $value['usr_id'];
-            unset($req);
-            $req['usrId'] = $usrId;
-            $req['letterId'] = $ltterId;
-            if (!empty($_POST['startDate'])) {
-                $req['startDate'] = $_POST['startDate'];
-            }
-            if (!empty($_POST['endDate'])) {
-                $req['endDate'] = $_POST['endDate'];
-            }
-
-            $req['dep_id'] = $_SESSION['dep_id'];
-            $responseRule = Report::getruleList($req);
-            $contRule = count($responseRule);
-            if ($contRule == 0) {
-                $contRule = 1;
-            } else {
-
-                $contRule++;
-            }
-
-    ?>
-            <tr>
-                <td rowspan="<?php echo $contRule; ?>" align="center"><?php echo $index; ?></td>
-                <td rowspan="<?php echo $contRule; ?>"><?php echo  $value['fullname']; ?></td>
-                <td rowspan="<?php echo $contRule; ?>"><?php echo  $value['usr_dep_name']; ?></td>
-                <td rowspan="<?php echo $contRule; ?>"><?php echo  $value['usr_pos_name']; ?></td>
-
-                <?php
-                if ($contRule  > 1) {
-                    foreach ($responseRule as $key2 => $valuerule) {
-                ?>
-            <tr>
-                <td><?php echo  $valuerule['rule_name']; ?></td>
-                <td align="center"><?php echo  $valuerule['countrule']; ?></td>
-            </tr>
-        <?php
-                    }
-                } else {
-        ?>
-
-        <td align="center">-</td>
-        <td align="center">0</td>
-
-    <?php
-                }
-    ?>
-    </tr>
-<?php
-            $index++;
-        }
-    } else {
-?>
-<tr>
-    <td colspan="6" align="center">ไม่พบข้อมูล</td>
-</tr>
-<?php
-    }
-?>
-
-</table>
+                                        ?>
+                                                <tr>
+                                                    <td></td>
+                                                    <td align="center"><span style="color:<?php echo $color; ?>"><?php echo $textStatus; ?></span></td>
+                                                    <td><?php echo $value['letter_number']; ?></td>
+                                                           <td><?php echo db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id ='".$value['letter_type']."'","letter_type_name"); ?></td>
+                                                    <td><?php echo db2Date($value['letter_date'])." ".$value['letter_time']; ?></td>
+                                                    <td><?php echo db_getData("SELECT usr_username FROM view_user WHERE usr_id =" . $value['usr_id'] . "", 'usr_username'); ?></td>
+                                                    <td><?php echo $value['fullname']; ?></td>
+                                                    <td><?php echo $value['usr_pos_name']; ?></td>
+                                                </tr>
+                                            <?php
+                                                $index++;
+                                            }
+                                        } else {
+                                            ?>
+                                            <tr>
+                                                <td colspan="6" class="text-center text-danger">ไม่พบข้อมูล</td>
+                                            </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
 <?php
 $htmlBody = ob_get_clean();
 if ($_POST['typeExport'] == 'pdf') {
@@ -137,7 +121,7 @@ if ($_POST['typeExport'] == 'pdf') {
     $mpdf->WriteHTML($htmlBody);
     // Output to browser
     $mpdf->Output();;
-}else{
+} else {
     echo $htmlBody;
 }
 ?>

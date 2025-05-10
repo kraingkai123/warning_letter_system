@@ -45,5 +45,16 @@ if($proc=='add'){
     db_update('m_user',$fields,$cond);
     $status = true;
     $message = "บันทึกข้อมูลเสร็จสิ้น";
+}else if($proc=="getManager"){
+    $depId = db_getData("SELECT dep_id FROM VIEW_USER WHERE USR_ID='".$_POST['usrId']."'",'dep_id');
+    $response = User::getManager($depId);
+    $status = true;
+    $res = array(
+        "Message" => $message,
+        "Status" => $status,
+        "data" => $response
+    );
+    echo json_encode($res);
+    exit;  
 }
 ?>

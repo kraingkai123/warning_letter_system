@@ -84,7 +84,7 @@ if ($PROC == 'add') {
         $fields['letter_id'] = $letterId;
         db_insert('frm_letter_rule', $fields);
     }
-    //เส้นทางเอสการ
+    //เส้นทางเอกสาร
     unset($fieldsProcess);
     $fieldsProcess['letter_id'] = $letterId;
     $fieldsProcess['sender_id'] = $_SESSION['usr_id'];
@@ -119,7 +119,6 @@ if ($PROC == 'add') {
     $perProfile = User::getDataUser($_POST['manager_id']);
     $fields['manager_name'] = $perProfile['fullname'];
     $fields['manager_pos'] = $perProfile['pos_name'];
-    $letterId = Letter::SaveData($fields);
     Letter::UpdateData($fields, $letterId);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $cond['letter_id'] = $letterId;

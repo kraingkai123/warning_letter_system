@@ -6,7 +6,7 @@ class Report
     {
         global $conn;
     }
-    public static function ListRule(array $req) // flag = Y ดึงมาใช้งาน
+    public static function ListReport(array $req) // flag = Y ดึงมาใช้งาน
     {
         $filter = "dep_id='" . $req['dep_id'] . "'";
         if ($req['startDate'] != "" && $req['endDate'] != "") {
@@ -16,7 +16,7 @@ class Report
         } else if ($req['endDate']  != "") {
             $filter .= " AND letter_date='" . $req['endDate'] . "'";
         }
-        $reponse = db_query("SELECT CONCAT(prefix_name,usr_fname,' ',usr_lname) as fullname,frm_target.usr_id,m_letter.letter_id,usr_dep_name,usr_pos_name,m_letter.* FROM m_letter
+        $reponse = db_query("SELECT CONCAT(prefix_name,usr_fname,' ',usr_lname) as fullname,frm_target.usr_id as target_id,m_letter.letter_id,usr_dep_name,usr_pos_name,m_letter.* FROM m_letter
         INNER JOIN frm_target ON frm_target.letter_id =  m_letter.letter_id WHERE $filter ORDER BY letter_date desc");
         return $reponse;
     }

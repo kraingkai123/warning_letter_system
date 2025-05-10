@@ -6,9 +6,12 @@ class Position
     {
         global $conn;
     }
-    public static function ListPostion()
+    public static function ListPostion($status)
     {
-        $sql = "SELECT * FROM usr_position WHERE 1=1  ";
+         if ($status == 'Y') {
+            $filter = " AND pos_status = '1'";
+        }
+        $sql = "SELECT * FROM usr_position WHERE 1=1 $filter ";
         $response = db_query($sql);
         return $response;
     }

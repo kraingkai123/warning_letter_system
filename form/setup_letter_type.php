@@ -323,7 +323,7 @@ include("../include/header.php");
                     <label for="inputPassword" class="col-sm-2 col-form-label">รายละเอียด (1)<span class="text-danger">*</span></label>
                     <div class="col-sm-10">
                         <textarea class="form-control" name="detail_1" id="detail_1"></textarea>
-                        <small class="text-danger">รูปแทนที่วันที่คือ XXXX</small>
+                        <small class="text-danger">รูปแทนที่วันที่คือ XXXX เวลา TTTT</small>
                     </div>
                 </div>
                 <div class="form-group row">

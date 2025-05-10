@@ -46,21 +46,25 @@ class User
         $response = db_queryFirst($sql);
         return $response;
     }
-    public static function getUserAll($depId, $loginType)
+    public static function getUserAll($depId, $loginType, $active_status = "")
     {
+        if ($active_status == 'Y') {
+            $filter = " AND m_user.usr_status = '" . $active_status . "'";
+        }
         if ($loginType == "0") {
-            $filter = " AND m_user.dep_id = '" . $depId . "'";
+            $filter .= " AND m_user.dep_id = '" . $depId . "'";
         }
         $sql = "select usr_username,usr_fname,usr_lname,usr_id,usr_type,dep_name,pos_name,is_manager,prefix_name,m_user.dep_id,dep_name,usr_status,usr_username FROM m_user
                             INNER JOIN usr_position ON usr_position.pos_id = m_user.usr_position
                             INNER JOIN usr_department ON usr_department.dep_id=m_user.dep_id 
 							INNER JOIN m_prefix ON m_prefix.prefix_id=m_user.prefix_id
-                            WHERE 1=1 $filter";
+                            WHERE 1=1  $filter ";
         $response = db_query($sql);
         return $response;
     }
-    public static function getManager($depId){
-        $response =db_query("SELECT * FROM view_user WHERE dep_id='$depId' AND is_manager='Y'");
+    public static function getManager($depId)
+    {
+        $response = db_query("SELECT * FROM view_user WHERE dep_id='$depId' AND is_manager='Y'");
         return $response;
     }
 }

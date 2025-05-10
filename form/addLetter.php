@@ -81,7 +81,7 @@ if ($_GET['LETTER_ID'] != "") {
                                         <select name="letter_target[]" id="letter_target" class="form-control selectbox" onchange="getManager(this.value)">
                                             <option value="">โปรดเลือก</option>
                                             <?php
-                                            $responseProfile = User::getUserAll($_SESSION['dep_id'], 0);
+                                            $responseProfile = User::getUserAll($_SESSION['dep_id'], 0,'Y');
                                             foreach ($responseProfile as $key => $value) {
                                                 $select = "";
                                                 foreach ($dataFrmTarget as $key2 => $value2) {
@@ -187,7 +187,7 @@ if ($_GET['LETTER_ID'] != "") {
                                     <div class="col-sm-7">
                                         <select name="witness[]" id="witness" class="form-control selectbox" multiple>
                                             <?php
-                                            $responseProfile = User::getUserAll($_SESSION['dep_id'], 1);
+                                            $responseProfile = User::getUserAll($_SESSION['dep_id'], 1,'Y');
                                             foreach ($responseProfile as $key => $value) {
                                                 $select = "";
                                                 foreach ($dataFrmWiness as $key2 => $value2) {
@@ -207,7 +207,7 @@ if ($_GET['LETTER_ID'] != "") {
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">ลงชื่อผู้จัดการ </label>
                                     <div class="col-sm-2">
                                         <a href="#!" class="btn btn-primary"
-                                            onclick="window.open('letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> ลงชื่อ</a>
+                                            onclick="window.open('letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> เซ็นชื่อ</a>
                                     </div>
                                     <div class="col-sm-6">
                                         <img id="view_pic" style="width: 500px;" />
@@ -348,7 +348,7 @@ if ($_GET['LETTER_ID'] != "") {
         }
         if ($("#img_create").val() == "") {
             Swal.fire({
-                title: "กรุณาเซ็นลายเซ็นผู้สร้าง",
+                title: "กรุณาเซ็นลายเซ็นผู้จัดการ",
                 icon: "error"
             });
             invalidate = false;

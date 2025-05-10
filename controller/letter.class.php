@@ -55,7 +55,8 @@ class Letter
     {
         $reponse = db_query("SELECT * FROM m_letter 
         INNER JOIN letter_process ON letter_process.letter_id = m_letter.letter_id
-        WHERE letter_status not in(5,0) AND (receive_status is null OR receive_status='Y') order by CASE
+        WHERE letter_status not in(5,0) AND (receive_status is null OR receive_status='Y') 
+        order by CASE
         WHEN letter_status=1 THEN 0
         ELSE 1
     END asc");

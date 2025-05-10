@@ -6,9 +6,12 @@ class Department
     {
         global $conn;
     }
-    public static function ListDepartment()
+    public static function ListDepartment($status="")
     {
-        $sql = "SELECT * FROM usr_department WHERE 1=1 AND dep_status=1";
+          if ($status == 'Y') {
+            $filter = " AND dep_status = '1'";
+        }
+        $sql = "SELECT * FROM usr_department WHERE 1=1 $filter";
         $response = db_query($sql);
         return $response;
     }

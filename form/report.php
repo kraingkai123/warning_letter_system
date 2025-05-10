@@ -39,7 +39,7 @@ include("../include/header.php");
                             }
 
                             $req['dep_id'] = $_SESSION['dep_id'];
-                            $respone = Report::ListRule($req);
+                            $respone = Report::ListReport($req);
                             ?>
                             <div class="text-right">
                                 <button type="button" class="btn btn-success" onclick="exportData('excel')">ส่งออก Excal</button>
@@ -93,7 +93,7 @@ include("../include/header.php");
                                                     <td><?php echo $value['letter_number']; ?></td>
                                                     <td><?php echo db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id ='" . $value['letter_type'] . "'", "letter_type_name"); ?></td>
                                                     <td><?php echo db2Date($value['letter_date']) . " " . $value['letter_time']; ?></td>
-                                                    <td><?php echo db_getData("SELECT usr_username FROM view_user WHERE usr_id =" . $value['usr_id'] . "", 'usr_username'); ?></td>
+                                                    <td><?php echo db_getData("SELECT usr_username FROM view_user WHERE usr_id =" . $value['target_id'] . "", 'usr_username'); ?></td>
                                                     <td><?php echo $value['fullname']; ?></td>
                                                     <td><?php echo $value['usr_pos_name']; ?></td>
                                                      <td><a class="btn btn-primary btn-mini" target="_blank" href="../view/LetterDetail.php?LETTER_ID=<?php echo $value['letter_id']; ?>&proc=view" role="button"><i class="nc-icon nc-email-85"></i> รายละเอียด</a></td>

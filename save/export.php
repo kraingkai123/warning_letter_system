@@ -23,7 +23,7 @@ if (!empty($_POST['endDate'])) {
 }
 
 $req['dep_id'] = $_SESSION['dep_id'];
-$respone = Report::ListRule($req);
+$respone = Report::ListReport($req);
 if ($_POST['typeExport'] == 'pdf') {
     $mpdf = new \Mpdf\Mpdf(['format' => 'A4-L', 'margin_left' => $margin_left, 'margin_right' => $margin_right, 'margin_top' => $margin_top, 'margin_bottom' => $margin_bottom, 'margin_header' => $margin_header, 'margin_footer' => $margin_footer]);
 } else {
@@ -51,8 +51,11 @@ ob_start();
 
  <table id="example" class="table table-striped table-bordered" style="width:100%">
                                     <thead>
+                                        <tr>
+                                            <td colspan="7" align="center"><strong><?php echo $header;?></strong></td>
+                                        </tr>
                                         <tr class="text-center">
-                                            <th class="text-center" width="10%">รายละเอียด</th>
+                                           
                                             <th class="text-center" width="10%">สถานะ</th>
                                             <th class="text-center" width="10%">เลขที่เอกสาร</th>
                                              <th class="text-center" width="10%">โทษทางวินัย</th>
@@ -90,15 +93,16 @@ ob_start();
                                                 }
 
                                         ?>
-                                                <tr>
-                                                    <td></td>
+                                                 <tr>
+                                                   
                                                     <td align="center"><span style="color:<?php echo $color; ?>"><?php echo $textStatus; ?></span></td>
                                                     <td><?php echo $value['letter_number']; ?></td>
-                                                           <td><?php echo db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id ='".$value['letter_type']."'","letter_type_name"); ?></td>
-                                                    <td><?php echo db2Date($value['letter_date'])." ".$value['letter_time']; ?></td>
-                                                    <td><?php echo db_getData("SELECT usr_username FROM view_user WHERE usr_id =" . $value['usr_id'] . "", 'usr_username'); ?></td>
+                                                    <td><?php echo db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id ='" . $value['letter_type'] . "'", "letter_type_name"); ?></td>
+                                                    <td><?php echo db2Date($value['letter_date']) . " " . $value['letter_time']; ?></td>
+                                                    <td><?php echo db_getData("SELECT usr_username FROM view_user WHERE usr_id =" . $value['target_id'] . "", 'usr_username'); ?></td>
                                                     <td><?php echo $value['fullname']; ?></td>
                                                     <td><?php echo $value['usr_pos_name']; ?></td>
+                                                   
                                                 </tr>
                                             <?php
                                                 $index++;

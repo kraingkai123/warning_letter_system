@@ -82,7 +82,7 @@ $rUser = User::getDataUser($_POST['usr_id']);
             <select class=" form-control" style="width: 100%;" id="dep_id" name="dep_id" aria-required="true" alert="กรุณาเลือกหน่วยงาน/ฝ่าย">
                 <option value="">โปรดเลือก</option>
                 <?php
-                $resposnePrefix = Department::ListDepartment();
+                $resposnePrefix = Department::ListDepartment('Y');
                 foreach ($resposnePrefix as $key => $value) {
                 ?>
                     <option value="<?php echo $value['dep_id']; ?>" <?php echo $value['dep_id'] == $rUser['dep_id'] ? "selected" : ""; ?>><?php echo $value['dep_name']; ?></option>
@@ -97,7 +97,7 @@ $rUser = User::getDataUser($_POST['usr_id']);
             <select class=" form-control" style="width: 100%;" id="usr_position" name="usr_position" aria-required="true" alert="กรุณาเลือกตำแหน่ง">
                 <option value="">โปรดเลือก</option>
                 <?php
-                $resposnePrefix = Position::ListPostion();
+                $resposnePrefix = Position::ListPostion('Y');
                 foreach ($resposnePrefix as $key => $value) {
                 ?>
                     <option value="<?php echo $value['pos_id']; ?>" <?php echo $value['pos_id'] == $rUser['usr_position'] ? "selected" : ""; ?>><?php echo $value['pos_name']; ?></option>

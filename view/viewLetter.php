@@ -431,7 +431,7 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
                 <td><small>* ฝ่ายบุคคล</small></td>
             </tr>
             <tr>
-                <td colspan="3" style="text-align:left;"><u><strong>หมายเหตุ</strong></u> ในกรณ๊พนักงานไม่ได้ลงนามรับทราบหนังสือฯฉบับนี้ ผู้บังคับบัญชาจึงได้อ่านให้พนักงานฟังต่อหน้าพยานและให้พยานทั้งสองลงลายมือชื่อ</td>
+                <td colspan="3" style="text-align:left;"><u><strong>หมายเหตุ</strong></u> ในกรณีพนักงานไม่ได้ลงนามรับทราบหนังสือฯฉบับนี้ ผู้บังคับบัญชาจึงได้อ่านให้พนักงานฟังต่อหน้าพยานและให้พยานทั้งสองลงลายมือชื่อ</td>
             </tr>
         </table>
         <table width="100%" border="0">

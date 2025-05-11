@@ -221,6 +221,9 @@ include("../include/header.php");
                 dataType: "html",
                 success: function(response) {
                     $('#modal_content').html(response)
+                    $('.selectbox').select2({
+                        dropdownParent: $('#exampleModal')
+                    });
                 }
             });
         }
@@ -238,6 +241,9 @@ include("../include/header.php");
                     $('#modal_content').html(response)
                     $("#proc").val(proc)
                     $("#usr_id").val(usr_id)
+                    $('.selectbox').select2({
+                        dropdownParent: $('#exampleModal')
+                    });
                 }
             });
 

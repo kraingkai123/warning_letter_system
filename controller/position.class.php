@@ -6,11 +6,13 @@ class Position
     {
         global $conn;
     }
-    public static function ListPostion($status="")
+    public static function ListPostion($status = "", $depId = 0)
     {
-         if ($status == 'Y') {
+        if ($status == 'Y') {
             $filter = " AND pos_status = '1'";
+            $filter .= " AND dep_id = '" . $depId . "'";
         }
+
         $sql = "SELECT * FROM usr_position WHERE 1=1 $filter ";
         $response = db_query($sql);
         return $response;
@@ -29,7 +31,7 @@ class Position
     }
     public static function getDataPostion(int $posId)
     {
-        $sql = "SELECT * FROM usr_position WHERE 1=1  AND pos_id ='".$posId."'";
+        $sql = "SELECT * FROM usr_position WHERE 1=1  AND pos_id ='" . $posId . "'";
         $response = db_queryFirst($sql);
         return $response;
     }

@@ -31,14 +31,15 @@ if (empty($userName)) {
         $status = true;
         if ($response['usr_type'] == 0) {
             if($response['is_manager']=='Y'){
-                $filter.=" AND (manager_status is null OR manager_status ='Y')";
+                $filter.=" AND (manager_status ='Y')";
             }else{
-                $filter.=" AND manager_status is null";
+                $filter.=" AND manager_status ='N'";
             }
             $filter .= " AND menu_type='2' ";
         }else{
             $filter = " AND menu_type='1'";
         }
+       
         $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
 
         $i = 0;

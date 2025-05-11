@@ -47,16 +47,16 @@ include("../include/header.php");
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['pos_id']; ?>" onclick="EditData('edit','<?php echo $value['pos_id']; ?>')" data-name="<?php echo $value['pos_name']; ?>" data-is_manager="<?php echo $value['is_manager']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['pos_id']; ?>" onclick="EditData('edit','<?php echo $value['pos_id']; ?>')" data-dep_id="<?php echo $value['dep_id']; ?>" data-name="<?php echo $value['pos_name']; ?>" data-is_manager="<?php echo $value['is_manager']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
                                                 <?php
-                                                    $count = db_getData("SELECT COUNT(1) as C FROM m_user WHERE usr_position='".$value['pos_id']."'","C");
-                                                    if($count==0){
-                                                        ?>
-                                                         <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['pos_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
-                                                        <?php
-                                                    }
+                                                $count = db_getData("SELECT COUNT(1) as C FROM m_user WHERE usr_position='" . $value['pos_id'] . "'", "C");
+                                                if ($count == 0) {
                                                 ?>
-                                               
+                                                    <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['pos_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                <?php
+                                                }
+                                                ?>
+
                                             </td>
                                         </tr>
                                     <?php
@@ -189,9 +189,9 @@ include("../include/header.php");
                     var is_manager = $('#btnEdit' + pos_id).data('is_manager');
 
                     if (is_manager != 'Y') {
-                       is_manager='Y';
-                    }else{
-                        is_manager='N';
+                        is_manager = 'Y';
+                    } else {
+                        is_manager = 'N';
                     }
                     Swal.fire({
                         title: "คุณต้องการบันทึกข้อมูลใช่หรือไม่",
@@ -211,7 +211,8 @@ include("../include/header.php");
                                     pos_name: $('#pos_name').val(),
                                     proc: proc,
                                     pos_id: pos_id,
-                                    is_manager: is_manager
+                                    is_manager: is_manager,
+                                    dep_id:$("#dep_id").val()
                                 }, // serializes the form's elements.
                                 dataType: "json",
                                 success: function(response) {
@@ -237,6 +238,9 @@ include("../include/header.php");
         }
 
         function EditData(proc, pos_id) {
+            $('.selectbox').select2({
+                dropdownParent: $('#exampleModal')
+            });
             $("#proc").val(proc)
             $("#pos_id").val(pos_id)
             var pos_name = $("#btnEdit" + pos_id).data('name');
@@ -246,6 +250,9 @@ include("../include/header.php");
             if (is_manager == 'Y') {
                 $('#is_manager').prop('checked', true)
             }
+            var dep_id = $('#btnEdit' + pos_id).data('dep_id');
+            $("#dep_id").val(dep_id).trigger("change")
+
         }
 
         function DeleteData(proc, pos_id) {
@@ -319,6 +326,22 @@ include("../include/header.php");
                         </div>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">หน่วยงาน/ฝ่าย<span class="text-danger">*</span></label>
+                    <div class="col-sm-10">
+                        <select class=" form-control selectbox" style="width: 100%;" id="dep_id" name="dep_id" aria-required="true" alert="กรุณาเลือกหน่วยงาน/ฝ่าย" onchange="getPostion(this.value)">
+                            <option value="">โปรดเลือก</option>
+                            <?php
+                            $resposnePrefix = Department::ListDepartment('Y');
+                            foreach ($resposnePrefix as $key => $value) {
+                            ?>
+                                <option value="<?php echo $value['dep_id']; ?>" <?php echo $value['dep_id'] == $rUser['dep_id'] ? "selected" : ""; ?>><?php echo $value['dep_name']; ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
 
             </div>
             <div class="modal-footer">
@@ -329,3 +352,8 @@ include("../include/header.php");
         </div>
     </div>
 </div>
+<script>
+    $('.selectbox').select2({
+        dropdownParent: $('#exampleModal')
+    });
+</script>

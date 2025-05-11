@@ -9,7 +9,7 @@ $rUser = User::getDataUser($_POST['usr_id']);
         <div class="col-md-2 pr-1">
 
             <label>คำนำหน้า</label><span class="text-danger">*</span><br>
-            <select class=" select2 form-control" style="width: 100%;" id="prefix_id" name="prefix_id" aria-required="true" alert="กรุณาเลือกคำนำหน้า">
+            <select class=" selectbox form-control" style="width: 100%;" id="prefix_id" name="prefix_id" aria-required="true" alert="กรุณาเลือกคำนำหน้า">
                 <option value="">โปรดเลือก</option>
                 <?php
                 $resposnePrefix = User::getPrefix();
@@ -38,7 +38,7 @@ $rUser = User::getDataUser($_POST['usr_id']);
     <div class="row">
         <div class="col-md-2 pr-1">
             <label>เพศ</label><span class="text-danger">*</span><br>
-            <select class=" form-control" id="usr_gender" name="usr_gender" aria-required="true" alert="กรุณาเลือกเพศ">
+            <select class=" form-control selectbox" style="width: 100%;" id="usr_gender" name="usr_gender" aria-required="true" alert="กรุณาเลือกเพศ">
                 <option value="1" <?php echo $rUser['usr_gender'] == 1 ? 'selected' : ""; ?>>ชาย</option>
                 <option value="2" <?php echo $rUser['usr_gender'] == 2 ? 'selected' : ""; ?>>หญิง</option>
             </select>
@@ -69,17 +69,18 @@ $rUser = User::getDataUser($_POST['usr_id']);
                 <label for="inputPassword" class="col-sm-4 col-form-label">ผู้ดูแลระบบ</label>
                 <div class="col-sm-10">
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="usr_type" name="usr_type" <?php echo $rUser['usr_type'] == 1? 'checked' : '' ;?>>
+                        <input type="checkbox" class="custom-control-input" id="usr_type" name="usr_type" <?php echo $rUser['usr_type'] == 1 ? 'checked' : ''; ?>>
                         <label class="custom-control-label" for="usr_type"></label>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-2 pr-1">
             <label>หน่วยงาน/ฝ่าย</label><span class="text-danger">*</span><br>
-            <select class=" form-control" style="width: 100%;" id="dep_id" name="dep_id" aria-required="true" alert="กรุณาเลือกหน่วยงาน/ฝ่าย">
+            <select class=" form-control selectbox" style="width: 100%;" id="dep_id" name="dep_id" aria-required="true" alert="กรุณาเลือกหน่วยงาน/ฝ่าย" onchange="getPostion(this.value)">
                 <option value="">โปรดเลือก</option>
                 <?php
                 $resposnePrefix = Department::ListDepartment('Y');
@@ -94,10 +95,10 @@ $rUser = User::getDataUser($_POST['usr_id']);
         </div>
         <div class="col-md-5 px-1">
             <label>ตำแหน่ง</label><span class="text-danger">*</span><br>
-            <select class=" form-control" style="width: 100%;" id="usr_position" name="usr_position" aria-required="true" alert="กรุณาเลือกตำแหน่ง">
+            <select class=" form-control selectbox" style="width: 100%;" id="usr_position" name="usr_position" aria-required="true" alert="กรุณาเลือกตำแหน่ง">
                 <option value="">โปรดเลือก</option>
                 <?php
-                $resposnePrefix = Position::ListPostion('Y');
+                $resposnePrefix = Position::ListPostion('Y', $rUser['dep_id']);
                 foreach ($resposnePrefix as $key => $value) {
                 ?>
                     <option value="<?php echo $value['pos_id']; ?>" <?php echo $value['pos_id'] == $rUser['usr_position'] ? "selected" : ""; ?>><?php echo $value['pos_name']; ?></option>
@@ -109,33 +110,22 @@ $rUser = User::getDataUser($_POST['usr_id']);
     </div>
 </form>
 <script>
-    $(document).ready(function() {
-        /* $('#prefix_id').select2({
-            placeholder: 'คำขึ้นต้น',
-            maximumSelectionLength: 1,
-            language: {
-                maximumSelected: function() {
-                    return 'คุณสามารถเลือกได้เพียง ' + 1 + ' รายการเท่านั้น';
-                }
-            },
-        })
-        $('#dep_id').select2({
-            placeholder: 'คำขึ้นต้น',
-            maximumSelectionLength: 1,
-            language: {
-                maximumSelected: function() {
-                    return 'คุณสามารถเลือกได้เพียง ' + 1 + ' รายการเท่านั้น';
-                }
-            },
-        })
-        $('#usr_position').select2({
-            placeholder: 'คำขึ้นต้น',
-            maximumSelectionLength: 1,
-            language: {
-                maximumSelected: function() {
-                    return 'คุณสามารถเลือกได้เพียง ' + 1 + ' รายการเท่านั้น';
-                }
-            },
-        }) */
-    });
+    function getPostion(depId) {
+        $("#usr_position").empty()
+        $.ajax({
+            type: "POST",
+            url: "../save/setup_position_proc.php",
+            data: {
+                proc: 'getPositon',
+                depId: depId,
+            }, // serializes the form's elements.
+            dataType: "json",
+            success: function(response) {
+                
+                $.each(response.data, function(index, item) {
+                    $("#usr_position").append("<option value='" + item.pos_id + "'>" + item.pos_name + "</option>")
+                });
+            }
+        });
+    }
 </script>

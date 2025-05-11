@@ -13,20 +13,21 @@ if ($proc == "updateStatus") {
     Position::EditData('usr_position', $fields, $cond);
     $status = true;
     $message = "บันทึกข้อมูลเสร็จสิ้น";
-} else if($proc=="updateStatusManager"){
+} else if ($proc == "updateStatusManager") {
     $pos_id = $_POST['pos_id'];
     $status = $_POST['status'];
     unset($fields);
-    $fields['is_manager'] = $status == 'Y' ? 'N': 'Y';
+    $fields['is_manager'] = $status == 'Y' ? 'N' : 'Y';
     unset($cond);
     $cond['pos_id'] = $pos_id;
     Position::EditData('usr_position', $fields, $cond);
     $status = true;
     $message = "บันทึกข้อมูลเสร็จสิ้น";
-}else if ($proc == 'add') {
+} else if ($proc == 'add') {
     unset($fields);
     $fields['pos_name'] = $_POST['pos_name'];
     $fields['pos_status'] = 1;
+    $fields['dep_id'] = $_POST['dep_id'];
     Position::SaveData('usr_position', $fields);
     $status = true;
     $message = "บันทึกข้อมูลเสร็จสิ้น";
@@ -34,6 +35,7 @@ if ($proc == "updateStatus") {
     unset($fields);
     $fields['pos_name'] = $_POST['pos_name'];
     $fields['is_manager'] = $_POST['is_manager'];
+     $fields['dep_id'] = $_POST['dep_id'];
     unset($cond);
     $cond['pos_id'] = $_POST['pos_id'];
     Position::EditData('usr_position', $fields, $cond);
@@ -42,13 +44,18 @@ if ($proc == "updateStatus") {
 } else if ($proc == 'delete') {
     unset($cond);
     $cond['pos_id'] = $_POST['pos_id'];
-    Position::DeleteData('usr_position',$cond);
+    Position::DeleteData('usr_position', $cond);
+    $status = true;
+    $message = "บันทึกข้อมูลเสร็จสิ้น";
+} else if ($proc == 'getPositon') {
+    $response = Position::ListPostion('Y', $_POST['depId']);
     $status = true;
     $message = "บันทึกข้อมูลเสร็จสิ้น";
 }
 $res = array(
     "Message" => $message,
-    "Status" => $status
+    "Status" => $status,
+    "data" => $response
 );
 echo json_encode($res);
 exit;

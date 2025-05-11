@@ -474,7 +474,7 @@ if ($_GET['LETTER_ID'] != "") {
             }, // serializes the form's elements.
             dataType: "json",
             success: function(response) {
-                manager_id
+                
                 $.each(response.data, function(index, item) {
                     $("#manager_id").append("<option value='"+item.usr_id+"'>"+item.fullname+"</option>")
     });

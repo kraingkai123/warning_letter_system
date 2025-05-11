@@ -1,0 +1,11 @@
+delete from m_menu;
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (1, 'ข้อมูลผู้ใช้งาน', 1, 'nc-single-02', 1, 'usr_main.php', NULL, 3);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (2, 'ตั้งค่าประเภทคำร้อง', 1, 'nc-align-left-2', 1, 'setup_letter_type.php', NULL, 6);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (3, 'คำร้องขอ', 2, 'nc-badge', 2, 'frmSend.php', 'Y', 1);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (4, 'ตั้งค่าหน่วยงาน/ฝ่าย', 1, 'nc-bank', 1, 'setup_department.php', NULL, 4);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (5, 'ตั้งค่าตำแหน่ง', 1, 'nc-album-2', 1, 'setup_postion.php', NULL, 5);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (6, 'อนุมัติเอกสาร', 1, 'nc-check-2', 1, 'approved_list.php', NULL, 2);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (7, 'ตั้งค่าข้อบังคับ', 1, 'nc-bullet-list-67', 1, 'RulePage.php', NULL, 7);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (8, 'รายงาน', 1, 'nc-bullet-list-67', 1, 'report.php', NULL, 8);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (9, 'คำร้องขอ', 2, 'nc-badge', 2, 'frmSend.php', NULL, 1);
+INSERT INTO `warning_letter_system`.`m_menu`(`menu_id`, `menu_name`, `menu_type`, `menu_image`, `menu_group`, `menu_url`, `manager_status`, `order_menu`) VALUES (10, 'คำร้องขอ', 1, 'nc-badge', 2, 'frmSend.php', NULL, 1);

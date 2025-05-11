@@ -6,7 +6,7 @@ class Position
     {
         global $conn;
     }
-    public static function ListPostion($status)
+    public static function ListPostion($status="")
     {
          if ($status == 'Y') {
             $filter = " AND pos_status = '1'";

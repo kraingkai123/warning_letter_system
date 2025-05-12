@@ -22,7 +22,7 @@ if ($PROC == 'add') {
     $fields['letter_time'] = $_POST['letter_time'];
     for ($i = 1; $i < 4; $i++) {
         if (!empty($_POST['type_detail_' . $i])) {
-            $fields['type_detail_' . $i] = $_POST['type_detail_' . $i];
+            $fields['type_detail_' . $i] = str_replace(" ",'&nbsp;',$_POST['type_detail_' . $i]);
         }
     }
     $fields['letter_date_do'] = $_POST['letter_date_do'];
@@ -111,7 +111,7 @@ if ($PROC == 'add') {
     $fields['letter_time'] = $_POST['letter_time'];
     for ($i = 1; $i < 4; $i++) {
         if (!empty($_POST['type_detail_' . $i])) {
-            $fields['type_detail_' . $i] = $_POST['type_detail_' . $i];
+            $fields['type_detail_' . $i] = str_replace(" ",'&nbsp;',$_POST['type_detail_' . $i]);
         }
     }
     $fields['letter_date_do'] = $_POST['letter_date_do'];

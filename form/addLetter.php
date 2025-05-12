@@ -360,7 +360,7 @@ if ($_GET['LETTER_ID'] != "") {
             });
             var delta = quill.getContents(); // Delta format (JSON-like)
             var html = quill.root.innerHTML;
-            $('#letter_detail').val(html);
+            $('#letter_detail').val(html.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;'));
             $.ajax({
                 type: "POST",
                 url: '../save/LetterProc.php',

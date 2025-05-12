@@ -32,8 +32,11 @@ class LetterType
     }
     public static function getDataType($lt_id)
     {
-        $sql = "SELECT * FROM m_letter_type WHERE 1=1 AND lt_id = '".$lt_id."'";
+        $sql = "SELECT * FROM m_letter_type WHERE 1=1 AND lt_id = '" . $lt_id . "'";
         $response = db_queryFirst($sql);
+        for ($i = 1; $i < 4; $i++) {
+            $response['detail_' . $i] = str_replace("&nbsp;", ' ', $response['detail_' . $i]);
+        }
         return $response;
     }
 }

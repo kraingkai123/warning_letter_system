@@ -194,6 +194,10 @@ include("../include/header.php");
 
         function AddData(proc) {
             $("#proc").val(proc)
+            $(".form-control").each(function(index) {
+                $(this).val("")
+            });
+          
         }
 
         function EditData(proc, department_id) {

@@ -203,6 +203,10 @@ include("../include/header.php");
 
         function AddData(proc) {
             $("#proc").val(proc)
+              $('#rule_status').prop('checked', false)
+             $(".form-control").each(function(index) {
+                $(this).val("")
+            });
         }
 
         function EditData(proc, pos_id) {

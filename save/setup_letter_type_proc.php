@@ -18,7 +18,7 @@ if ($proc == "updateStatus") {
     $fields['letter_type_name'] = $_POST['letter_type_name'];
     $fields['letter_type_status'] = 1;
     for ($i = 1; $i < 4; $i++) {
-        $fields['detail_' . $i] = $_POST['detail_' . $i];
+        $fields['detail_' . $i] = str_replace(" ",'&nbsp;',$_POST['detail_' . $i]);
     }
     LetterType::SaveData('m_letter_type', $fields);
     $status = true;
@@ -27,7 +27,7 @@ if ($proc == "updateStatus") {
     unset($fields);
     $fields['letter_type_name'] = $_POST['letter_type_name'];
     for ($i = 1; $i < 4; $i++) {
-        $fields['detail_' . $i] = $_POST['detail_' . $i];
+        $fields['detail_' . $i] = str_replace(" ",'&nbsp;',$_POST['detail_' . $i]);
     }
     unset($cond);
     $cond['lt_id'] = $_POST['lt_id'];

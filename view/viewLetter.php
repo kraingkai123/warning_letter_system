@@ -327,7 +327,7 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
                 <td colspan="4"><?php echo $dataLetter['type_detail_2']; ?></td>
             </tr>
             <tr>
-                <td colspan="4"><?php echo $dataLetter['letter_detail']; ?></td>
+                <td colspan="4"><?php echo strip_tags($dataLetter['letter_detail']); ?></td>
             </tr>
             <tr>
                 <td colspan="4">

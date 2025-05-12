@@ -234,7 +234,13 @@ include("../include/header.php");
         }
 
         function AddData(proc) {
-            $("#proc").val(proc)
+            $("#proc").val(proc);
+              $('#is_manager').prop('checked', false)
+             $(".form-control").each(function(index) {
+                $(this).val("")
+            });
+              $("#dep_id").val("").trigger('change')
+             
         }
 
         function EditData(proc, pos_id) {

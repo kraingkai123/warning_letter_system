@@ -114,12 +114,12 @@ include("../include/header.php");
                         title: "กรุณากรอกรายละเอียด (1)",
                         icon: "error"
                     });
-                }else if ($("#detail_2").val() == "") {
+                } else if ($("#detail_2").val() == "") {
                     Swal.fire({
                         title: "กรุณากรอกรายละเอียด (2)",
                         icon: "error"
                     });
-                }else if ($("#detail_3").val() == "") {
+                } else if ($("#detail_3").val() == "") {
                     Swal.fire({
                         title: "กรุณากรอกรายละเอียด (3)",
                         icon: "error"
@@ -173,12 +173,12 @@ include("../include/header.php");
                         title: "กรุณากรอกรายละเอียด (1)",
                         icon: "error"
                     });
-                }else if ($("#detail_2").val() == "") {
+                } else if ($("#detail_2").val() == "") {
                     Swal.fire({
                         title: "กรุณากรอกรายละเอียด (2)",
                         icon: "error"
                     });
-                }else if ($("#detail_3").val() == "") {
+                } else if ($("#detail_3").val() == "") {
                     Swal.fire({
                         title: "กรุณากรอกรายละเอียด (3)",
                         icon: "error"
@@ -227,6 +227,9 @@ include("../include/header.php");
 
         function AddData(proc) {
             $("#proc").val(proc)
+            $(".form-control").each(function(index) {
+               $(this).val("")
+            });
         }
 
         function EditData(proc, lt_id) {
@@ -247,10 +250,10 @@ include("../include/header.php");
                             icon: "error"
                         });
                     } else {
-                       $('#letter_type_name').val(response.data.letter_type_name)
-                       $('#detail_1').val(response.data.detail_1)
-                       $('#detail_2').val(response.data.detail_2)
-                       $('#detail_3').val(response.data.detail_3)
+                        $('#letter_type_name').val(response.data.letter_type_name)
+                        $('#detail_1').val(response.data.detail_1)
+                        $('#detail_2').val(response.data.detail_2)
+                        $('#detail_3').val(response.data.detail_3)
                     }
                 }
             });

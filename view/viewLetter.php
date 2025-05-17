@@ -327,21 +327,13 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
             <tr>
                 <td colspan="4"><?php echo $dataLetter['type_detail_1']; ?></td>
             </tr>
-<<<<<<< Updated upstream
-            <tr>
-                <td colspan="4"><?php echo strip_tags($dataLetter['letter_detail']); ?></td>
-=======
-              <tr>
+             <tr>
                 <td colspan="4"><?php echo strip_tags($dataLetter['letter_detail']); ?></td>
             </tr>
             <tr>
                 <td colspan="4"><?php echo $dataLetter['type_detail_2']; ?></td>
->>>>>>> Stashed changes
             </tr>
-            <tr>
-                <td colspan="4"><?php echo $dataLetter['type_detail_2']; ?></td>
-            </tr>
-            
+           
             <tr>
                 <td colspan="4">
                     <?php $dataRule = Rule::getruleLetter($_GET['LETTER_ID']);

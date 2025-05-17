@@ -42,7 +42,7 @@ include("../include/header.php");
                             $respone = Report::ListReport($req);
                             ?>
                             <div class="text-right">
-                                <button type="button" class="btn btn-success" onclick="exportData('excel')">ส่งออก Excal</button>
+                                <button type="button" class="btn btn-success" onclick="exportData('excel')">ส่งออก Excel</button>
                                 <button type="button" class="btn btn-danger" onclick="exportData('pdf')">ส่งออก PDF</button>
                             </div>
                             <div id='divExport'>
@@ -54,6 +54,7 @@ include("../include/header.php");
                                             <th class="text-center" width="10%">เลขที่เอกสาร</th>
                                             <th class="text-center" width="10%">โทษทางวินัย</th>
                                             <th class="text-center" width="10%">วันที่</th>
+                                            <th class="text-center" width="10%">สาขา</th>
                                             <th class="text-center" width="10%">รหัสพนักงาน</th>
                                             <th class="text-center" width="20%">ชื่อ-นามสกุล</th>
                                             <th class="text-center" width="20%">ตำแหน่ง</th>
@@ -93,6 +94,7 @@ include("../include/header.php");
                                                     <td><?php echo $value['letter_number']; ?></td>
                                                     <td><?php echo db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id ='" . $value['letter_type'] . "'", "letter_type_name"); ?></td>
                                                     <td><?php echo db2Date($value['letter_date']) . " " . $value['letter_time']; ?></td>
+                                                    <td><?php echo $value['org_name'];?></td>
                                                     <td><?php echo db_getData("SELECT usr_username FROM view_user WHERE usr_id =" . $value['target_id'] . "", 'usr_username'); ?></td>
                                                     <td><?php echo $value['fullname']; ?></td>
                                                     <td><?php echo $value['usr_pos_name']; ?></td>

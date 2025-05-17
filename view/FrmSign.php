@@ -15,8 +15,17 @@
         </div>
     </div>
 </div>
+
 <br>
+<div class="form-group row">
+    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">เอกสารแนบ</label>
+    <div class="col-sm-6">
+        <div id="file-dropzone" class="dropzone"></div>
+    </div>
+</div>
+
 <div class="form-group row" id="divSign">
+    <br>
     <div class="col-sm-2">
         <a href="#!" class="btn btn-primary"
             onclick="window.open('../form/letter_sign.php?ID=xxxx','sign','width=1000,height=600');"> <i class="icofont icofont-edit-alt"></i> ลงชื่อ</a>
@@ -31,12 +40,5 @@
     <div class="col-md-1">หมายเหตุ</div>
     <div class="col-md-6">
         <textarea class="form-control" id="hr_reson" name="hr_reson" rows="3"></textarea>
-    </div>
-</div>
-<br>
-<div class="form-group row">
-    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">เอกสารแนบ</label>
-    <div class="col-sm-6">
-        <div id="file-dropzone" class="dropzone"></div>
     </div>
 </div>

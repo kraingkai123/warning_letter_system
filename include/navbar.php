@@ -15,7 +15,7 @@
                                                             } else                                                            if ($_GET['menu_id'] == "") {
                                                                 echo "หน้าแรก";
                                                             } else {
-                                                                echo $_SESSION['menu'][$_GET['menu_id']]['menu_name'];
+                                                                echo $_SESSION['menu'][$_GET['menu_id']]['menu_name'] == "" ? "คำร้องขอ" : $_SESSION['menu'][$_GET['menu_id']]['menu_name'] ;
                                                             }
                                                             ?></a>
             </div>

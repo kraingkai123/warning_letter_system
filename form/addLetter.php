@@ -62,7 +62,19 @@ if ($_GET['LETTER_ID'] != "") {
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-8">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">สาขา <span class="text-danger">*</span></label>
+                                    <div class="col-sm-7">
+                                        <select name="org_id" id="org_id" class="form-control selectbox" placeholder="โปรดเลือก">
+                                            <option value="">โปรดเลือก</option>
+                                            <?php
+                                            $responseDepartment = Department::ListOrg('Y');
+                                            foreach ($responseDepartment as $key => $value) {
+                                            ?>
+                                                <option value="<?php echo $value['dep_id']; ?>" <?php echo $dataLetter['org_id'] == $value["dep_id"] ? "selected" : ""; ?>>
+                                                    <?php echo $value['dep_name']; ?></option>
+                                            <?php
+                                            } ?>
+                                        </select>
                                     </div>
                                     <label for="letter_date" class="col-sm-1 col-form-label text-dark">เวลากระทำผิด<span class="text-danger">*</span></label>
                                     <div class="col-sm-2">
@@ -171,7 +183,7 @@ if ($_GET['LETTER_ID'] != "") {
                                                 <tr id="tr_<?php echo $value['file_id']; ?>">
                                                     <td align="center"><?php echo $indexFile; ?></td>
                                                     <td><a href="<?php echo $value['full_url']; ?>" target="_blank" download="<?php echo $value['file_name']; ?>"><?php echo $value['file_name']; ?></a></td>
-                                                    <td align="center"><button type="button" class="btn btn-danger btn-mini" onclick="DeleteFile('<?php echo $value['file_id']; ?>')"><i class="nc-icon nc-simple-remove"></i>ลบ</button></td>
+                                                    <td align="center"><button type="button" class="btn btn-danger btn-mini" onclick="DeleteFile('<?php echo $value['file_id']; ?>')"><i class="nc-icon nc-simple-remove"></i> ลบ</button></td>
                                                 </tr>
                                             <?php
                                                 $indexFile++;
@@ -280,6 +292,13 @@ if ($_GET['LETTER_ID'] != "") {
     function saveData() {
 
         var invalidate = true;
+         if ($('#org_id').val() == "") {
+            Swal.fire({
+                title: "กรุณาเลือกสาขา",
+                icon: "error"
+            });
+            invalidate = false;
+        }
         if ($('#letter_type').val() == "") {
             Swal.fire({
                 title: "กรุณาเลือกประเภทคำร้อง",

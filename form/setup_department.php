@@ -40,17 +40,17 @@ include("../include/header.php");
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['dep_id']; ?>" onclick="EditData('edit','<?php echo $value['dep_id']; ?>')" data-name="<?php echo $value['dep_name']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" id="btnEdit<?php echo $value['dep_id']; ?>" onclick="EditData('edit','<?php echo $value['dep_id']; ?>')" data-name="<?php echo $value['dep_name']; ?>" data-org_status="<?php echo $value['org_status']; ?>"><i class="nc-icon nc-ruler-pencil"></i> แก้ไข</button>
                                                 <?php
-                                                    $count = db_getData("SELECT COUNT(1) as C FROM m_user WHERE dep_id='".$value['dep_id']."'","C");
-                                                    if($count==0){
-                                                        ?>
-                                                         <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['dep_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
-                                                        <?php
-                                                    }
+                                                $count = db_getData("SELECT COUNT(1) as C FROM m_user WHERE dep_id='" . $value['dep_id'] . "'", "C");
+                                                if ($count == 0) {
                                                 ?>
-                                                
-                                               
+                                                    <button type="button" class="btn btn-danger" onclick="DeleteData('delete','<?php echo $value['dep_id']; ?>')"> <i class="nc-icon nc-simple-remove"></i> ลบ</button>
+                                                <?php
+                                                }
+                                                ?>
+
+
                                             </td>
                                         </tr>
                                     <?php
@@ -106,6 +106,10 @@ include("../include/header.php");
         function SaveData() {
             var proc = $("#proc").val();
             var department_id = $("#department_id").val()
+            var check='N';
+            if($("#org_status").prop('checked')==true){
+                check='Y'
+            }
             if (proc == 'add') {
                 if ($("#department_name").val() == "") {
                     Swal.fire({
@@ -129,7 +133,8 @@ include("../include/header.php");
                                 url: "../save/setup_department_proc.php",
                                 data: {
                                     department_name: $('#department_name').val(),
-                                    proc: proc
+                                    proc: proc,
+                                    org_status: check
                                 }, // serializes the form's elements.
                                 dataType: "json",
                                 success: function(response) {
@@ -171,6 +176,7 @@ include("../include/header.php");
                                 data: {
                                     department_name: $('#department_name').val(),
                                     proc: proc,
+                                    org_status: check,
                                     department_id: department_id
                                 }, // serializes the form's elements.
                                 dataType: "json",
@@ -197,14 +203,20 @@ include("../include/header.php");
             $(".form-control").each(function(index) {
                 $(this).val("")
             });
-          
+
         }
 
         function EditData(proc, department_id) {
             $("#proc").val(proc)
             $("#department_id").val(department_id)
             var department_name = $("#btnEdit" + department_id).data('name');
+            var org_status = $("#btnEdit" + department_id).data('org_status');
             $('#department_name').val(department_name);
+             if (org_status == 'Y') {
+                $('#org_status').prop('checked', true)
+            }else{
+                 $('#org_status').prop('checked', false)
+            }
         }
 
         function DeleteData(proc, department_id) {
@@ -267,6 +279,15 @@ include("../include/header.php");
                     <label for="inputPassword" class="col-sm-2 col-form-label">หน่วยงาน/ฝ่าย<span class="text-danger">*</span></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="department_name" name="department_name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">สาขา</label>
+                    <div class="col-sm-10">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="org_status" value="Y">
+                            <label class="custom-control-label" for="org_status"></label>
+                        </div>
                     </div>
                 </div>
             </div>

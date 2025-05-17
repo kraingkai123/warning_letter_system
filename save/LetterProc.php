@@ -22,7 +22,7 @@ if ($PROC == 'add') {
     $fields['letter_time'] = $_POST['letter_time'];
     for ($i = 1; $i < 4; $i++) {
         if (!empty($_POST['type_detail_' . $i])) {
-            $fields['type_detail_' . $i] = str_replace(" ",'&nbsp;',$_POST['type_detail_' . $i]);
+            $fields['type_detail_' . $i] = str_replace(" ", '&nbsp;', $_POST['type_detail_' . $i]);
         }
     }
     $fields['letter_date_do'] = $_POST['letter_date_do'];
@@ -30,6 +30,10 @@ if ($PROC == 'add') {
     $perProfile = User::getDataUser($_POST['manager_id']);
     $fields['manager_name'] = $perProfile['fullname'];
     $fields['manager_pos'] = $perProfile['pos_name'];
+    //สาขา
+    $orgName = db_getData("SELECT dep_name FROM usr_department where dep_id ='" . $_POST['org_id'] . "'", 'dep_name');
+    $fields['org_id'] = $_POST['org_id'];
+    $fields['org_name'] = $orgName;
     $letterId = Letter::SaveData($fields);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $cond['letter_id'] = $letterId;
@@ -95,7 +99,11 @@ if ($PROC == 'add') {
     Process::SaveProcess("letter_process", $fieldsProcess);
     //
     $return['status'] = 200;
-    $return['url'] = '../form/frmSend.php?menu_id=2';
+    if ($_SESSION['usr_type'] == 1) {
+        $return['url'] = '../form/frmSend.php?menu_id=10';
+    } else {
+        $return['url'] = '../form/frmSend.php?menu_id=9';
+    }
 } else if ($PROC == 'edit') {
     $letterId = $_POST['LETTER_ID'];
     unset($fields);
@@ -111,7 +119,7 @@ if ($PROC == 'add') {
     $fields['letter_time'] = $_POST['letter_time'];
     for ($i = 1; $i < 4; $i++) {
         if (!empty($_POST['type_detail_' . $i])) {
-            $fields['type_detail_' . $i] = str_replace(" ",'&nbsp;',$_POST['type_detail_' . $i]);
+            $fields['type_detail_' . $i] = str_replace(" ", '&nbsp;', $_POST['type_detail_' . $i]);
         }
     }
     $fields['letter_date_do'] = $_POST['letter_date_do'];
@@ -119,6 +127,10 @@ if ($PROC == 'add') {
     $perProfile = User::getDataUser($_POST['manager_id']);
     $fields['manager_name'] = $perProfile['fullname'];
     $fields['manager_pos'] = $perProfile['pos_name'];
+    //สาขา
+    $orgName = db_getData("SELECT dep_name FROM usr_department where dep_id ='" . $_POST['org_id'] . "'", 'dep_name');
+    $fields['org_id'] = $_POST['org_id'];
+    $fields['org_name'] = $orgName;
     Letter::UpdateData($fields, $letterId);
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $cond['letter_id'] = $letterId;
@@ -184,7 +196,11 @@ if ($PROC == 'add') {
     Process::SaveProcess("letter_process", $fieldsProcess);
     //
     $return['status'] = 200;
-    $return['url'] = '../form/frmSend.php?menu_id=2';
+    if ($_SESSION['usr_type'] == 1) {
+        $return['url'] = '../form/frmSend.php?menu_id=10';
+    } else {
+        $return['url'] = '../form/frmSend.php?menu_id=9';
+    }
 } else if ($PROC == 'delete') {
     $letterId = $_POST['LETTER_ID'];
     $cond['letter_id'] = $letterId;
@@ -211,6 +227,48 @@ if ($PROC == 'add') {
         $fields['hr_position'] = $_SESSION['pos_name'];
         $fields['img_hr'] = FileAttach::MakeSignature($_POST['img_create']);
         $fields['hr_appove_status'] = 'Y';
+        //เส้นทางเอสการ
+        $resWiness = Letter::getDataWiness($letterId);
+        foreach ($resWiness as $key => $value) {
+            unset($fieldsProcess);
+            $fieldsProcess['letter_id'] = $letterId;
+            $fieldsProcess['sender_id'] = $_SESSION['usr_id'];
+            $fieldsProcess['sender_name'] = $_SESSION['full_name'];
+            $fieldsProcess['sender_date'] = date('Y-m-d');
+            $fieldsProcess['sender_time'] = date("H:i:s");
+            $fieldsProcess['letter_step'] = 4;
+            $fieldsProcess['receive_user'] = $value['usr_id'];
+            $fieldsProcess['receive_name'] = $value['prefix_name'] . $value['usr_fname'] . " " . $value['usr_lname'];
+            $fieldsProcess['receive_status'] = 'W';
+            Process::SaveProcess("letter_process", $fieldsProcess);
+        }
+        $resWiness = Letter::getDataTarget($letterId);
+        foreach ($resWiness as $key => $value) {
+            unset($fieldsProcess);
+            $fieldsProcess['letter_id'] = $letterId;
+            $fieldsProcess['sender_id'] = $_SESSION['usr_id'];
+            $fieldsProcess['sender_name'] = $_SESSION['full_name'];
+            $fieldsProcess['sender_date'] = date('Y-m-d');
+            $fieldsProcess['sender_time'] = date("H:i:s");
+            $fieldsProcess['letter_step'] = 3;
+            $fieldsProcess['receive_user'] = $value['usr_id'];
+            $fieldsProcess['receive_name'] = $value['prefix_name'] . $value['usr_fname'] . " " . $value['usr_lname'];
+            $fieldsProcess['receive_status'] = 'W';
+            Process::SaveProcess("letter_process", $fieldsProcess);
+        }
+        $resData = Letter::getDataLetter($letterId);
+        unset($fieldsProcess);
+        $fieldsProcess['letter_id'] = $letterId;
+        $fieldsProcess['sender_id'] = $_SESSION['usr_id'];
+        $fieldsProcess['sender_name'] = $_SESSION['full_name'];
+        $fieldsProcess['sender_date'] = date('Y-m-d');
+        $fieldsProcess['sender_time'] = date("H:i:s");
+        $fieldsProcess['letter_step'] = 2;
+        $fieldsProcess['receive_user'] = $resData['manager_id'];
+        $fieldsProcess['receive_name'] = $resData['manager_name'];
+        $fieldsProcess['receive_status'] = 'W';
+        Process::SaveProcess("letter_process", $fieldsProcess);
+        //
     } else  if ($_POST['rdoStatus'] == 'B') {
         $status = 5;
     } else  if ($_POST['rdoStatus'] == 'N') {
@@ -234,7 +292,7 @@ if ($PROC == 'add') {
     Process::UpdateProcess('letter_process', $fieldsProcess, $cond);
     //
     $return['status'] = 200;
-    $return['url'] = '../form/approved_list.php?menu_id=1';
+    $return['url'] = '../form/approved_list.php?menu_id=6';
 } else if ($PROC == 'Receive') {
     $status = 4;
     foreach ($_POST['img_create_traget'] as $key => $value) {
@@ -259,16 +317,29 @@ if ($PROC == 'add') {
         $cond['f_id'] = $key;
         db_update('frm_witness', $fields, $cond);
     }
-    unset($fields);
-    $fields['manager_sign_date'] = date('Y-m-d');
-    $fields['letter_status'] = $status;
-    $fields['manager_image'] = FileAttach::MakeSignature($_POST['img_create_managerxxx']);
-    $letterId = $_POST['LETTER_ID'];
-    Letter::UpdateData($fields, $letterId);
+    if ($_POST['step'] == 2) {
+        unset($fields);
+        $fields['manager_sign_date'] = date('Y-m-d');
+        $fields['letter_status'] = $status;
+        $fields['manager_image'] = FileAttach::MakeSignature($_POST['img_create_managerxxx']);
+        $letterId = $_POST['LETTER_ID'];
+        Letter::UpdateData($fields, $letterId);
+    }
+    unset($fieldsProcess);
+    $fieldsProcess['receive_date'] = date('Y-m-d');
+    $fieldsProcess['receive_time'] = date("H:i:s");
+    $fieldsProcess['receive_status'] = 'Y';
+    unset($cond);
+    $cond['bp_id'] = $_POST['bp_id'];
+    Process::UpdateProcess('letter_process', $fieldsProcess, $cond);
     $return['status'] = 200;
     FileAttach::Save2Master($letterId, $_POST['TEMP_FILE']);
     $return['status'] = 200;
-    $return['url'] = '../form/frmSend.php?menu_id=2';
+    if ($_SESSION['usr_type'] == 1) {
+        $return['url'] = '../form/signBook.php?menu_id=11';
+    } else {
+        $return['url'] = '../form/signBook.php?menu_id=12';
+    }
 }
 
 echo json_encode($return);

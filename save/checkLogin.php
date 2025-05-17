@@ -44,7 +44,7 @@ if (empty($userName)) {
 
         $i = 0;
         foreach ($responseMenu as $key => $value) {
-            $_SESSION["menu"][$i] = array(
+            $_SESSION["menu"][$value['menu_id']] = array(
                 "menu_name" => $value['menu_name'],
                 "menu_url" => $value['menu_url'],
                 "menu_image" => $value['menu_image'],

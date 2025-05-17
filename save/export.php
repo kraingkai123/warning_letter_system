@@ -52,7 +52,7 @@ ob_start();
  <table id="example" class="table table-striped table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <td colspan="7" align="center"><strong><?php echo $header;?></strong></td>
+                                            <td colspan="8" align="center"><strong><?php echo $header;?></strong></td>
                                         </tr>
                                         <tr class="text-center">
                                            
@@ -60,6 +60,7 @@ ob_start();
                                             <th class="text-center" width="10%">เลขที่เอกสาร</th>
                                              <th class="text-center" width="10%">โทษทางวินัย</th>
                                             <th class="text-center" width="10%">วันที่</th>
+                                             <th class="text-center" width="10%">สาขา</th>
                                             <th class="text-center" width="10%">รหัสพนักงาน</th>
                                             <th class="text-center" width="20%">ชื่อ-นามสกุล</th>
                                             <th class="text-center" width="20%">ตำแหน่ง</th>
@@ -99,6 +100,7 @@ ob_start();
                                                     <td><?php echo $value['letter_number']; ?></td>
                                                     <td><?php echo db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id ='" . $value['letter_type'] . "'", "letter_type_name"); ?></td>
                                                     <td><?php echo db2Date($value['letter_date']) . " " . $value['letter_time']; ?></td>
+                                                      <td><?php echo $value['org_name'];?></td>
                                                     <td><?php echo db_getData("SELECT usr_username FROM view_user WHERE usr_id =" . $value['target_id'] . "", 'usr_username'); ?></td>
                                                     <td><?php echo $value['fullname']; ?></td>
                                                     <td><?php echo $value['usr_pos_name']; ?></td>

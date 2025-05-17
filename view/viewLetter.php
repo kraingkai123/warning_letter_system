@@ -301,6 +301,10 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
                 <td width="60%"></td>
                 <td width="40%" colspan="2">เขียนที่ <?php echo $dataLetter['letter_write_address']; ?></td>
             </tr>
+              <tr>
+                <td width="60%"></td>
+                <td width="40%" colspan="2">สำนักงาน/สาขา <?php echo $dataLetter['org_name']; ?></td>
+            </tr>
         </table>
         <table border="0" width="100%">
             <tr>
@@ -323,8 +327,16 @@ $dataLetter = Letter::getDataLetter($_GET['LETTER_ID']);
             <tr>
                 <td colspan="4"><?php echo $dataLetter['type_detail_1']; ?></td>
             </tr>
+<<<<<<< Updated upstream
             <tr>
                 <td colspan="4"><?php echo strip_tags($dataLetter['letter_detail']); ?></td>
+=======
+              <tr>
+                <td colspan="4"><?php echo strip_tags($dataLetter['letter_detail']); ?></td>
+            </tr>
+            <tr>
+                <td colspan="4"><?php echo $dataLetter['type_detail_2']; ?></td>
+>>>>>>> Stashed changes
             </tr>
             <tr>
                 <td colspan="4"><?php echo $dataLetter['type_detail_2']; ?></td>

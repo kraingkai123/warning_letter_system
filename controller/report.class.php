@@ -8,7 +8,10 @@ class Report
     }
     public static function ListReport(array $req) // flag = Y ดึงมาใช้งาน
     {
-        $filter = "dep_id='" . $req['dep_id'] . "'";
+        $filter="";
+        if ($_SESSION['usr_type'] == 0) {
+            $filter .= "dep_id='" . $req['dep_id'] . "'";
+        }
         if ($req['startDate'] != "" && $req['endDate'] != "") {
             $filter .= "  AND (letter_date >= '" . $req['startDate'] . "' AND letter_date <= '" . $req['endDate'] . "')";
         } else if ($req['startDate']  != "") {
@@ -16,8 +19,9 @@ class Report
         } else if ($req['endDate']  != "") {
             $filter .= " AND letter_date='" . $req['endDate'] . "'";
         }
-        $reponse = db_query("SELECT CONCAT(prefix_name,usr_fname,' ',usr_lname) as fullname,frm_target.usr_id as target_id,m_letter.letter_id,usr_dep_name,usr_pos_name,m_letter.* FROM m_letter
-        INNER JOIN frm_target ON frm_target.letter_id =  m_letter.letter_id WHERE $filter ORDER BY letter_date desc");
+        $reponse = db_query("SELECT org_name,CONCAT(prefix_name,usr_fname,' ',usr_lname) as fullname,frm_target.usr_id as target_id,m_letter.letter_id,usr_dep_name,usr_pos_name,m_letter.* FROM m_letter
+        INNER JOIN frm_target ON frm_target.letter_id =  m_letter.letter_id WHERE 1=1 $filter ORDER BY letter_date desc");
+        
         return $reponse;
     }
     public static function  getruleList(array $req)

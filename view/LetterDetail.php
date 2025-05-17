@@ -109,7 +109,9 @@ if ($_GET['LETTER_ID'] != "") {
                                                             $receiveDatetime = "";
                                                             if ($value['receive_status'] != "") {
                                                                 $receiveName = " ส่ง " . $value['receive_name'];
-                                                                $receiveDatetime = "<span class='text-primary'>" . " (" . db2Date($value['receive_date']) . " " . $value['receive_time'] . ")" . "</span>";
+                                                                if (!empty($value['receive_date'])) {
+                                                                    $receiveDatetime = "<span class='text-primary'>" . " (" . db2Date($value['receive_date']) . " " . $value['receive_time'] . ")" . "</span>";
+                                                                }
                                                             }
                                                             if ($value['receive_status'] == 'N') {
                                                                 $txtReceiveStatus = "ไม่อนุมัติ";
@@ -117,6 +119,8 @@ if ($_GET['LETTER_ID'] != "") {
                                                                 $txtReceiveStatus = "อนุมัติ";
                                                             } else if ($value['receive_status'] == 'B') {
                                                                 $txtReceiveStatus = "ส่งกลับแก้ไข";
+                                                            } else   if ($value['receive_status'] == 'W') {
+                                                                 $txtReceiveStatus = "รออนุมัติ";
                                                             }
 
 
@@ -227,6 +231,7 @@ if ($_GET['LETTER_ID'] != "") {
                                         <input type="hidden" name="LETTER_ID" id="LETTER_ID" value="<?php echo $_GET['LETTER_ID']; ?>">
                                         <input type="hidden" name="PROC" id="PROC" value="<?php echo $_GET['proc']; ?>">
                                         <input type="hidden" name="bp_id" id="bp_id" value="<?php echo $_GET['bp_id']; ?>">
+                                        <input type="hidden" name="step" id="step" value="<?php echo $_GET['STEP']; ?>">
                                         <?php if ($_GET['proc'] == 'Approve') {
                                             include("FrmSign.php");
                                         } else if ($_GET['proc'] == 'Receive') {

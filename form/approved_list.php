@@ -45,7 +45,7 @@ include("../include/header.php");
                                             $color="#FFAFAF";
                                         }
                                     ?>
-                                        <tr style="background-color:<?php echo $color;?>">
+                                        <tr >
                                             <td align="center"><?php echo $i; ?></td>
                                             <td align="center">
                                                 <?php echo $value['letter_number']; ?>
@@ -53,7 +53,7 @@ include("../include/header.php");
                                             <td><?php echo $value['letter_name']; ?></td>
                                             <td><?php echo $value['letter_target']; ?></td>
                                             <td><?php echo db2Date($value['letter_date']); ?></td>
-                                            <td><?php
+                                            <td style="background-color:<?php echo $color;?>"><?php
                                                 if ($value['letter_status'] == 1) {
                                                     $textStatus = "รอตรวจสอบ";
                                                 } else if ($value['letter_status'] == 5) {

@@ -33,4 +33,13 @@ class Department
         $response = db_queryFirst($sql);
         return $response;
     }
+    public static function ListOrg($status="")//สาขา
+    {
+          if ($status == 'Y') {
+            $filter = " AND dep_status = '1' AND org_status='Y'";
+        }
+        $sql = "SELECT * FROM usr_department WHERE 1=1 $filter";
+        $response = db_query($sql);
+        return $response;
+    }
 }

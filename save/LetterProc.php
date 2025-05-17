@@ -56,7 +56,7 @@ if ($PROC == 'add') {
         $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'];
         $target .= " รหัสพนักงาน " . $perProfile['usr_username'];
         $target .= " ตำแหน่ง " . $posData['pos_name'];
-        $target .= " ฝ่าย " . $posData['dep_name'] . ",";
+        $target .= " ฝ่าย " . $depData['dep_name'] . ",";
     }
     $tureTarget = substr($target, 0, -1);
     unset($fields);
@@ -153,7 +153,7 @@ if ($PROC == 'add') {
         $target .= $prefixData['prefix_name'] . $perProfile['usr_fname'] . ' ' . $perProfile['usr_lname'];
         $target .= " รหัสพนักงาน " . $perProfile['usr_username'];
         $target .= " ตำแหน่ง " . $posData['pos_name'];
-        $target .= " ฝ่าย " . $posData['dep_name'] . ",";;
+        $target .= " ฝ่าย " . $perProfile['dep_name'] . ",";;
     }
     $tureTarget = substr($target, 0, -1);
     unset($fields);

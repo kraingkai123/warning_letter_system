@@ -88,9 +88,9 @@
 <script>
 	function login() {
 		$.ajax({
-			type: "POST",
-			url: "./save/checkLogin.php",
-			data: {
+			type: "POST", // ประเภทการส่งข้อมูลจะมี 2 แบบ มีเ GET POST
+			url: "./save/checkLogin.php", // ปลายทางที่สงข้อมูลไป
+			data: {//ข้อมูลที่ส่งไป
 				username: $('#username').val(),
 				password: $("#password").val()
 			}, // serializes the form's elements.

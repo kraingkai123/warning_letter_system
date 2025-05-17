@@ -1,7 +1,7 @@
 <?php
 include("connect.php");
 function db_query($sql, $show_sql = 'N')
-{
+{//ดึงข้อมูลออกมาเป็นรายการทั้งหมด
     global $conn;
     $array = array();
     if ($show_sql == 'Y') {
@@ -14,7 +14,7 @@ function db_query($sql, $show_sql = 'N')
     return $array;
 }
 function db_queryFirst($sql)
-{
+{//ดึงข้อมูลออกมาเป็นรายการแรกที่เจอข้อมูล
     global $conn;
     $array = array();
     $result = mysqli_query($conn, $sql);
@@ -24,21 +24,21 @@ function db_queryFirst($sql)
     return $array[0];
 }
 function db_getData($sql, $target)
-{
+{//ดึงข้อมูลออกมาโดยระบุ ฟิลที่ต้องการ 
     global $conn;
     $result = mysqli_query($conn, $sql);
     $obj = mysqli_fetch_assoc($result);
     return $obj[$target];
 }
 function db_numrows($sql)
-{
+{//นับจำนวนแถวที่เจอข้อมูล
     global $conn;
     $result = mysqli_query($conn, $sql);
     $count = mysqli_num_rows($result);
     return $count;
 }
 function db_insert($table, $fields)
-{
+{//การเพิ่มข้อมูล
     global $conn;
     $sql = "";
     $fieldsInsert = "";
@@ -60,7 +60,7 @@ function db_insert($table, $fields)
     return $last_id;
 }
 function db_update($table, $fields, $cond)
-{
+{//การแก้ไขข้อมูล
     global $conn;
     $sql = "";
     $fieldsData = "";
@@ -84,7 +84,7 @@ function db_update($table, $fields, $cond)
     }
 }
 function db_delete($table, $cond)
-{
+{//การลบข้อมูล
     global $conn;
     $sql = "";
     $where = "";

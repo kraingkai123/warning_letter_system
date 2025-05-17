@@ -106,7 +106,7 @@ include("../include/header.php");
                                         } else {
                                             ?>
                                             <tr>
-                                                <td colspan="6" class="text-center text-danger">ไม่พบข้อมูล</td>
+                                                <td colspan="9" class="text-center text-danger">ไม่พบข้อมูล</td>
                                             </tr>
                                         <?php
                                         }

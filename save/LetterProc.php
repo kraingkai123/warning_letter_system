@@ -102,7 +102,7 @@ if ($PROC == 'add') {
     if ($_SESSION['usr_type'] == 1) {
         $return['url'] = '../form/frmSend.php?menu_id=10';
     } else {
-        $return['url'] = '../form/frmSend.php?menu_id=9';
+        $return['url'] = '../form/frmSend.php?menu_id=0';
     }
 } else if ($PROC == 'edit') {
     $letterId = $_POST['LETTER_ID'];
@@ -199,7 +199,7 @@ if ($PROC == 'add') {
     if ($_SESSION['usr_type'] == 1) {
         $return['url'] = '../form/frmSend.php?menu_id=10';
     } else {
-        $return['url'] = '../form/frmSend.php?menu_id=9';
+        $return['url'] = '../form/frmSend.php?menu_id=0';
     }
 } else if ($PROC == 'delete') {
     $letterId = $_POST['LETTER_ID'];
@@ -338,7 +338,7 @@ if ($PROC == 'add') {
     if ($_SESSION['usr_type'] == 1) {
         $return['url'] = '../form/signBook.php?menu_id=11';
     } else {
-        $return['url'] = '../form/signBook.php?menu_id=12';
+        $return['url'] = '../form/signBook.php?menu_id=2';
     }
 }
 

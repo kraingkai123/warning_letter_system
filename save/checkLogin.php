@@ -40,8 +40,45 @@ if (empty($userName)) {
             $filter = " AND menu_type='1'";
         }
        
-        $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
-
+        
+        if($response['usr_type']==1){
+            $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
+        }else{
+            if($response['is_manager']=='Y'){
+                $responseMenu[] =array(
+                    "menu_name" =>"ยื่นคำขอ",
+                    "menu_url"=>"frmSend.php",
+                    "menu_image"=>"nc-badge",
+                    "menu_id" =>0
+                );
+                /* $responseMenu[] =array(
+                    "menu_name" =>"อนุมัติเอกสาร",
+                    "menu_url"=>"approved_list.php",
+                    "menu_image"=>"nc-check-2"
+                ); */
+                $responseMenu[] =array(
+                    "menu_name" =>"เซ็นเอกสาร",
+                    "menu_url"=>"signBook.php",
+                    "menu_image"=>"nc-badge",
+                    "menu_id" =>2
+                );
+            }else{
+                $responseMenu[] =array(
+                    "menu_name" =>"ยื่นคำขอ",
+                    "menu_url"=>"frmSend.php",
+                    "menu_image"=>"nc-badge",
+                    "menu_id" =>0
+                );
+                $responseMenu[] =array(
+                    "menu_name" =>"เซ็นเอกสาร",
+                    "menu_url"=>"signBook.php",
+                    "menu_image"=>"nc-badge",
+                    "menu_id" =>2
+                );
+            }
+        }
+      /*   print_pre($responseMenu);
+        exit; */
         $i = 0;
         foreach ($responseMenu as $key => $value) {
             $_SESSION["menu"][$value['menu_id']] = array(

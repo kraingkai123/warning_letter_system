@@ -73,10 +73,7 @@ class Letter
         $reponse = db_query("SELECT * FROM m_letter 
         INNER JOIN letter_process ON letter_process.letter_id = m_letter.letter_id
         WHERE  letter_step in(2,3,4) AND (receive_status ='W') and receive_user='".$_SESSION['usr_id']."'
-        order by CASE
-        WHEN letter_status=1 THEN 0
-        ELSE 1
-    END asc");
+        order by bp_id desc");
 
         return $reponse;
     }

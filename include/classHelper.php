@@ -8,3 +8,4 @@ include("../controller/letter.class.php");
 include("../controller/rule.class.php");
 include("../controller/report.class.php");
 include("../controller/process.class.php");
+include("../controller/mistake.class.php");

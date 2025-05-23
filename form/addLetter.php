@@ -93,7 +93,7 @@ if ($_GET['LETTER_ID'] != "") {
                                         <select name="letter_target[]" id="letter_target" class="form-control selectbox" onchange="getManager(this.value)">
                                             <option value="">โปรดเลือก</option>
                                             <?php
-                                            $responseProfile = User::getUserAll($_SESSION['dep_id'], 0,'Y');
+                                            $responseProfile = User::getUserAll($_SESSION['dep_id'], 0, 'Y');
                                             foreach ($responseProfile as $key => $value) {
                                                 $select = "";
                                                 foreach ($dataFrmTarget as $key2 => $value2) {
@@ -108,6 +108,24 @@ if ($_GET['LETTER_ID'] != "") {
                                             ?>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="letter_write_address" class="col-sm-1 col-form-label text-dark col-form-label-lg">การกระทำผิด <span class="text-danger">*</span></label>
+                                    <div class="col-sm-7">
+                                        <select name="mistake_id" id="mistake_id" class="form-control selectbox" placeholder="โปรดเลือก" onchange="getMistakeData(this.value)">
+                                            <option value="">โปรดเลือก</option>
+                                            <?php
+                                            $responseType = MisTake::ListMistake('Y');
+
+                                            foreach ($responseType as $key => $value) {
+                                            ?>
+                                                <option value="<?php echo $value['mistake_id']; ?>" <?php echo $dataLetter['mistake_id'] == $value["mistake_id"] ? "selected" : ""; ?>>
+                                                    <?php echo $value['mistake_name']; ?></option>
+                                            <?php
+                                            } ?>
+                                        </select>
+                                    </div>
+
                                 </div>
                                 <div class="form-group row" style="display: none;">
                                     <label for="letter_write_address" class="col-sm-1 col-form-label text-dark">รายละเอียด (1) <span class="text-danger">*</span></label>
@@ -199,7 +217,7 @@ if ($_GET['LETTER_ID'] != "") {
                                     <div class="col-sm-7">
                                         <select name="witness[]" id="witness" class="form-control selectbox" multiple>
                                             <?php
-                                            $responseProfile = User::getUserAll($_SESSION['dep_id'], 1,'Y');
+                                            $responseProfile = User::getUserAll($_SESSION['dep_id'], 1, 'Y');
                                             foreach ($responseProfile as $key => $value) {
                                                 $select = "";
                                                 foreach ($dataFrmWiness as $key2 => $value2) {
@@ -232,10 +250,10 @@ if ($_GET['LETTER_ID'] != "") {
                                         <select name="manager_id" id="manager_id" class="form-control selectbox">
                                             <option value="">โปรดเลือก</option>
                                             <?php
-                                             $depId = db_getData("SELECT dep_id FROM VIEW_USER WHERE USR_ID='".$target."'",'dep_id');
+                                            $depId = db_getData("SELECT dep_id FROM VIEW_USER WHERE USR_ID='" . $target . "'", 'dep_id');
                                             $responseProfile = User::getManager($target);
 
-                                
+
                                             foreach ($responseProfile as $key => $value) {
                                                 $select = "";
                                                 if ($dataLetter['manager_id'] == $value['usr_id']) {
@@ -282,17 +300,17 @@ if ($_GET['LETTER_ID'] != "") {
 </html>
 <script>
     $(document).ready(function() {
-        var quill = new Quill('#editor', {
+         window.quill = new Quill('#editor', {
             theme: 'snow'
         });
         quill.root.innerHTML = $("#letter_detail").val();
-      
+
     });
 
     function saveData() {
 
         var invalidate = true;
-         if ($('#org_id').val() == "") {
+        if ($('#org_id').val() == "") {
             Swal.fire({
                 title: "กรุณาเลือกสาขา",
                 icon: "error"
@@ -355,14 +373,14 @@ if ($_GET['LETTER_ID'] != "") {
             });
             invalidate = false;
         } else {
-           
+
             var check = $("#witness").val().length;
             if (check < 2) {
                 Swal.fire({
-                title: "กรุณาเลือกพยานอย่างน้อย 2 คน",
-                icon: "error"
-            });
-            invalidate = false;
+                    title: "กรุณาเลือกพยานอย่างน้อย 2 คน",
+                    icon: "error"
+                });
+                invalidate = false;
             }
         }
         if ($("#img_create").val() == "") {
@@ -445,6 +463,23 @@ if ($_GET['LETTER_ID'] != "") {
         });
     }
 
+    function getMistakeData(mistakeId) {
+        $.ajax({
+            type: "POST",
+            url: "../save/mistakeProc.php",
+            data: {
+                proc: 'getData',
+                mistakeId: mistakeId,
+            }, // serializes the form's elements.
+            dataType: "json",
+            success: function(response) {
+              
+              quill.clipboard.dangerouslyPasteHTML(response.data.mistake_name);
+
+            }
+        });
+    }
+
     function getDataLetterType(letterType) {
         $.ajax({
             type: "POST",
@@ -482,7 +517,8 @@ if ($_GET['LETTER_ID'] != "") {
             }
         });
     }
-    function getManager(usrId){
+
+    function getManager(usrId) {
         $("#manager_id").empty()
         $.ajax({
             type: "POST",
@@ -493,10 +529,10 @@ if ($_GET['LETTER_ID'] != "") {
             }, // serializes the form's elements.
             dataType: "json",
             success: function(response) {
-                
+
                 $.each(response.data, function(index, item) {
-                    $("#manager_id").append("<option value='"+item.usr_id+"'>"+item.fullname+"</option>")
-    });
+                    $("#manager_id").append("<option value='" + item.usr_id + "'>" + item.fullname + "</option>")
+                });
             }
         });
     }

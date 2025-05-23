@@ -16,6 +16,7 @@ if ($PROC == 'add') {
     $fields['letter_detail'] = $_POST['letter_detail'];
     $fields['letter_status'] = 1;
     $fields['letter_type'] = $_POST['letter_type'];
+    $fields['mistake_id'] = $_POST['mistake_id'];
     $fields['img_create'] = FileAttach::MakeSignature($_POST['img_create']);
     $letter_type_name = db_getData("SELECT letter_type_name FROM m_letter_type WHERE lt_id='" . $_POST['letter_type'] . "'", 'letter_type_name');
     $fields['letter_type_name'] = $letter_type_name;
@@ -111,6 +112,7 @@ if ($PROC == 'add') {
     $fields['letter_date'] = $_POST['letter_date'];
     $fields['letter_name'] = $_POST['letter_name'];
     $fields['letter_detail'] = $_POST['letter_detail'];
+    $fields['mistake_id'] = $_POST['mistake_id'];
     $fields['letter_status'] = 1;
     $fields['letter_type'] = $_POST['letter_type'];
     $fields['img_create'] = FileAttach::MakeSignature($_POST['img_create']);

@@ -78,7 +78,7 @@ if (empty($userName)) {
         }
       /*   print_pre($responseMenu);
         exit; */
-        $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
+    /*     $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC"); */
        
 
         $i = 0;

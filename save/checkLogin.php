@@ -40,8 +40,6 @@ if (empty($userName)) {
             $filter = " AND menu_type='1'";
         }
        
-<<<<<<< Updated upstream
-        
         if($response['usr_type']==1){
             $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
         }else{
@@ -58,7 +56,7 @@ if (empty($userName)) {
                     "menu_image"=>"nc-check-2"
                 ); */
                 $responseMenu[] =array(
-                    "menu_name" =>"เซ็นเอกสาร",
+                    "menu_name" =>"ลงนามเอกสาร",
                     "menu_url"=>"signBook.php",
                     "menu_image"=>"nc-badge",
                     "menu_id" =>2
@@ -71,7 +69,7 @@ if (empty($userName)) {
                     "menu_id" =>0
                 );
                 $responseMenu[] =array(
-                    "menu_name" =>"เซ็นเอกสาร",
+                    "menu_name" =>"ลงนามเอกสาร",
                     "menu_url"=>"signBook.php",
                     "menu_image"=>"nc-badge",
                     "menu_id" =>2
@@ -80,11 +78,9 @@ if (empty($userName)) {
         }
       /*   print_pre($responseMenu);
         exit; */
-=======
         $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
        
 
->>>>>>> Stashed changes
         $i = 0;
         foreach ($responseMenu as $key => $value) {
             $_SESSION["menu"][$value['menu_id']] = array(

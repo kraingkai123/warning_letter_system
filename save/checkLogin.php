@@ -40,6 +40,7 @@ if (empty($userName)) {
             $filter = " AND menu_type='1'";
         }
        
+<<<<<<< Updated upstream
         
         if($response['usr_type']==1){
             $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
@@ -79,6 +80,11 @@ if (empty($userName)) {
         }
       /*   print_pre($responseMenu);
         exit; */
+=======
+        $responseMenu = db_query("SELECT * FROM m_menu WHERE  1=1 $filter ORDER BY order_menu ASC");
+       
+
+>>>>>>> Stashed changes
         $i = 0;
         foreach ($responseMenu as $key => $value) {
             $_SESSION["menu"][$value['menu_id']] = array(

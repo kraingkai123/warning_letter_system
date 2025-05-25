@@ -58,7 +58,7 @@ if (empty($userName)) {
                     "menu_image"=>"nc-check-2"
                 ); */
                 $responseMenu[] =array(
-                    "menu_name" =>"ลงนามเอกสาร",
+                    "menu_name" =>"เซ็นเอกสาร",
                     "menu_url"=>"signBook.php",
                     "menu_image"=>"nc-badge",
                     "menu_id" =>2
@@ -71,7 +71,7 @@ if (empty($userName)) {
                     "menu_id" =>0
                 );
                 $responseMenu[] =array(
-                    "menu_name" =>"]'ลงนามเอกสาร",
+                    "menu_name" =>"เซ็นเอกสาร",
                     "menu_url"=>"signBook.php",
                     "menu_image"=>"nc-badge",
                     "menu_id" =>2
